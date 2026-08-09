@@ -10,15 +10,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-se
 body.demo-mode { background: #0a0e1a; }
 
 /* Side nav */
-.side-nav { position: fixed; left: 0; top: 0; right: 0; height: 48px; background: rgba(15,20,25,0.97); border-bottom: 1px solid rgba(99,102,241,0.15); z-index: 9998; display: flex; align-items: center; padding: 0 24px; gap: 4px; overflow-x: auto; backdrop-filter: blur(8px); }
+.side-nav { position: fixed; left: 0; top: 0; right: 0; height: 48px; background: rgba(15,20,25,0.97); border-bottom: 1px solid rgba(99,102,241,0.15); z-index: 9998; display: flex; align-items: center; padding: 0 140px 0 24px; backdrop-filter: blur(8px); }
 body.demo-mode .side-nav { display: none; }
-.side-nav .sn-title { font-size: 11px; color: rgba(165,180,252,0.7); font-weight: 600; letter-spacing: 0.8px; margin-right: 12px; white-space: nowrap; }
+.side-nav .sn-items { display: flex; align-items: center; gap: 4px; overflow-x: auto; min-width: 0; }
+.side-nav .sn-title { font-size: 11px; color: rgba(165,180,252,0.7); font-weight: 600; letter-spacing: 0.8px; margin-right: 12px; white-space: nowrap; flex-shrink: 0; }
 .side-nav .sn-item { display: flex; align-items: center; gap: 5px; padding: 6px 12px; font-size: 13px; color: #9ca3af; cursor: pointer; transition: all 0.2s; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
 .side-nav .sn-item:hover { color: #e8eaed; background: rgba(99,102,241,0.12); }
 .side-nav .sn-item.active { color: #a5b4fc; background: rgba(99,102,241,0.18); font-weight: 600; }
 .side-nav .sn-item .sn-icon { font-size: 13px; }
 
-.mode-toggle { position: fixed; top: 16px; right: 16px; z-index: 9999; display: flex; background: #1a1f2e; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.mode-toggle { position: fixed; top: 8px; right: 24px; z-index: 9999; display: flex; background: #1a1f2e; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+body.demo-mode .mode-toggle { top: 16px; right: 16px; }
 .mode-toggle button { padding: 8px 16px; border: none; background: transparent; cursor: pointer; font-size: 13px; color: #9ca3af; transition: all 0.2s; }
 .mode-toggle button.active { background: #6366f1; color: #fff; }
 
@@ -282,15 +284,17 @@ body.demo-mode .doc-details { display: none; }
 </head>
 <body>
 <nav class="side-nav" id="sideNav">
-  <div class="sn-title">页面导航</div>
-  <div class="sn-item active" data-page="page-home"><span class="sn-icon">🏠</span>星球首页</div>
-  <div class="sn-item" data-page="page-detail-cocreation"><span class="sn-icon">🟣</span>共创星详情</div>
-  <div class="sn-item" data-page="page-detail-promotion"><span class="sn-icon">🟠</span>传播星详情</div>
-  <div class="sn-item" data-page="page-detail-guardian"><span class="sn-icon">🟢</span>守护星详情</div>
-  <div class="sn-item" data-page="page-level-cocreation"><span class="sn-icon">📈</span>共创星等级</div>
-  <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
-  <div class="sn-item" data-page="page-level-guardian"><span class="sn-icon">📈</span>守护星等级</div>
-  <div class="sn-item" data-page="page-profile"><span class="sn-icon">👤</span>个人中心</div>
+  <div class="sn-items">
+    <div class="sn-title">页面导航</div>
+    <div class="sn-item active" data-page="page-home"><span class="sn-icon">🏠</span>星球首页</div>
+    <div class="sn-item" data-page="page-detail-cocreation"><span class="sn-icon">🟣</span>共创星详情</div>
+    <div class="sn-item" data-page="page-detail-promotion"><span class="sn-icon">🟠</span>传播星详情</div>
+    <div class="sn-item" data-page="page-detail-guardian"><span class="sn-icon">🟢</span>守护星详情</div>
+    <div class="sn-item" data-page="page-level-cocreation"><span class="sn-icon">📈</span>共创星等级</div>
+    <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
+    <div class="sn-item" data-page="page-level-guardian"><span class="sn-icon">📈</span>守护星等级</div>
+    <div class="sn-item" data-page="page-profile"><span class="sn-icon">👤</span>个人中心</div>
+  </div>
 </nav>
 <div class="mode-toggle">
   <button class="active" onclick="setMode('doc')">文档模式</button>
