@@ -10,22 +10,22 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-se
 body.demo-mode { background: #0a0e1a; }
 
 /* Side nav */
-.side-nav { position: fixed; left: 0; top: 0; width: 180px; height: 100vh; background: rgba(15,20,25,0.97); border-right: 1px solid rgba(99,102,241,0.15); z-index: 9998; display: flex; flex-direction: column; padding: 56px 0 16px; overflow-y: auto; backdrop-filter: blur(8px); }
+.side-nav { position: fixed; left: 0; top: 0; right: 0; height: 48px; background: rgba(15,20,25,0.97); border-bottom: 1px solid rgba(99,102,241,0.15); z-index: 9998; display: flex; align-items: center; padding: 0 24px; gap: 4px; overflow-x: auto; backdrop-filter: blur(8px); }
 body.demo-mode .side-nav { display: none; }
-.side-nav .sn-title { font-size: 11px; color: rgba(165,180,252,0.7); font-weight: 600; letter-spacing: 0.8px; padding: 0 16px; margin-bottom: 8px; text-transform: uppercase; }
-.side-nav .sn-item { display: flex; align-items: center; gap: 8px; padding: 9px 16px; font-size: 13px; color: #9ca3af; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
-.side-nav .sn-item:hover { color: #e8eaed; background: rgba(99,102,241,0.08); }
-.side-nav .sn-item.active { color: #a5b4fc; border-left-color: #6366f1; background: rgba(99,102,241,0.1); font-weight: 600; }
-.side-nav .sn-item .sn-icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+.side-nav .sn-title { font-size: 11px; color: rgba(165,180,252,0.7); font-weight: 600; letter-spacing: 0.8px; margin-right: 12px; white-space: nowrap; }
+.side-nav .sn-item { display: flex; align-items: center; gap: 5px; padding: 6px 12px; font-size: 13px; color: #9ca3af; cursor: pointer; transition: all 0.2s; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
+.side-nav .sn-item:hover { color: #e8eaed; background: rgba(99,102,241,0.12); }
+.side-nav .sn-item.active { color: #a5b4fc; background: rgba(99,102,241,0.18); font-weight: 600; }
+.side-nav .sn-item .sn-icon { font-size: 13px; }
 
 .mode-toggle { position: fixed; top: 16px; right: 16px; z-index: 9999; display: flex; background: #1a1f2e; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 .mode-toggle button { padding: 8px 16px; border: none; background: transparent; cursor: pointer; font-size: 13px; color: #9ca3af; transition: all 0.2s; }
 .mode-toggle button.active { background: #6366f1; color: #fff; }
 
 /* ============ Stage (annotation canvas) ============ */
-.stage { width: 1500px; height: 900px; margin: 24px 0 0 200px; position: relative; flex-shrink: 0; }
+.stage { width: 1500px; height: 900px; margin: 72px auto 0; position: relative; flex-shrink: 0; }
 @media (max-width: 1560px) {
-  .stage { transform: scale(min(1, (100vw - 220px) / 1500)); transform-origin: top left; margin-bottom: max(24px, calc(900px - 900px * min(1, (100vw - 220px) / 1500) + 48px)); }
+  .stage { transform: scale(min(1, (100vw - 48px) / 1500)); transform-origin: top left; margin-left: 24px; margin-bottom: max(24px, calc(900px - 900px * min(1, (100vw - 48px) / 1500) + 48px)); }
 }
 body.demo-mode .stage { transform: none; width: 390px; height: 844px; margin: calc((100vh - 844px) / 2) auto 0; }
 .stage-hint { position: absolute; top: 2px; left: 24px; font-size: 12px; color: rgba(232,234,237,0.55); z-index: 4; letter-spacing: 0.5px; }
