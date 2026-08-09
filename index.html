@@ -8,14 +8,24 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; background: #0f1419; color: #1a1a1a; overflow-x: auto; }
 body.demo-mode { background: #0a0e1a; }
+
+/* Side nav */
+.side-nav { position: fixed; left: 0; top: 0; width: 180px; height: 100vh; background: rgba(15,20,25,0.97); border-right: 1px solid rgba(99,102,241,0.15); z-index: 9998; display: flex; flex-direction: column; padding: 56px 0 16px; overflow-y: auto; backdrop-filter: blur(8px); }
+body.demo-mode .side-nav { display: none; }
+.side-nav .sn-title { font-size: 11px; color: rgba(165,180,252,0.7); font-weight: 600; letter-spacing: 0.8px; padding: 0 16px; margin-bottom: 8px; text-transform: uppercase; }
+.side-nav .sn-item { display: flex; align-items: center; gap: 8px; padding: 9px 16px; font-size: 13px; color: #9ca3af; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
+.side-nav .sn-item:hover { color: #e8eaed; background: rgba(99,102,241,0.08); }
+.side-nav .sn-item.active { color: #a5b4fc; border-left-color: #6366f1; background: rgba(99,102,241,0.1); font-weight: 600; }
+.side-nav .sn-item .sn-icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+
 .mode-toggle { position: fixed; top: 16px; right: 16px; z-index: 9999; display: flex; background: #1a1f2e; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 .mode-toggle button { padding: 8px 16px; border: none; background: transparent; cursor: pointer; font-size: 13px; color: #9ca3af; transition: all 0.2s; }
 .mode-toggle button.active { background: #6366f1; color: #fff; }
 
 /* ============ Stage (annotation canvas) ============ */
-.stage { width: 1500px; height: 900px; margin: 24px auto 0; position: relative; flex-shrink: 0; }
+.stage { width: 1500px; height: 900px; margin: 24px auto 0 204px; position: relative; flex-shrink: 0; }
 @media (max-width: 1560px) {
-  .stage { transform: scale(min(1, (100vw - 40px) / 1500)); transform-origin: top center; margin-bottom: max(24px, calc(900px - 900px * min(1, (100vw - 40px) / 1500) + 48px)); }
+  .stage { transform: scale(min(1, (100vw - 220px) / 1500)); transform-origin: top left; margin-bottom: max(24px, calc(900px - 900px * min(1, (100vw - 220px) / 1500) + 48px)); }
 }
 body.demo-mode .stage { transform: none; width: 390px; height: 844px; margin: calc((100vh - 844px) / 2) auto 0; }
 .stage-hint { position: absolute; top: 2px; left: 24px; font-size: 12px; color: rgba(232,234,237,0.55); z-index: 4; letter-spacing: 0.5px; }
@@ -241,7 +251,7 @@ body.demo-mode .marker { visibility: hidden !important; }
 .bulletin-reward { font-size: 10px; color: rgba(255,255,255,0.85); white-space: nowrap; }
 
 /* ============ Doc details (below stage, doc mode only) ============ */
-.doc-details { max-width: 1500px; margin: 32px auto 48px; padding: 0 24px; color: #e8eaed; }
+.doc-details { max-width: 1500px; margin: 32px auto 48px; margin-left: 204px; padding: 0 24px; color: #e8eaed; }
 body.demo-mode .doc-details { display: none; }
 .dd-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
 .dd-head h2 { font-size: 18px; font-weight: 700; color: #e8eaed; }
@@ -271,6 +281,17 @@ body.demo-mode .doc-details { display: none; }
 </style>
 </head>
 <body>
+<nav class="side-nav" id="sideNav">
+  <div class="sn-title">页面导航</div>
+  <div class="sn-item active" data-page="page-home"><span class="sn-icon">🏠</span>星球首页</div>
+  <div class="sn-item" data-page="page-detail-cocreation"><span class="sn-icon">🟣</span>共创星详情</div>
+  <div class="sn-item" data-page="page-detail-promotion"><span class="sn-icon">🟠</span>传播星详情</div>
+  <div class="sn-item" data-page="page-detail-guardian"><span class="sn-icon">🟢</span>守护星详情</div>
+  <div class="sn-item" data-page="page-level-cocreation"><span class="sn-icon">📈</span>共创星等级</div>
+  <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
+  <div class="sn-item" data-page="page-level-guardian"><span class="sn-icon">📈</span>守护星等级</div>
+  <div class="sn-item" data-page="page-profile"><span class="sn-icon">👤</span>个人中心</div>
+</nav>
 <div class="mode-toggle">
   <button class="active" onclick="setMode('doc')">文档模式</button>
   <button onclick="setMode('demo')">演示模式</button>
@@ -892,18 +913,7 @@ body.demo-mode .doc-details { display: none; }
 <!-- ==================== 需求明细（文档内容） ==================== -->
 <div class="doc-details" id="docDetails">
   <div class="dd-head"><h2>需求明细</h2><span class="dd-badge">PRD</span></div>
-  <p class="dd-sub">标注版将 PRD 文档内容直接落于原型之上：上方标注（①–⑤）指向对应界面模块并随页面切换；以下为完整需求数据明细。</p>
-
-  <div class="quick-nav">
-    <button onclick="navToProto('page-home')">🏠 星球首页</button>
-    <button onclick="navToProto('page-detail-cocreation')">共创星详情</button>
-    <button onclick="navToProto('page-detail-promotion')">传播星详情</button>
-    <button onclick="navToProto('page-detail-guardian')">守护星详情</button>
-    <button onclick="navToProto('page-level-cocreation')">共创星等级</button>
-    <button onclick="navToProto('page-level-promotion')">传播星等级</button>
-    <button onclick="navToProto('page-level-guardian')">守护星等级</button>
-    <button onclick="navToProto('page-profile')">个人中心</button>
-  </div>
+  <p class="dd-sub">标注版将 PRD 文档内容直接落于原型之上，以下为完整需求数据明细。</p>
 
   <div class="d-grid">
     <div class="d-card span3">
@@ -1076,6 +1086,25 @@ function navToProto(pageId){
   }
 }
 window.addEventListener('resize',()=>{ if(!document.body.classList.contains('demo-mode')) drawArrows(); });
+
+// Side nav click
+document.querySelectorAll('.sn-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.sn-item').forEach(i=>i.classList.remove('active'));
+    item.classList.add('active');
+    goToPage(item.dataset.page);
+    document.getElementById('stage').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// Sync side nav active state on goToPage
+const _origGoToPage = goToPage;
+goToPage = function(id){
+  _origGoToPage(id);
+  document.querySelectorAll('.sn-item').forEach(i=>{
+    i.classList.toggle('active', i.dataset.page===id);
+  });
+};
 
 // Init
 showAnnotations('page-home');
