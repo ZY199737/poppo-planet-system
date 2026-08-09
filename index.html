@@ -46,10 +46,10 @@ body.demo-mode .anno { display: none !important; }
 .anno .co-sub { margin-top: 7px; padding-top: 7px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 11.5px; color: #9ca3af; line-height: 1.6; }
 
 /* Markers inside phone pages */
-.marker { position: absolute; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; font-size: 13px; font-weight: 800; display: none; align-items: center; justify-content: center; z-index: 50; cursor: pointer; user-select: none; transition: transform 0.2s, box-shadow 0.2s; animation: markerPulse 2.6s ease-in-out infinite; box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(99,102,241,0.4), 0 0 14px rgba(99,102,241,0.6); }
+.marker { position: absolute; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; font-size: 13px; font-weight: 800; visibility: hidden; align-items: center; justify-content: center; z-index: 50; cursor: pointer; user-select: none; transition: transform 0.2s, box-shadow 0.2s; animation: markerPulse 2.6s ease-in-out infinite; box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(99,102,241,0.4), 0 0 14px rgba(99,102,241,0.6); }
 @keyframes markerPulse { 0%,100% { box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(99,102,241,0.4), 0 0 14px rgba(99,102,241,0.6); } 50% { box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(99,102,241,0.6), 0 0 22px rgba(99,102,241,0.85); } }
 .marker.linked { transform: scale(1.5); box-shadow: 0 0 0 3px #fff, 0 0 0 6px rgba(99,102,241,0.8), 0 0 28px rgba(99,102,241,1); }
-body.demo-mode .marker { display: none !important; }
+body.demo-mode .marker { visibility: hidden !important; }
 
 /* ============ Phone internals (verbatim from original) ============ */
 .page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transition: transform 0.4s ease, opacity 0.3s ease; opacity: 0; pointer-events: none; overflow-y: auto; }
