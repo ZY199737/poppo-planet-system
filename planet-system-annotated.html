@@ -289,10 +289,8 @@ body.demo-mode .doc-details { display: none; }
     <div class="sn-item active" data-page="page-home"><span class="sn-icon">🏠</span>星球首页</div>
     <div class="sn-item" data-page="page-detail-cocreation"><span class="sn-icon">🟣</span>共创星详情</div>
     <div class="sn-item" data-page="page-detail-promotion"><span class="sn-icon">🟠</span>传播星详情</div>
-    <div class="sn-item" data-page="page-detail-guardian"><span class="sn-icon">🟢</span>守护星详情</div>
     <div class="sn-item" data-page="page-level-cocreation"><span class="sn-icon">📈</span>共创星等级</div>
     <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
-    <div class="sn-item" data-page="page-level-guardian"><span class="sn-icon">📈</span>守护星等级</div>
   </div>
 </nav>
 <div class="mode-toggle">
@@ -423,10 +421,10 @@ body.demo-mode .doc-details { display: none; }
         <div class="task-item"><div class="task-left"><div class="task-icon">🔍</div><div><div class="task-name">翻译查错</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn">去参与</button></div>
       </div>
       <div class="marker" id="m-dc-3" style="top:402px;left:252px;">③</div>
+      <div class="marker" id="m-dc-5" style="top:420px;left:350px;">⑤</div>
       <div class="rank-section">
         <div class="rank-card">
           <div class="rank-header"><span class="rank-header-icon">🏆</span><span class="rank-header-title">本月星球排行</span><span class="rank-header-sub" title="贡献值：完成任务获得的能量累计" onclick="showRankInfo()">?</span></div>
-          <div class="marker" id="m-dc-5" style="top:478px;left:330px;">⑤</div>
           <div class="rank-scroll">
             <div class="rank-item"><span class="rank-num">1</span><div class="rank-avatar">👤</div><span class="rank-name">StarBuilder_01<span class="rank-crown">👑</span></span><span class="rank-score">2,840</span></div>
             <div class="rank-item"><span class="rank-num">2</span><div class="rank-avatar">👤</div><span class="rank-name">VoiceCraft</span><span class="rank-score">2,210</span></div>
@@ -445,52 +443,6 @@ body.demo-mode .doc-details { display: none; }
     </div>
 
     <!-- PAGE 3: Guardian Detail -->
-    <div class="page slide-right" id="page-detail-guardian">
-      <div class="status-bar">
-        <span>9:41</span>
-        <div class="dynamic-island">
-          <div class="dynamic-island-inner">
-            <div class="dynamic-island-camera"></div>
-            <div class="dynamic-island-sensor"></div>
-          </div>
-        </div>
-        <span>⚡ 100%</span>
-      </div>
-      <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-home')"></div><div class="title">守护星</div></div>
-      <div class="detail-header">
-        <div class="detail-planet-orb guardian"></div>
-        <h2>守护星 Guardian</h2>
-        <p class="subtitle">秩序守护的堡垒，守护者公正裁决维护社区的健康环境</p>
-      </div>
-      <div class="marker" id="m-dg-1" style="top:150px;left:214px;">①</div>
-      <div class="level-section"><div class="level-card green" onclick="goToPage('page-level-guardian')"><div class="level-badge green">T1</div><div class="level-info"><h4>见习守护 Guardian Trainee</h4><p>能量 80 / 200 · 距升级还需 120</p><div class="level-progress"><div class="level-progress-bar" style="width:40%"></div></div></div><div class="level-arrow"></div></div></div>
-      <div class="marker" id="m-dg-2" style="top:298px;left:252px;">②</div>
-      <div class="task-section">
-        <div class="section-title green">可参与任务</div>
-        <div class="task-item"><div class="task-left"><div class="task-icon green">⚖️</div><div><div class="task-name">举报投诉评判</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn green">去参与</button></div>
-        <div class="task-item"><div class="task-left"><div class="task-icon green">🥊</div><div><div class="task-name">举报PK</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn green">去参与</button></div>
-      </div>
-      <div class="marker" id="m-dg-3" style="top:452px;left:252px;">③</div>
-      <div class="rank-section">
-        <div class="rank-card">
-          <div class="rank-header"><span class="rank-header-icon">🏆</span><span class="rank-header-title">本月星球排行</span><span class="rank-header-sub" title="贡献值：完成任务获得的能量累计" onclick="showRankInfo()">?</span></div>
-          <div class="marker" id="m-dg-5" style="top:478px;left:330px;">⑤</div>
-          <div class="rank-scroll">
-            <div class="rank-item"><span class="rank-num">1</span><div class="rank-avatar">👤</div><span class="rank-name">Shield_Master<span class="rank-crown">👑</span></span><span class="rank-score">1,960</span></div>
-            <div class="rank-item"><span class="rank-num">2</span><div class="rank-avatar">👤</div><span class="rank-name">JusticeKeeper</span><span class="rank-score">1,720</span></div>
-            <div class="rank-item"><span class="rank-num">3</span><div class="rank-avatar">👤</div><span class="rank-name">OrderGuard</span><span class="rank-score">1,540</span></div>
-            <div class="rank-item"><span class="rank-num">4</span><div class="rank-avatar">👤</div><span class="rank-name">SafeZone</span><span class="rank-score">1,280</span></div>
-            <div class="rank-item"><span class="rank-num">5</span><div class="rank-avatar">👤</div><span class="rank-name">PeaceWarden</span><span class="rank-score">980</span></div>
-            <div class="rank-item"><span class="rank-num">6</span><div class="rank-avatar">👤</div><span class="rank-name">SilentGuard</span><span class="rank-score">860</span></div>
-            <div class="rank-item"><span class="rank-num">7</span><div class="rank-avatar">👤</div><span class="rank-name">FairJudge</span><span class="rank-score">740</span></div>
-            <div class="rank-item"><span class="rank-num">8</span><div class="rank-avatar">👤</div><span class="rank-name">NightWatch</span><span class="rank-score">620</span></div>
-            <div class="rank-item"><span class="rank-num">9</span><div class="rank-avatar">👤</div><span class="rank-name">TruthSeeker</span><span class="rank-score">510</span></div>
-            <div class="rank-item"><span class="rank-num">10</span><div class="rank-avatar">👤</div><span class="rank-name">CalmStorm</span><span class="rank-score">430</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="marker" id="m-dg-4" style="top:570px;left:36px;">④</div>
-    </div>
 
     <!-- PAGE 3.5: Promotion Detail -->
     <div class="page slide-right" id="page-detail-promotion">
@@ -518,10 +470,10 @@ body.demo-mode .doc-details { display: none; }
         <div class="task-item"><div class="task-left"><div class="task-icon orange">📢</div><div><div class="task-name">站外扩散</div><div class="task-reward">合格 +30 能量 · 优质 +50 能量</div></div></div><button class="task-btn orange">去参与</button></div>
       </div>
       <div class="marker" id="m-dp-3" style="top:402px;left:252px;">③</div>
+      <div class="marker" id="m-dp-5" style="top:420px;left:350px;">⑤</div>
       <div class="rank-section">
         <div class="rank-card">
           <div class="rank-header"><span class="rank-header-icon">🏆</span><span class="rank-header-title">本月星球排行</span><span class="rank-header-sub" title="贡献值：完成任务获得的能量累计" onclick="showRankInfo()">?</span></div>
-          <div class="marker" id="m-dp-5" style="top:478px;left:330px;">⑤</div>
           <div class="rank-empty">本月暂无数据，快来冲榜吧！</div>
         </div>
       </div>
@@ -555,32 +507,6 @@ body.demo-mode .doc-details { display: none; }
       <div class="marker" id="m-lp-2" style="top:430px;left:40px;">②</div>
     </div>
 
-    <!-- PAGE 3.7: Guardian Level -->
-    <div class="page slide-right" id="page-level-guardian">
-      <div class="status-bar">
-        <span>9:41</span>
-        <div class="dynamic-island">
-          <div class="dynamic-island-inner">
-            <div class="dynamic-island-camera"></div>
-            <div class="dynamic-island-sensor"></div>
-          </div>
-        </div>
-        <span>⚡ 100%</span>
-      </div>
-      <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-guardian')"></div><div class="title">守护星 · 成长等级</div></div>
-      <div class="level-list">
-        <div class="level-swiper" data-current="0">
-          <div class="level-tier current" style="border-color:rgba(76,175,80,0.4);background:rgba(76,175,80,0.06);"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#4caf50,#81c784);">T1</div><div><div class="tier-name">见习守护 Guardian Trainee</div><div class="tier-name-en">被采纳获 1000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:40%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 200 能量</div></div></div>
-          <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#388e3c,#4caf50);">T2</div><div><div class="tier-name">正义守卫 Justice Guard</div><div class="tier-name-en">被采纳获 1200 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 200 能量 · 还需 120</div></div><div class="tier-lock">需累计 200 能量解锁</div></div>
-          <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#1b5e20,#388e3c);">T3</div><div><div class="tier-name">秩序裁决 Order Judge</div><div class="tier-name-en">被采纳获 1500 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 1000 能量 · 还需 920</div></div><div class="tier-lock">需累计 1000 能量解锁</div></div>
-          <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#ffd700,#ff8f00);">T4</div><div><div class="tier-name">星球守护者 Planet Guardian</div><div class="tier-name-en">被采纳获 2000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 3000 能量 · 还需 2920</div></div><div class="tier-lock">需累计 3000 能量解锁</div></div>
-        </div>
-        <div class="level-dots green"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-      </div>
-      <div class="marker" id="m-lg-1" style="top:210px;left:262px;">①</div>
-      <div class="energy-section"><div class="section-title green">能量获取规则</div><div class="energy-card"><div class="energy-row"><span>评判被采纳</span><span class="energy-val" style="color:#81c784;">+30</span></div><div class="energy-row"><span>连续7天有采纳</span><span class="energy-val" style="color:#81c784;">+50 额外</span></div><div class="energy-row"><span>单月采纳≥10条</span><span class="energy-val" style="color:#81c784;">+100 额外</span></div></div></div>
-      <div class="marker" id="m-lg-2" style="top:430px;left:40px;">②</div>
-    </div>
 
     <!-- PAGE 4: Co-Creation Level -->
     <div class="page slide-right" id="page-level-cocreation">
@@ -722,27 +648,6 @@ body.demo-mode .doc-details { display: none; }
     <div class="co-body">新星球暂无数据时展示<strong class="hl">空态「本月暂无数据，快来冲榜吧！」</strong>，引导用户参与冲榜。</div>
   </div>
 
-  <!-- Guardian Detail -->
-  <div class="anno left" data-page="page-detail-guardian" data-target="m-dg-1" style="top:112px;">
-    <div class="co-badge">①</div><div class="co-page">守护星详情</div>
-    <div class="co-title">星球视觉</div>
-    <div class="co-body">绿色星球 + 世界观描述<strong class="hl">「秩序守护的堡垒，守护者公正裁决维护社区的健康环境」</strong>。</div>
-  </div>
-  <div class="anno right" data-page="page-detail-guardian" data-target="m-dg-2" style="top:260px;">
-    <div class="co-badge">②</div><div class="co-page">守护星详情</div>
-    <div class="co-title">等级卡片</div>
-    <div class="co-body">展示当前等级<strong class="hl">T1 见习守护 Guardian Trainee</strong>、能量进度 <strong class="hl">80 / 200 · 距升级还需 120</strong>；点击进入等级成长页。</div>
-  </div>
-  <div class="anno left" data-page="page-detail-guardian" data-target="m-dg-3" style="top:414px;">
-    <div class="co-badge">③</div><div class="co-page">守护星详情</div>
-    <div class="co-title">可参与任务</div>
-    <div class="co-body"><strong class="hl">举报投诉评判、举报PK</strong> — 被采纳 +30 能量 · 1000 金币/条。</div>
-  </div>
-  <div class="anno left" data-page="page-detail-guardian" data-target="m-dg-4" style="top:532px;">
-    <div class="co-badge">④</div><div class="co-page">守护星详情</div>
-    <div class="co-title">本月星球排行</div>
-    <div class="co-body">展示该星球本月能量<strong class="hl">Top10 建设者</strong>，第 1 名带 👑 领主标识；每月 1 日 0:00 重置。</div>
-  </div>
 
   <!-- Level pages -->
   <div class="anno left" data-page="page-level-cocreation" data-target="m-lc-1" style="top:172px;">
@@ -789,27 +694,7 @@ body.demo-mode .doc-details { display: none; }
     </ul></div>
   </div>
 
-  <div class="anno left" data-page="page-level-guardian" data-target="m-lg-1" style="top:172px;">
-    <div class="co-badge">①</div><div class="co-page">守护星 · 等级</div>
-    <div class="co-title">等级成长路径</div>
-    <div class="co-body">展示该星球 <strong class="hl">T1-T4 完整成长路径</strong>，支持左右滑动切换。</div>
-    <div class="co-body"><ul>
-      <li>T1 见习守护 Guardian Trainee · 200 能量 · 1500 金币</li>
-      <li>T2 正式守护 Official Guardian · 1000 能量 · 5000 金币</li>
-      <li>T3 资深守护 Senior Guardian · 3000 能量 · 15000 金币</li>
-      <li>T4 守护长官 Chief Guardian · 5000 能量 · 30000 金币</li>
-    </ul></div>
-  </div>
-  <div class="anno right" data-page="page-level-guardian" data-target="m-lg-2" style="top:392px;">
-    <div class="co-badge">②</div><div class="co-page">守护星 · 等级</div>
-    <div class="co-title">能量获取规则</div>
-    <div class="co-body">展示该星球的<strong class="hl">能量获取规则</strong>：</div>
-    <div class="co-body"><ul>
-      <li>被采纳：+30 能量</li>
-      <li>连续 7 天签到：+50 能量</li>
-      <li>单月被采纳 ≥10 条：+100 能量</li>
-    </ul></div>
-  </div>
+
       <li>T2 解锁：累计 200 能量</li>
       <li>T3 解锁：累计 1000 能量</li>
       <li>T4 解锁：累计 3000 能量</li>
@@ -844,25 +729,6 @@ body.demo-mode .doc-details { display: none; }
       <li>优质建议达 3 条 <strong class="hl">+100 额外</strong></li>
     </ul></div>
     <div class="co-sub">传播质量越高（优质 > 合格），单条能量回报越高。</div>
-  </div>
-  <div class="anno left" data-page="page-level-guardian" data-target="m-lg-1" style="top:150px;">
-    <div class="co-badge">①</div><div class="co-page">守护星 · 等级</div>
-    <div class="co-title">等级成长路径</div>
-    <div class="co-body">展示该星球 <strong class="hl">T1-T4 完整成长路径</strong>，支持左右滑动切换。当前等级高亮展示能量进度；未解锁等级展示「需累计 N 能量解锁」。</div>
-    <div class="co-body"><ul>
-      <li>T2 解锁：累计 200 能量</li>
-      <li>T3 解锁：累计 1000 能量</li>
-      <li>T4 解锁：累计 3000 能量</li>
-    </ul></div>
-  </div>
-  <div class="anno right" data-page="page-level-guardian" data-target="m-lg-2" style="top:330px;">
-    <div class="co-badge">②</div><div class="co-page">守护星 · 等级</div>
-    <div class="co-title">能量获取规则</div>
-    <div class="co-body"><ul>
-      <li>评判被采纳 <strong class="hl">+30</strong></li>
-      <li>连续 7 天有采纳 <strong class="hl">+50 额外</strong></li>
-      <li>单月采纳 ≥10 条 <strong class="hl">+100 额外</strong></li>
-    </ul></div>
   </div>
 
   <!-- Profile -->
