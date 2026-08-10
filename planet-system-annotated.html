@@ -293,7 +293,6 @@ body.demo-mode .doc-details { display: none; }
     <div class="sn-item" data-page="page-level-cocreation"><span class="sn-icon">📈</span>共创星等级</div>
     <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
     <div class="sn-item" data-page="page-level-guardian"><span class="sn-icon">📈</span>守护星等级</div>
-    <div class="sn-item" data-page="page-profile"><span class="sn-icon">👤</span>个人中心</div>
   </div>
 </nav>
 <div class="mode-toggle">
@@ -320,7 +319,7 @@ body.demo-mode .doc-details { display: none; }
         </div>
         <span>⚡ 100%</span>
       </div>
-      <div class="user-topbar" onclick="goToPage('page-profile')">
+      <div class="user-topbar">
         <div class="avatar">👤</div>
         <div><div class="uname">Luna_Star</div><div class="utags"><span class="utag purple">共创星·体验官</span><span class="utag orange">传播星·传播新手</span></div></div>
       </div>
@@ -335,7 +334,7 @@ body.demo-mode .doc-details { display: none; }
             <line x1="170" y1="490" x2="285" y2="300"/>
             <line x1="285" y1="300" x2="180" y2="90"/>
           </svg>
-          <div class="marker" id="m-home-2" style="top:430px;left:173px;">②</div>
+          <div class="marker" id="m-home-2" style="top:340px;left:173px;">②</div>
 
           <div class="planet planet-co-creation" onclick="goToDetail('co-creation')">
             <div class="planet-leader"><div class="lm-av">👑</div><span>StarBuilder_01</span></div>
@@ -373,7 +372,7 @@ body.demo-mode .doc-details { display: none; }
             <span class="planet-name">星探星</span>
             <span class="planet-name-en">Scout</span>
           </div>
-          <div class="marker" id="m-home-4" style="top:548px;left:146px;">④</div>
+          <div class="marker" id="m-home-4" style="top:502px;left:146px;">④</div>
         </div>
       </div>
 
@@ -611,40 +610,6 @@ body.demo-mode .doc-details { display: none; }
     </div>
 
     <!-- PAGE 6: Profile -->
-    <div class="page slide-right" id="page-profile">
-      <div class="status-bar">
-        <span>9:41</span>
-        <div class="dynamic-island">
-          <div class="dynamic-island-inner">
-            <div class="dynamic-island-camera"></div>
-            <div class="dynamic-island-sensor"></div>
-          </div>
-        </div>
-        <span>⚡ 100%</span>
-      </div>
-      <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-home')"></div><div class="title">个人中心</div></div>
-      <div style="padding:24px;text-align:center;">
-        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#7c4dff,#ff4081);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid rgba(124,77,255,0.4);">👤</div>
-        <div style="font-size:18px;font-weight:700;">Luna_Star</div>
-        <div style="margin-top:8px;display:flex;justify-content:center;gap:8px;">
-          <span class="utag purple" style="font-size:11px;padding:3px 10px;">共创星 · 体验官 T1</span>
-          <span class="utag orange" style="font-size:11px;padding:3px 10px;">传播星 · 传播新手 T1</span>
-        </div>
-        <div style="margin-top:20px;display:flex;justify-content:center;gap:32px;">
-          <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:#ffd700;">8,200</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">金币</div></div>
-          <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:#b388ff;">120</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">共创能量</div></div>
-          <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:#ffb74d;">95</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">传播能量</div></div>
-        </div>
-      </div>
-      <div class="marker" id="m-pr-1" style="top:290px;left:52px;">①</div>
-      <div style="padding:0 24px;">
-        <div class="task-item"><div class="task-left"><div class="task-icon">📊</div><div><div class="task-name">我的贡献记录</div></div></div><div class="level-arrow"></div></div>
-        <div class="task-item"><div class="task-left"><div class="task-icon">🏆</div><div><div class="task-name">排行榜</div></div></div><div class="level-arrow"></div></div>
-        <div class="task-item"><div class="task-left"><div class="task-icon">🪙</div><div><div class="task-name">金币明细</div></div></div><div class="level-arrow"></div></div>
-        <div class="task-item"><div class="task-left"><div class="task-icon">⚙️</div><div><div class="task-name">设置</div></div></div><div class="level-arrow"></div></div>
-      </div>
-      <div class="marker" id="m-pr-2" style="top:440px;left:252px;">②</div>
-    </div>
 
     <!-- Rank Info Bottom Sheet -->
     <div class="rank-sheet-overlay" id="rank-sheet-overlay" onclick="hideRankInfo()"></div>
@@ -674,9 +639,8 @@ body.demo-mode .doc-details { display: none; }
     <div class="co-badge">①</div><div class="co-page">星球首页</div>
     <div class="co-title">用户身份栏</div>
     <div class="co-body">顶部展示当前用户<strong class="hl">头像、昵称与已获得的星球称号标签</strong>（如 共创星·体验官、传播星·传播新手）。身份标签随对应星球等级提升而升级，右侧预留金币余额入口。</div>
-    <div class="co-sub">点击头像可进入个人中心，查看各星球身份与能量余额。</div>
   </div>
-  <div class="anno left" data-page="page-home" data-target="m-home-2" style="top:360px;">
+  <div class="anno left" data-page="page-home" data-target="m-home-2" style="top:280px;">
     <div class="co-badge">②</div><div class="co-page">星球首页</div>
     <div class="co-title">星球展示 · 星座图</div>
     <div class="co-body">4 颗星球以<strong class="hl">星座连线</strong>分布，营造太空探索氛围：</div>
@@ -690,10 +654,10 @@ body.demo-mode .doc-details { display: none; }
   <div class="anno right" data-page="page-home" data-target="m-home-3" style="top:84px;">
     <div class="co-badge">③</div><div class="co-page">星球首页</div>
     <div class="co-title">星球领主标识</div>
-    <div class="co-body">已解锁星球顶部展示<strong class="hl">当前领主</strong>（👑 + 昵称）。每月能量排名第 1 名获封星球领主，每月 1 日 0:00 按自然月重置。</div>
-    <div class="co-sub">权益：领主专属称号、头像框、额外金币奖励。</div>
+    <div class="co-body">已解锁星球顶部展示<strong class="hl">当前领主</strong>（用户头像 + 昵称）。每月能量排名第 1 名获封星球领主，每月 1 日 0:00 按自然月重置。</div>
+    <div class="co-sub">点击领主标识可跳转到该用户的个人主页，查看 TA 的星球成就与贡献历史。</div>
   </div>
-  <div class="anno right" data-page="page-home" data-target="m-home-4" style="top:480px;">
+  <div class="anno right" data-page="page-home" data-target="m-home-4" style="top:502px;">
     <div class="co-badge">④</div><div class="co-page">星球首页</div>
     <div class="co-title">锁定星球交互</div>
     <div class="co-body">未解锁星球（守护星 / 星探星）以<strong class="hl">灰色 + 🔒</strong> 标识呈现，点击弹出提示气泡「🔒 星球名 · 即将开放，敬请期待」，点击「我知道了」关闭。</div>
@@ -902,16 +866,6 @@ body.demo-mode .doc-details { display: none; }
   </div>
 
   <!-- Profile -->
-  <div class="anno left" data-page="page-profile" data-target="m-pr-1" style="top:170px;">
-    <div class="co-badge">①</div><div class="co-page">个人中心</div>
-    <div class="co-title">全局身份</div>
-    <div class="co-body">个人中心聚合展示<strong class="hl">头像、昵称、双星球身份标签</strong>（共创星·体验官 T1、传播星·传播新手 T1），以及金币余额与各星球能量余额。</div>
-  </div>
-  <div class="anno right" data-page="page-profile" data-target="m-pr-2" style="top:380px;">
-    <div class="co-badge">②</div><div class="co-page">个人中心</div>
-    <div class="co-title">功能入口</div>
-    <div class="co-body"><strong class="hl">我的贡献记录 / 排行榜 / 金币明细 / 设置</strong> 四个入口，供建设者查看贡献历史与账户信息。</div>
-  </div>
 </div><!-- /stage -->
 
 <!-- ==================== 需求明细（文档内容） ==================== -->
