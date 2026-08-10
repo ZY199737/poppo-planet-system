@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Poppo 星球体系 - 交互原型</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; background: #0f1419; color: #1a1a1a; overflow-x: hidden; }
+.app-layout { display: flex; height: 100vh; overflow: hidden; }
+.doc-panel { flex: 1; overflow-y: auto; padding: 40px 48px; background: #0f1419; border-right: 1px solid rgba(255,255,255,0.06); transition: all 0.3s ease; color: #e8eaed; }
+.demo-panel { flex: 0 0 440px; display: flex; align-items: center; justify-content: center; background: #0f1419; position: sticky; top: 0; height: 100vh; }
+body.demo-mode .doc-panel { display: none; }
+body.demo-mode .demo-panel { flex: 1; }
+body.demo-mode { background: #0a0e1a; }
+.mode-toggle { position: fixed; top: 16px; right: 16px; z-index: 9999; display: flex; background: #1a1f2e; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.mode-toggle button { padding: 8px 16px; border: none; background: transparent; cursor: pointer; font-size: 13px; color: #9ca3af; transition: all 0.2s; }
+.mode-toggle button.active { background: #6366f1; color: #fff; }
+.phone-frame { width: 390px; height: 844px; position: relative; overflow: hidden; border-radius: 44px; border: 3px solid #1a1f33; background: linear-gradient(180deg, #0a0e1a 0%, #0f1528 50%, #0a0e1a 100%); color: #e8eaed; }
+.page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transition: transform 0.4s ease, opacity 0.3s ease; opacity: 0; pointer-events: none; overflow-y: auto; }
+.page.active { opacity: 1; pointer-events: all; transform: translateX(0); }
+.page.slide-right { transform: translateX(100%); }
+.status-bar { height: 54px; display: flex; align-items: flex-start; justify-content: space-between; padding: 14px 24px 0; font-size: 12px; font-weight: 600; position: sticky; top: 0; z-index: 100; background: inherit; }
+.dynamic-island { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 126px; height: 37px; background: #000; border-radius: 19px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
+.dynamic-island-inner { width: 100%; height: 100%; border-radius: 19px; background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); display: flex; align-items: center; justify-content: center; gap: 6px; }
+.dynamic-island-camera { width: 8px; height: 8px; border-radius: 50%; background: #0a1a2a; border: 1px solid rgba(100,150,200,0.3); }
+.dynamic-island-sensor { width: 22px; height: 6px; border-radius: 3px; background: #05080f; }
+.nav-bar { display: flex; align-items: center; padding: 10px 16px; gap: 12px; }
+.nav-bar .back-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.nav-bar .back-btn::after { content: ''; width: 8px; height: 8px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(45deg); margin-left: 3px; }
+.nav-bar .title { font-size: 18px; font-weight: 700; }
+
+/* User top bar */
+.user-topbar { display: flex; align-items: center; padding: 10px 24px 0; gap: 10px; cursor: pointer; }
+.user-topbar .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #7c4dff, #ff4081); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.user-topbar .uname { font-size: 14px; font-weight: 600; }
+.user-topbar .utags { display: flex; gap: 6px; margin-top: 3px; }
+.user-topbar .utag { font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 500; }
+.user-topbar .utag.purple { background: rgba(124,77,255,0.2); color: #b388ff; }
+.user-topbar .utag.green { background: rgba(0,200,83,0.15); color: #69f0ae; }
+.user-topbar .utag.orange { background: rgba(255,152,0,0.15); color: #ffb74d; }
+.user-topbar .coins { margin-left: auto; font-size: 12px; color: #ffd700; font-weight: 600; }
+
+/* Stars area */
+.stars-container { position: relative; height: 680px; display: flex; align-items: center; justify-content: center; }
+.stars-orbit { position: relative; width: 350px; height: 640px; }
+.stars-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+.star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 2s ease-in-out infinite; }
+@keyframes twinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+/* Planet base */
+.planet { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.3s; }
+.planet:hover { transform: scale(1.08); }
+.planet.locked { cursor: not-allowed; filter: grayscale(1) brightness(0.4); opacity: 0.5; }
+.planet.locked:hover { transform: scale(1.02); }
+.planet .planet-orb { width: 72px; height: 72px; border-radius: 50%; margin-bottom: 6px; position: relative; overflow: hidden; }
+.planet .planet-orb::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.03) 20%, transparent 40%, rgba(255,255,255,0.05) 60%, transparent 80%); animation: planet-rotate 20s linear infinite; }
+.planet .planet-orb::after { content:''; position:absolute; top:6px; left:10px; width:22px; height:14px; background:rgba(255,255,255,0.25); border-radius:50%; transform:rotate(-30deg); filter:blur(2px); }
+@keyframes planet-rotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.planet:not(.locked) .planet-orb { box-shadow: 0 0 20px var(--glow), 0 0 60px var(--glow-soft), inset 0 -10px 20px rgba(0,0,0,0.3); animation: pulse-glow 3s ease-in-out infinite; }
+@keyframes pulse-glow { 0%,100%{box-shadow:0 0 25px var(--glow)} 50%{box-shadow:0 0 45px var(--glow), 0 0 80px var(--glow-soft)} }
+.planet .planet-surface { position:absolute; top:0; left:0; width:100%; height:100%; border-radius:50%; overflow:hidden; }
+.planet .planet-band { position:absolute; width:120%; left:-10%; height:8px; background:rgba(255,255,255,0.06); border-radius:50%; }
+.planet .planet-band:nth-child(1) { top:30%; transform:rotate(-5deg); }
+.planet .planet-band:nth-child(2) { top:50%; transform:rotate(3deg); height:6px; }
+.planet .planet-band:nth-child(3) { top:68%; transform:rotate(-2deg); height:5px; background:rgba(255,255,255,0.04); }
+.planet .planet-name { font-size: 11px; font-weight: 600; white-space: nowrap; }
+.planet .planet-name-en { font-size: 9px; opacity: 0.8; margin-top: 1px; }
+.planet .planet-leader { display:flex; align-items:center; gap:3px; margin-bottom:4px; font-size:9px; color:rgba(255,215,0,0.9); }
+.planet .planet-leader .lm-av { width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,#ffd700,#ff8f00); font-size:7px; display:flex; align-items:center; justify-content:center; }
+.planet .lock-icon { position:absolute; top:50%; left:50%; transform:translate(-50%,-60%); width:24px; height:24px; background:rgba(0,0,0,0.6); border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.planet .lock-icon::before { content:'🔒'; font-size:12px; }
+
+/* Planet positions */
+.planet-co-creation { top: 20px; left: 42%; }
+.planet-guardian { top: 220px; left: 8%; }
+.planet-promotion { top: 260px; right: 8%; }
+.planet-scout { top: 440px; left: 35%; }
+
+/* Planet colors */
+.co-creation-orb { --glow: rgba(124,77,255,0.5); --glow-soft: rgba(124,77,255,0.15); background: radial-gradient(circle at 30% 30%, #b388ff, #7c4dff 40%, #4a148c 80%, #1a0040); }
+.guardian-orb { --glow: rgba(0,200,83,0.4); --glow-soft: rgba(0,200,83,0.12); background: radial-gradient(circle at 30% 30%, #69f0ae, #00c853 40%, #1b5e20 80%, #0a2e0f); }
+.promotion-orb { --glow: rgba(255,152,0,0.4); --glow-soft: rgba(255,152,0,0.12); background: radial-gradient(circle at 30% 30%, #ffcc80, #ff9800 40%, #e65100 80%, #4e1a00); }
+.scout-orb { background: radial-gradient(circle at 30% 30%, #90a4ae, #546e7a 40%, #37474f 80%, #1a2327); box-shadow: inset 0 -10px 20px rgba(0,0,0,0.4) !important; }
+
+/* Constellation lines */
+.constellation-lines { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+.constellation-lines line { stroke:rgba(124,77,255,0.12); stroke-width:1; stroke-dasharray:4 4; }
+/* Detail page */
+.detail-header { padding: 20px 24px; text-align: center; }
+.detail-planet-orb { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px; position: relative; overflow: hidden; }
+.detail-planet-orb::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.03) 20%, transparent 40%, rgba(255,255,255,0.05) 60%, transparent 80%); animation:planet-rotate 20s linear infinite; }
+.detail-planet-orb::after { content:''; position:absolute; top:8px; left:14px; width:24px; height:14px; background:rgba(255,255,255,0.25); border-radius:50%; transform:rotate(-30deg); filter:blur(2px); }
+.detail-planet-orb.co-creation { background:radial-gradient(circle at 30% 30%,#b388ff,#7c4dff 40%,#4a148c 80%,#1a0040); box-shadow:0 0 30px rgba(124,77,255,0.5),0 0 60px rgba(124,77,255,0.2),inset 0 -10px 20px rgba(0,0,0,0.3); animation:pulse-glow-purple 3s ease-in-out infinite; }
+.detail-planet-orb.guardian { background:radial-gradient(circle at 30% 30%,#69f0ae,#00c853 40%,#1b5e20 80%,#0a2e0f); box-shadow:0 0 30px rgba(0,200,83,0.4),0 0 60px rgba(0,200,83,0.15),inset 0 -10px 20px rgba(0,0,0,0.3); animation:pulse-glow-green 3s ease-in-out infinite; }
+@keyframes pulse-glow-purple { 0%,100%{box-shadow:0 0 30px rgba(124,77,255,0.5)} 50%{box-shadow:0 0 50px rgba(124,77,255,0.8),0 0 80px rgba(124,77,255,0.3)} }
+.detail-planet-orb.promotion { background:radial-gradient(circle at 30% 30%,#ffcc80,#ff9800 40%,#e65100 80%,#4e1a00); box-shadow:0 0 30px rgba(255,152,0,0.4),0 0 60px rgba(255,152,0,0.15),inset 0 -10px 20px rgba(0,0,0,0.3); animation:pulse-glow-orange 3s ease-in-out infinite; }
+@keyframes pulse-glow-orange { 0%,100%{box-shadow:0 0 30px rgba(255,152,0,0.4)} 50%{box-shadow:0 0 50px rgba(255,152,0,0.7),0 0 80px rgba(255,152,0,0.2)} }
+.level-card.orange { background:rgba(255,152,0,0.06); border-color:rgba(255,152,0,0.2); }
+.level-badge.orange { background:linear-gradient(135deg,#ff9800,#ffb74d); }
+.section-title.orange::before { background:#ff9800; }
+.task-item .task-icon.orange { background:rgba(255,152,0,0.12); }
+.task-item .task-btn.orange { background:linear-gradient(135deg,#ff9800,#ffb300); }
+.prosperity-fill.orange { background:linear-gradient(90deg,#ff9800,#ffb74d); }
+.detail-header h2 { font-size: 20px; font-weight: 700; }
+.detail-header .subtitle { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+
+/* Cards */
+.prosperity-section, .leader-section, .level-section, .task-section, .energy-section { padding: 0 24px; margin-bottom: 16px; }
+.prosperity-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:16px; }
+.prosperity-label { display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px; }
+.prosperity-label span:last-child { color:#b388ff; }
+.prosperity-bar { height:8px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; }
+.prosperity-fill { height:100%; border-radius:4px; transition:width 1s ease; }
+.prosperity-fill.purple { background:linear-gradient(90deg,#7c4dff,#b388ff); }
+.prosperity-fill.green { background:linear-gradient(90deg,#00c853,#69f0ae); }
+.prosperity-stage { display:flex; justify-content:space-between; margin-top:8px; font-size:10px; color:rgba(255,255,255,0.85); }
+.rank-section { padding:0 24px; margin-bottom:16px; }
+.rank-card { background:linear-gradient(135deg, rgba(30,30,50,0.7), rgba(20,20,40,0.8)); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:16px; backdrop-filter:blur(10px); }
+.rank-header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.rank-header-icon { font-size:16px; }
+.rank-header-title { font-size:14px; font-weight:600; color:#fff; }
+.rank-header-sub { font-size:13px; width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); display:flex; align-items:center; justify-content:center; margin-left:auto; cursor:pointer; transition:all 0.2s; }
+.rank-header-sub:hover { background:rgba(255,255,255,0.18); color:rgba(255,255,255,0.9); }
+.rank-scroll { max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.rank-scroll::-webkit-scrollbar { width:3px; }
+.rank-scroll::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:3px; }
+.rank-item { display:flex; align-items:center; padding:9px 10px; gap:10px; border-radius:10px; margin-bottom:4px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04); }
+.rank-item:last-child { margin-bottom:0; }
+.rank-num { width:20px; font-size:12px; font-weight:700; color:rgba(255,255,255,0.85); text-align:center; }
+.rank-item:nth-child(1) .rank-num { color:#ffd700; font-size:14px; }
+.rank-item:nth-child(2) .rank-num { color:#c0c0c0; }
+.rank-item:nth-child(3) .rank-num { color:#cd7f32; }
+.rank-avatar { width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:11px; }
+.rank-item:nth-child(1) .rank-avatar { border:2px solid #ffd700; }
+.rank-name { flex:1; font-size:12px; color:rgba(255,255,255,0.8); }
+.rank-item:nth-child(1) .rank-name { color:#ffd700; font-weight:600; }
+.rank-score { font-size:11px; color:rgba(255,255,255,0.85); }
+.rank-crown { font-size:10px; margin-left:2px; }
+.rank-empty { padding:24px; text-align:center; font-size:12px; color:rgba(255,255,255,0.8); font-style:italic; }
+.level-card { background:rgba(124,77,255,0.08); border:1px solid rgba(124,77,255,0.2); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer; }
+.level-card.green { background:rgba(0,200,83,0.06); border-color:rgba(0,200,83,0.2); }
+.level-progress { height:6px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:6px; overflow:hidden; }
+.level-progress-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,#7c4dff,#b388ff); }
+.level-card.green .level-progress-bar { background:linear-gradient(90deg,#00c853,#69f0ae); }
+.level-card.orange .level-progress-bar { background:linear-gradient(90deg,#ff9800,#ffcc02); }
+.level-badge { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#7c4dff,#b388ff); display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:800; }
+.level-badge.green { background:linear-gradient(135deg,#00c853,#69f0ae); }
+.level-info h4 { font-size:14px; font-weight:600; }
+.level-info p { font-size:12px; color:rgba(255,255,255,0.75); margin-top:2px; }
+.level-arrow { margin-left:auto; width:20px; height:20px; opacity:0.7; }
+.level-arrow::after { content:''; display:block; width:7px; height:7px; border-right:2px solid #fff; border-top:2px solid #fff; transform:rotate(45deg); margin-top:6px; }
+.section-title { font-size:15px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.section-title::before { content:''; width:3px; height:14px; background:#7c4dff; border-radius:2px; }
+.section-title.green::before { background:#00c853; }
+.task-item { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; }
+.task-item .task-left { display:flex; align-items:center; gap:10px; }
+.task-item .task-icon { width:34px; height:34px; border-radius:10px; background:rgba(124,77,255,0.15); display:flex; align-items:center; justify-content:center; font-size:15px; }
+.task-item .task-icon.green { background:rgba(0,200,83,0.12); }
+.task-item .task-name { font-size:13px; font-weight:500; }
+.task-item .task-reward { font-size:11px; color:rgba(255,255,255,0.85); margin-top:2px; }
+.task-item .task-btn { padding:6px 14px; border-radius:14px; background:linear-gradient(135deg,#7c4dff,#651fff); font-size:11px; font-weight:600; cursor:pointer; border:none; color:#fff; }
+.task-item .task-btn.green { background:linear-gradient(135deg,#00c853,#00e676); }
+
+/* Level page */
+.level-list { padding:0 24px; margin-top:20px; position:relative; overflow:hidden; }
+.level-swiper { display:flex; transition:transform 0.3s ease; touch-action:pan-y; }
+.level-swiper .level-tier { min-width:100%; flex-shrink:0; box-sizing:border-box; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:20px; position:relative; overflow:hidden; }
+.level-swiper .level-tier.current { border-color:rgba(124,77,255,0.4); background:rgba(124,77,255,0.06); }
+.level-swiper .level-tier .tier-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.level-swiper .level-tier .tier-badge { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0; }
+.level-swiper .level-tier .tier-name { font-size:15px; font-weight:600; }
+.level-swiper .level-tier .tier-name-en { font-size:11px; color:rgba(255,255,255,0.85); margin-top:2px; }
+.level-swiper .level-tier .tier-progress { margin-top:12px; }
+.level-swiper .level-tier .tier-progress-bar { height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; }
+.level-swiper .level-tier .tier-progress-fill { height:100%; background:linear-gradient(90deg,#7c4dff,#b388ff); border-radius:3px; }
+.level-swiper .level-tier .tier-progress-text { font-size:11px; color:rgba(255,255,255,0.85); margin-top:6px; text-align:right; }
+.level-swiper .level-tier .tier-lock { font-size:12px; color:rgba(255,255,255,0.8); margin-top:12px; }
+.level-dots { display:flex; justify-content:center; gap:6px; margin-top:14px; }
+.level-dots .dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.15); transition:all 0.3s; }
+.level-dots .dot.active { width:18px; border-radius:3px; background:#7c4dff; }
+.level-dots.orange .dot.active { background:#ff9800; }
+.level-dots.green .dot.active { background:#4caf50; }
+.energy-section { margin-top:16px; }
+.energy-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:16px; }
+.energy-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px; }
+.energy-row:last-child { border-bottom:none; }
+.energy-row .energy-val { color:#b388ff; font-weight:600; }
+
+/* Toast */
+.toast { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.8); background:rgba(30,30,50,0.95); border:1px solid rgba(124,77,255,0.3); border-radius:16px; padding:24px 32px; text-align:center; opacity:0; pointer-events:none; transition:all 0.3s; z-index:1000; }
+.toast.show { opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:all; }
+.toast h3 { font-size:16px; margin-bottom:8px; }
+.toast p { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.5; }
+.toast .close-toast { margin-top:16px; padding:8px 24px; border-radius:20px; background:rgba(124,77,255,0.3); border:1px solid rgba(124,77,255,0.5); color:#fff; font-size:13px; cursor:pointer; }
+
+/* Rank Info Bottom Sheet */
+.rank-sheet-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:999; opacity:0; pointer-events:none; transition:opacity 0.3s; border-radius:44px; }
+.rank-sheet-overlay.show { opacity:1; pointer-events:all; }
+.rank-sheet { position:absolute; left:0; right:0; bottom:0; max-height:50%; background:linear-gradient(180deg, #1e1e32, #141428); border-top-left-radius:20px; border-top-right-radius:20px; z-index:1000; transform:translateY(100%); transition:transform 0.3s ease; overflow-y:auto; }
+.rank-sheet.show { transform:translateY(0); }
+.rank-sheet-header { display:flex; align-items:center; justify-content:space-between; padding:18px 20px 12px; border-bottom:1px solid rgba(255,255,255,0.06); position:sticky; top:0; background:inherit; }
+.rank-sheet-header h3 { font-size:16px; font-weight:600; color:#fff; margin:0; }
+.rank-sheet-close { width:28px; height:28px; border-radius:50%; border:none; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.8); font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.rank-sheet-content { padding:16px 20px 28px; }
+.rank-sheet-content p { font-size:13px; color:rgba(255,255,255,0.85); line-height:1.7; margin:0 0 10px; }
+.rank-sheet-content strong { color:#fff; }
+.rank-sheet-content ul { margin:0 0 14px; padding-left:18px; }
+.rank-sheet-content li { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.8; }
+
+/* Cosmic Bulletin Board */
+.cosmic-bulletin { position: absolute; bottom: 20px; left: 16px; right: 16px; background: linear-gradient(135deg, rgba(30,30,50,0.7), rgba(20,20,40,0.8)); border: 1px solid rgba(124,77,255,0.25); border-radius: 16px; padding: 16px; backdrop-filter: blur(10px); }
+.bulletin-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.bulletin-icon { font-size: 16px; }
+.bulletin-title { font-size: 14px; font-weight: 600; color: #fff; }
+.bulletin-subtitle { font-size: 11px; color: rgba(255,255,255,0.85); margin-left: auto; }
+.bulletin-items { display: flex; flex-direction: column; gap: 8px; }
+.bulletin-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
+.bulletin-item:active { transform: scale(0.98); background: rgba(255,255,255,0.06); }
+.bulletin-planet-tag { font-size: 9px; padding: 3px 8px; border-radius: 8px; font-weight: 600; white-space: nowrap; }
+.bulletin-planet-tag.purple { background: rgba(124,77,255,0.2); color: #b388ff; }
+.bulletin-planet-tag.green { background: rgba(0,200,83,0.15); color: #69f0ae; }
+.bulletin-planet-tag.orange { background: rgba(255,152,0,0.15); color: #ffb74d; }
+.bulletin-task-name { font-size: 12px; font-weight: 500; flex: 1; }
+.bulletin-reward { font-size: 10px; color: rgba(255,255,255,0.85); white-space: nowrap; }
+/* Doc Panel Styles */
+.doc-panel h1 { font-size: 22px; font-weight: 700; color: #e8eaed; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #6366f1; }
+.doc-panel h1:first-child { margin-top: 0; }
+.doc-panel h2 { font-size: 18px; font-weight: 600; color: #d1d5db; margin: 24px 0 12px; }
+.doc-panel h3 { font-size: 15px; font-weight: 600; color: #c4c8cf; margin: 20px 0 8px; }
+.doc-panel p { font-size: 14px; line-height: 1.8; color: #9ca3af; margin: 8px 0; }
+.doc-panel ul, .doc-panel ol { padding-left: 20px; margin: 8px 0; }
+.doc-panel li { font-size: 14px; line-height: 1.8; color: #9ca3af; margin: 4px 0; }
+.doc-panel table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.doc-panel th { background: rgba(99,102,241,0.15); color: #d1d5db; font-weight: 600; text-align: left; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.08); }
+.doc-panel td { padding: 10px 12px; border: 1px solid rgba(255,255,255,0.08); color: #9ca3af; vertical-align: top; }
+.doc-panel tr:hover td { background: rgba(255,255,255,0.03); }
+.doc-panel strong { color: #e8eaed; }
+.doc-panel blockquote { border-left: 3px solid #6366f1; padding: 8px 16px; margin: 12px 0; background: rgba(99,102,241,0.08); border-radius: 0 6px 6px 0; font-size: 13px; color: #9ca3af; }
+.doc-panel hr { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 24px 0; }
+.doc-nav-link { display: inline-block; margin: 4px 0; padding: 4px 10px; background: rgba(99,102,241,0.15); border-radius: 4px; font-size: 12px; color: #818cf8; cursor: pointer; transition: all 0.2s; }
+.doc-nav-link:hover { background: #6366f1; color: #fff; }
+.doc-title-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.doc-title-bar h1 { margin: 0; border: none; padding: 0; font-size: 24px; }
+.doc-badge { padding: 4px 10px; background: #6366f1; color: #fff; border-radius: 4px; font-size: 11px; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="mode-toggle">
+  <button class="active" onclick="setMode('doc')">文档模式</button>
+  <button onclick="setMode('demo')">演示模式</button>
+</div>
+<div class="app-layout">
+<div class="doc-panel">
+<div class="doc-title-bar">
+  <h1>建设者等级体系规划</h1>
+  <span class="doc-badge">PRD</span>
+</div>
+
+<h1>一、背景与目标</h1>
+<h2>1.1 现状</h2>
+<p>建设者中心一期已上线，仅开放「翻译查错」场景，验证了"用户提交建议 → 人工审核 → 平台奖励"的核心闭环。当前问题：激励为单次金币，无成长体系；身份无差异，无竞争目标；贡献不可见，无荣誉感。</p>
+
+<h2>1.2 目标</h2>
+<p>将建设者中心改造为<strong>「Poppo 宇宙」</strong>世界观——用户不是在做任务，而是在<strong>建设属于自己的星球</strong>。通过星球分类、等级成长、排行竞争、领主荣誉，驱动用户持续参与。</p>
+
+<h1>二、星球首页</h1>
+<p>首页为星球宇宙的主入口，以星座连线布局展示所有星球，营造太空探索氛围。</p>
+<p><span class="doc-nav-link" onclick="navToProto('page-home')">▶ 查看首页原型</span></p>
+
+<h2>2.1 用户身份栏</h2>
+<p>顶部展示当前用户头像、昵称及已获得的星球称号标签（如"共创星·体验官""传播星·传播新手"），右侧显示金币余额。</p>
+
+<h2>2.2 星球展示</h2>
+<p>4 颗星球以星座图形式分布，星球之间以星座连线相连：</p>
+<table>
+  <thead><tr><th>星球</th><th>状态</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>共创星 Co-Creation</td><td>已开放</td><td>紫色星球，点击进入详情页；顶部展示当前领主</td></tr>
+    <tr><td>传播星 Promotion</td><td>已开放</td><td>橙色星球，点击进入详情页；顶部展示当前领主</td></tr>
+    <tr><td>星探星 Scout</td><td>锁定</td><td>灰色+锁标识，点击弹出"即将开放"提示</td></tr>
+    <tr><td>守护星 Guardian</td><td>锁定</td><td>灰色+锁标识，点击弹出"即将开放"提示</td></tr>
+  </tbody>
+</table>
+
+<h2>2.3 星球通告</h2>
+<p>首页底部的任务推荐模块，展示各星球当前可参与的推荐任务，每条显示星球标签、任务名称、奖励预览。点击可直接跳转对应星球详情页。</p>
+
+<h1>三、星球详情页</h1>
+<p>点击已开放的星球进入详情页，结构统一：星球视觉 → 等级卡片 → 可参与任务 → 本月排行榜。</p>
+
+<h2>3.1 共创星详情</h2>
+<p><span class="doc-nav-link" onclick="navToProto('page-detail-cocreation')">▶ 查看共创星详情</span></p>
+<ul>
+  <li><strong>星球视觉：</strong>紫色星球 + 世界观描述"声音汇聚之地，每位建设者的建议都在塑造 Poppo 的未来"</li>
+  <li><strong>等级卡片：</strong>显示当前等级（如 T1 体验官）、能量进度条（120/200）、距升级所需能量；点击进入等级详情页</li>
+  <li><strong>可参与任务：</strong>翻译查错 — 被采纳 +30 能量 · 1000 金币/条</li>
+  <li><strong>本月排行：</strong>展示 Top10 用户，第一名带👑领主标识</li>
+</ul>
+
+<h2>3.2 传播星详情</h2>
+<p><span class="doc-nav-link" onclick="navToProto('page-detail-promotion')">▶ 查看传播星详情</span></p>
+<ul>
+  <li><strong>星球视觉：</strong>橙色星球 + 世界观描述"光芒扩散的起点，传播者让更多人看到 Poppo 的精彩"</li>
+  <li><strong>等级卡片：</strong>显示当前等级（如 T1 传播新手）、能量进度条（95/200）；点击进入等级详情页</li>
+  <li><strong>可参与任务：</strong>站外扩散 — 合格 +30 能量 · 优质 +50 能量</li>
+  <li><strong>本月排行：</strong>新星球暂无数据时显示"快来冲榜吧！"空态</li>
+</ul>
+
+<h2>3.3 守护星详情</h2>
+<p><span class="doc-nav-link" onclick="navToProto('page-detail-guardian')">▶ 查看守护星详情</span></p>
+<ul>
+  <li><strong>星球视觉：</strong>绿色星球 + 世界观描述"秩序守护的堡垒，守护者公正裁决维护社区的健康环境"</li>
+  <li><strong>等级卡片：</strong>显示当前等级（如 T1 见习守护）、能量进度条（80/200）；点击进入等级详情页</li>
+  <li><strong>可参与任务：</strong>举报投诉评判、举报PK — 被采纳 +30 能量 · 1000 金币/条</li>
+  <li><strong>本月排行：</strong>展示 Top10 用户</li>
+</ul>
+
+<h2>3.4 排行榜说明弹窗</h2>
+<p>排行标题旁的"?"图标点击后弹出底部弹窗，说明贡献值的定义、获取方式和作用。</p>
+
+<h1>四、等级成长页</h1>
+<p>点击详情页等级卡片进入，展示该星球完整的 4 级成长路径，支持左右滑动切换查看。</p>
+
+<h2>4.1 共创星等级</h2>
+<p><span class="doc-nav-link" onclick="navToProto('page-level-cocreation')">▶ 查看共创星等级</span></p>
+<table>
+  <thead><tr><th>等级</th><th>称号</th><th>能量门槛</th><th>奖励</th></tr></thead>
+  <tbody>
+    <tr><td>T1</td><td>体验官 Tester</td><td>0-199</td><td>被采纳获 1000 金币/条</td></tr>
+    <tr><td>T2</td><td>反馈师 Contributor</td><td>200-999</td><td>被采纳获 1200 金币/条</td></tr>
+    <tr><td>T3</td><td>代言人 Advocate</td><td>1000-2999</td><td>被采纳获 1500 金币/条</td></tr>
+    <tr><td>T4</td><td>共创者 Co-Creator</td><td>3000+</td><td>被采纳获 2000 金币/条</td></tr>
+  </tbody>
+</table>
+<p><strong>能量获取规则：</strong></p>
+<ul>
+  <li>建议被采纳 +30</li>
+  <li>连续7天有采纳 +50（额外）</li>
+  <li>单月采纳≥10条 +100（额外）</li>
+</ul>
+
+<h2>4.2 传播星等级</h2>
+<p><span class="doc-nav-link" onclick="navToProto('page-level-promotion')">▶ 查看传播星等级</span></p>
+<table>
+  <thead><tr><th>等级</th><th>称号</th><th>能量门槛</th><th>奖励</th></tr></thead>
+  <tbody>
+    <tr><td>T1</td><td>传播新手 Sharer</td><td>0-199</td><td>合格获 1000 金币/条</td></tr>
+    <tr><td>T2</td><td>推广达人 Promoter</td><td>200-999</td><td>合格获 1200 金币/条</td></tr>
+    <tr><td>T3</td><td>营销专家 Marketer</td><td>1000-2999</td><td>合格获 1500 金币/条</td></tr>
+    <tr><td>T4</td><td>增长大师 Growth Master</td><td>3000+</td><td>合格获 2000 金币/条</td></tr>
+  </tbody>
+</table>
+<p><strong>能量获取规则：</strong></p>
+<ul>
+  <li>评为合格建议 +30</li>
+  <li>评为优质建议 +50</li>
+  <li>优质建议达到3条 +100（额外）</li>
+</ul>
+
+<h2>4.3 守护星等级</h2>
+<p><span class="doc-nav-link" onclick="navToProto('page-level-guardian')">▶ 查看守护星等级</span></p>
+<table>
+  <thead><tr><th>等级</th><th>称号</th><th>能量门槛</th><th>奖励</th></tr></thead>
+  <tbody>
+    <tr><td>T1</td><td>见习守护 Guardian Trainee</td><td>0-199</td><td>被采纳获 1000 金币/条</td></tr>
+    <tr><td>T2</td><td>正义守卫 Justice Guard</td><td>200-999</td><td>被采纳获 1200 金币/条</td></tr>
+    <tr><td>T3</td><td>秩序裁决 Order Judge</td><td>1000-2999</td><td>被采纳获 1500 金币/条</td></tr>
+    <tr><td>T4</td><td>星球守护者 Planet Guardian</td><td>3000+</td><td>被采纳获 2000 金币/条</td></tr>
+  </tbody>
+</table>
+<p><strong>能量获取规则：</strong></p>
+<ul>
+  <li>评判被采纳 +30</li>
+  <li>连续7天有采纳 +50（额外）</li>
+  <li>单月采纳≥10条 +100（额外）</li>
+</ul>
+
+<h1>五、排行与荣誉</h1>
+<h2>5.1 星球领主</h2>
+<ul>
+  <li>每月能量排名第1名获封"星球领主"，在星球首页和详情页展示头像+昵称+👑标识</li>
+  <li>每月1日0:00重置，统计自然月内能量获取总量</li>
+  <li>权益：领主专属称号、头像框、额外金币奖励</li>
+</ul>
+<h2>5.2 星球护卫</h2>
+<ul>
+  <li>月末排名第2-10名获封"星球护卫"</li>
+  <li>权益：护卫称号、专属头像框、额外金币奖励</li>
+</ul>
+
+<hr>
+<p style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:32px;">文档来源：<a href="https://uf1iawhques.sg.larksuite.com/wiki/OhrfwNEUziGixpkAt4hl5YbPgQh" target="_blank" style="color:#818cf8;">飞书Wiki</a></p>
+
+</div>
+<div class="demo-panel">
+<div class="phone-frame">
+  <!-- PAGE 1: Home -->
+  <div class="page active" id="page-home">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="user-topbar">
+      <div class="avatar">👤</div>
+      <div><div class="uname">Luna_Star</div><div class="utags"><span class="utag purple">共创星·体验官</span><span class="utag orange">传播星·传播新手</span></div></div>
+    </div>
+
+    <div class="stars-container">
+      <div class="stars-bg" id="stars-bg"></div>
+      <div class="stars-orbit">
+        <svg class="constellation-lines" viewBox="0 0 350 640">
+          <line x1="180" y1="90" x2="80" y2="260"/>
+          <line x1="80" y1="260" x2="170" y2="490"/>
+          <line x1="170" y1="490" x2="285" y2="300"/>
+          <line x1="285" y1="300" x2="180" y2="90"/>
+        </svg>
+
+        <!-- Co-Creation: UNLOCKED -->
+        <div class="planet planet-co-creation" onclick="goToDetail('co-creation')">
+          <div class="planet-leader"><div class="lm-av">👑</div><span>StarBuilder_01</span></div>
+          <div class="planet-orb co-creation-orb">
+            <div class="planet-surface"><div class="planet-band"></div><div class="planet-band"></div><div class="planet-band"></div></div>
+          </div>
+          <span class="planet-name">共创星</span>
+          <span class="planet-name-en">Co-Creation</span>
+        </div>
+
+        <!-- Guardian: LOCKED -->
+        <div class="planet planet-guardian locked" onclick="showLockedToast('守护星 Guardian','即将开放，敬请期待')">
+          <div class="planet-orb guardian-orb">
+            <div class="planet-surface"><div class="planet-band"></div><div class="planet-band"></div><div class="planet-band"></div></div>
+          </div>
+          <div class="lock-icon"></div>
+          <span class="planet-name">守护星</span>
+          <span class="planet-name-en">Guardian</span>
+        </div>
+
+        <!-- Promotion: UNLOCKED -->
+        <div class="planet planet-promotion" onclick="goToDetail('promotion')">
+          <div class="planet-leader"><div class="lm-av">👑</div><span>Spread_King</span></div>
+          <div class="planet-orb promotion-orb">
+            <div class="planet-surface"><div class="planet-band"></div><div class="planet-band"></div><div class="planet-band"></div></div>
+          </div>
+          <span class="planet-name">传播星</span>
+          <span class="planet-name-en">Promotion</span>
+        </div>
+
+        <!-- Scout: LOCKED -->
+        <div class="planet planet-scout locked" onclick="showLockedToast('星探星 Scout','即将开放，敬请期待')">
+          <div class="planet-orb scout-orb">
+            <div class="planet-surface"><div class="planet-band"></div><div class="planet-band"></div><div class="planet-band"></div></div>
+          </div>
+          <div class="lock-icon"></div>
+          <span class="planet-name">星探星</span>
+          <span class="planet-name-en">Scout</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cosmic Bulletin Board -->
+    <div class="cosmic-bulletin">
+      <div class="bulletin-header">
+        <span class="bulletin-icon">📡</span>
+        <span class="bulletin-title">星球通告</span>
+      </div>
+      <div class="bulletin-items">
+        <div class="bulletin-item" onclick="goToDetail('promotion')">
+          <div class="bulletin-planet-tag orange">传播星</div>
+          <div class="bulletin-task-name">站外扩散</div>
+          <div class="bulletin-reward">+30 能量 · 1000 金币</div>
+        </div>
+        <div class="bulletin-item" onclick="goToDetail('co-creation')">
+          <div class="bulletin-planet-tag purple">共创星</div>
+          <div class="bulletin-task-name">翻译查错</div>
+          <div class="bulletin-reward">+30 能量 · 1000 金币</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Co-Creation Detail -->
+  <div class="page slide-right" id="page-detail-cocreation">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-home')"></div><div class="title">共创星</div></div>
+    <div class="detail-header">
+      <div class="detail-planet-orb co-creation"></div>
+      <h2>共创星 Co-Creation</h2>
+      <p class="subtitle">声音汇聚之地，每位建设者的建议都在塑造 Poppo 的未来</p>
+    </div>
+    <div class="level-section"><div class="level-card" onclick="goToPage('page-level-cocreation')"><div class="level-badge">T1</div><div class="level-info"><h4>体验官 Tester</h4><p>能量 120 / 200 · 距升级还需 80</p><div class="level-progress"><div class="level-progress-bar" style="width:60%"></div></div></div><div class="level-arrow"></div></div></div>
+    <div class="task-section">
+      <div class="section-title">可参与任务</div>
+      <div class="task-item"><div class="task-left"><div class="task-icon">🔍</div><div><div class="task-name">翻译查错</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn">去参与</button></div>
+    </div>
+    <div class="rank-section">
+      <div class="rank-card">
+        <div class="rank-header"><span class="rank-header-icon">🏆</span><span class="rank-header-title">本月星球排行</span><span class="rank-header-sub" title="贡献值：完成任务获得的能量累计" onclick="showRankInfo()">?</span></div>
+        <div class="rank-scroll">
+          <div class="rank-item"><span class="rank-num">1</span><div class="rank-avatar">👤</div><span class="rank-name">StarBuilder_01<span class="rank-crown">👑</span></span><span class="rank-score">2,840</span></div>
+          <div class="rank-item"><span class="rank-num">2</span><div class="rank-avatar">👤</div><span class="rank-name">VoiceCraft</span><span class="rank-score">2,210</span></div>
+          <div class="rank-item"><span class="rank-num">3</span><div class="rank-avatar">👤</div><span class="rank-name">PixelDream</span><span class="rank-score">1,890</span></div>
+          <div class="rank-item"><span class="rank-num">4</span><div class="rank-avatar">👤</div><span class="rank-name">SoundWave</span><span class="rank-score">1,650</span></div>
+          <div class="rank-item"><span class="rank-num">5</span><div class="rank-avatar">👤</div><span class="rank-name">Luna_Star</span><span class="rank-score">1,420</span></div>
+          <div class="rank-item"><span class="rank-num">6</span><div class="rank-avatar">👤</div><span class="rank-name">NightOwl</span><span class="rank-score">1,180</span></div>
+          <div class="rank-item"><span class="rank-num">7</span><div class="rank-avatar">👤</div><span class="rank-name">CodeBreeze</span><span class="rank-score">950</span></div>
+          <div class="rank-item"><span class="rank-num">8</span><div class="rank-avatar">👤</div><span class="rank-name">GlowFish</span><span class="rank-score">820</span></div>
+          <div class="rank-item"><span class="rank-num">9</span><div class="rank-avatar">👤</div><span class="rank-name">TideRider</span><span class="rank-score">710</span></div>
+          <div class="rank-item"><span class="rank-num">10</span><div class="rank-avatar">👤</div><span class="rank-name">CloudStep</span><span class="rank-score">580</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: Guardian Detail -->
+  <div class="page slide-right" id="page-detail-guardian">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-home')"></div><div class="title">守护星</div></div>
+    <div class="detail-header">
+      <div class="detail-planet-orb guardian"></div>
+      <h2>守护星 Guardian</h2>
+      <p class="subtitle">秩序守护的堡垒，守护者公正裁决维护社区的健康环境</p>
+    </div>
+    <div class="level-section"><div class="level-card green" onclick="goToPage('page-level-guardian')"><div class="level-badge green">T1</div><div class="level-info"><h4>见习守护 Guardian Trainee</h4><p>能量 80 / 200 · 距升级还需 120</p><div class="level-progress"><div class="level-progress-bar" style="width:40%"></div></div></div><div class="level-arrow"></div></div></div>
+    <div class="task-section">
+      <div class="section-title green">可参与任务</div>
+      <div class="task-item"><div class="task-left"><div class="task-icon green">⚖️</div><div><div class="task-name">举报投诉评判</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn green">去参与</button></div>
+      <div class="task-item"><div class="task-left"><div class="task-icon green">🥊</div><div><div class="task-name">举报PK</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn green">去参与</button></div>
+    </div>
+    <div class="rank-section">
+      <div class="rank-card">
+        <div class="rank-header"><span class="rank-header-icon">🏆</span><span class="rank-header-title">本月星球排行</span><span class="rank-header-sub" title="贡献值：完成任务获得的能量累计" onclick="showRankInfo()">?</span></div>
+        <div class="rank-scroll">
+          <div class="rank-item"><span class="rank-num">1</span><div class="rank-avatar">👤</div><span class="rank-name">Shield_Master<span class="rank-crown">👑</span></span><span class="rank-score">1,960</span></div>
+          <div class="rank-item"><span class="rank-num">2</span><div class="rank-avatar">👤</div><span class="rank-name">JusticeKeeper</span><span class="rank-score">1,720</span></div>
+          <div class="rank-item"><span class="rank-num">3</span><div class="rank-avatar">👤</div><span class="rank-name">OrderGuard</span><span class="rank-score">1,540</span></div>
+          <div class="rank-item"><span class="rank-num">4</span><div class="rank-avatar">👤</div><span class="rank-name">SafeZone</span><span class="rank-score">1,280</span></div>
+          <div class="rank-item"><span class="rank-num">5</span><div class="rank-avatar">👤</div><span class="rank-name">PeaceWarden</span><span class="rank-score">980</span></div>
+          <div class="rank-item"><span class="rank-num">6</span><div class="rank-avatar">👤</div><span class="rank-name">SilentGuard</span><span class="rank-score">860</span></div>
+          <div class="rank-item"><span class="rank-num">7</span><div class="rank-avatar">👤</div><span class="rank-name">FairJudge</span><span class="rank-score">740</span></div>
+          <div class="rank-item"><span class="rank-num">8</span><div class="rank-avatar">👤</div><span class="rank-name">NightWatch</span><span class="rank-score">620</span></div>
+          <div class="rank-item"><span class="rank-num">9</span><div class="rank-avatar">👤</div><span class="rank-name">TruthSeeker</span><span class="rank-score">510</span></div>
+          <div class="rank-item"><span class="rank-num">10</span><div class="rank-avatar">👤</div><span class="rank-name">CalmStorm</span><span class="rank-score">430</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3.5: Promotion Detail -->
+  <div class="page slide-right" id="page-detail-promotion">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-home')"></div><div class="title">传播星</div></div>
+    <div class="detail-header">
+      <div class="detail-planet-orb promotion"></div>
+      <h2>传播星 Promotion</h2>
+      <p class="subtitle">光芒扩散的起点，传播者让更多人看到 Poppo 的精彩</p>
+    </div>
+    <div class="level-section"><div class="level-card orange" onclick="goToPage('page-level-promotion')"><div class="level-badge orange">T1</div><div class="level-info"><h4>传播新手 Sharer</h4><p>能量 95 / 200 · 距升级还需 105</p><div class="level-progress"><div class="level-progress-bar" style="width:47.5%"></div></div></div><div class="level-arrow"></div></div></div>
+    <div class="task-section">
+      <div class="section-title orange">可参与任务</div>
+      <div class="task-item"><div class="task-left"><div class="task-icon orange">📢</div><div><div class="task-name">站外扩散</div><div class="task-reward">合格 +30 能量 · 优质 +50 能量</div></div></div><button class="task-btn orange">去参与</button></div>
+    </div>
+    <div class="rank-section">
+      <div class="rank-card">
+        <div class="rank-header"><span class="rank-header-icon">🏆</span><span class="rank-header-title">本月星球排行</span><span class="rank-header-sub" title="贡献值：完成任务获得的能量累计" onclick="showRankInfo()">?</span></div>
+        <div class="rank-empty">本月暂无数据，快来冲榜吧！</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3.6: Promotion Level -->
+  <div class="page slide-right" id="page-level-promotion">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-promotion')"></div><div class="title">传播星 · 成长等级</div></div>
+    <div class="level-list">
+      <div class="level-swiper" data-current="0">
+        <div class="level-tier current" style="border-color:rgba(255,152,0,0.4);background:rgba(255,152,0,0.06);"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#ff9800,#ffb74d);">T1</div><div><div class="tier-name">传播新手 Sharer</div><div class="tier-name-en">合格获 1000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:47.5%;background:linear-gradient(90deg,#ff9800,#ffb74d);"></div></div><div class="tier-progress-text">95 / 200 能量</div></div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#f57c00,#ff9800);">T2</div><div><div class="tier-name">推广达人 Promoter</div><div class="tier-name-en">合格获 1200 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#ff9800,#ffb74d);"></div></div><div class="tier-progress-text">95 / 200 能量 · 还需 105</div></div><div class="tier-lock">需累计 200 能量解锁</div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#e65100,#f57c00);">T3</div><div><div class="tier-name">营销专家 Marketer</div><div class="tier-name-en">合格获 1500 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#ff9800,#ffb74d);"></div></div><div class="tier-progress-text">95 / 1000 能量 · 还需 905</div></div><div class="tier-lock">需累计 1000 能量解锁</div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#ffd700,#ff8f00);">T4</div><div><div class="tier-name">增长大师 Growth Master</div><div class="tier-name-en">合格获 2000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#ff9800,#ffb74d);"></div></div><div class="tier-progress-text">95 / 3000 能量 · 还需 2905</div></div><div class="tier-lock">需累计 3000 能量解锁</div></div>
+      </div>
+      <div class="level-dots orange"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>    </div>
+    <div class="energy-section"><div class="section-title orange">能量获取规则</div><div class="energy-card"><div class="energy-row"><span>评为合格建议</span><span class="energy-val" style="color:#ffb74d;">+30</span></div><div class="energy-row"><span>评为优质建议</span><span class="energy-val" style="color:#ffb74d;">+50</span></div><div class="energy-row"><span>优质建议达到3条</span><span class="energy-val" style="color:#ffb74d;">+100 额外</span></div></div></div>
+  </div>
+
+  <!-- PAGE 3.7: Guardian Level -->
+  <div class="page slide-right" id="page-level-guardian">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-guardian')"></div><div class="title">守护星 · 成长等级</div></div>
+    <div class="level-list">
+      <div class="level-swiper" data-current="0">
+        <div class="level-tier current" style="border-color:rgba(76,175,80,0.4);background:rgba(76,175,80,0.06);"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#4caf50,#81c784);">T1</div><div><div class="tier-name">见习守护 Guardian Trainee</div><div class="tier-name-en">被采纳获 1000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:40%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 200 能量</div></div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#388e3c,#4caf50);">T2</div><div><div class="tier-name">正义守卫 Justice Guard</div><div class="tier-name-en">被采纳获 1200 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 200 能量 · 还需 120</div></div><div class="tier-lock">需累计 200 能量解锁</div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#1b5e20,#388e3c);">T3</div><div><div class="tier-name">秩序裁决 Order Judge</div><div class="tier-name-en">被采纳获 1500 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 1000 能量 · 还需 920</div></div><div class="tier-lock">需累计 1000 能量解锁</div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#ffd700,#ff8f00);">T4</div><div><div class="tier-name">星球守护者 Planet Guardian</div><div class="tier-name-en">被采纳获 2000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%;background:linear-gradient(90deg,#4caf50,#81c784);"></div></div><div class="tier-progress-text">80 / 3000 能量 · 还需 2920</div></div><div class="tier-lock">需累计 3000 能量解锁</div></div>
+      </div>
+      <div class="level-dots green"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>    </div>
+    <div class="energy-section"><div class="section-title green">能量获取规则</div><div class="energy-card"><div class="energy-row"><span>评判被采纳</span><span class="energy-val" style="color:#81c784;">+30</span></div><div class="energy-row"><span>连续7天有采纳</span><span class="energy-val" style="color:#81c784;">+50 额外</span></div><div class="energy-row"><span>单月采纳≥10条</span><span class="energy-val" style="color:#81c784;">+100 额外</span></div></div></div>
+  </div>
+
+  <!-- PAGE 4: Co-Creation Level -->
+  <div class="page slide-right" id="page-level-cocreation">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-cocreation')"></div><div class="title">共创星 · 成长等级</div></div>
+    <div class="level-list">
+      <div class="level-swiper" data-current="0">
+        <div class="level-tier current"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#7c4dff,#b388ff);">T1</div><div><div class="tier-name">体验官 Tester</div><div class="tier-name-en">被采纳获 1000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:60%"></div></div><div class="tier-progress-text">120 / 200 能量</div></div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#536dfe,#304ffe);">T2</div><div><div class="tier-name">反馈师 Contributor</div><div class="tier-name-en">被采纳获 1200 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%"></div></div><div class="tier-progress-text">120 / 200 能量 · 还需 80</div></div><div class="tier-lock">需累计 200 能量解锁</div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#aa00ff,#7c4dff);">T3</div><div><div class="tier-name">代言人 Advocate</div><div class="tier-name-en">被采纳获 1500 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%"></div></div><div class="tier-progress-text">120 / 1000 能量 · 还需 880</div></div><div class="tier-lock">需累计 1000 能量解锁</div></div>
+        <div class="level-tier"><div class="tier-header"><div class="tier-badge" style="background:linear-gradient(135deg,#ffd700,#ff8f00);">T4</div><div><div class="tier-name">共创者 Co-Creator</div><div class="tier-name-en">被采纳获 2000 金币/条</div></div></div><div class="tier-progress"><div class="tier-progress-bar"><div class="tier-progress-fill" style="width:0%"></div></div><div class="tier-progress-text">120 / 3000 能量 · 还需 2880</div></div><div class="tier-lock">需累计 3000 能量解锁</div></div>
+      </div>
+      <div class="level-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+    <div class="energy-section"><div class="section-title">能量获取规则</div><div class="energy-card"><div class="energy-row"><span>建议被采纳</span><span class="energy-val">+30</span></div><div class="energy-row"><span>连续7天有采纳</span><span class="energy-val">+50 额外</span></div><div class="energy-row"><span>单月采纳≥10条</span><span class="energy-val">+100 额外</span></div></div></div>
+  </div>
+
+  <!-- PAGE 6: Profile -->
+  <div class="page slide-right" id="page-profile">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="dynamic-island">
+        <div class="dynamic-island-inner">
+          <div class="dynamic-island-camera"></div>
+          <div class="dynamic-island-sensor"></div>
+        </div>
+      </div>
+      <span>⚡ 100%</span>
+    </div>
+    <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-home')"></div><div class="title">个人中心</div></div>
+    <div style="padding:24px;text-align:center;">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#7c4dff,#ff4081);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid rgba(124,77,255,0.4);">👤</div>
+      <div style="font-size:18px;font-weight:700;">Luna_Star</div>
+      <div style="margin-top:8px;display:flex;justify-content:center;gap:8px;">
+        <span class="utag purple" style="font-size:11px;padding:3px 10px;">共创星 · 体验官 T1</span>
+        <span class="utag orange" style="font-size:11px;padding:3px 10px;">传播星 · 传播新手 T1</span>
+      </div>
+      <div style="margin-top:20px;display:flex;justify-content:center;gap:32px;">
+        <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:#ffd700;">8,200</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">金币</div></div>
+        <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:#b388ff;">120</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">共创能量</div></div>
+        <div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:#ffb74d;">95</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;">传播能量</div></div>
+      </div>
+    </div>
+    <div style="padding:0 24px;">
+      <div class="task-item"><div class="task-left"><div class="task-icon">📊</div><div><div class="task-name">我的贡献记录</div></div></div><div class="level-arrow"></div></div>
+      <div class="task-item"><div class="task-left"><div class="task-icon">🏆</div><div><div class="task-name">排行榜</div></div></div><div class="level-arrow"></div></div>
+      <div class="task-item"><div class="task-left"><div class="task-icon">🪙</div><div><div class="task-name">金币明细</div></div></div><div class="level-arrow"></div></div>
+      <div class="task-item"><div class="task-left"><div class="task-icon">⚙️</div><div><div class="task-name">设置</div></div></div><div class="level-arrow"></div></div>
+    </div>
+  </div>
+
+<!-- Rank Info Bottom Sheet -->
+<div class="rank-sheet-overlay" id="rank-sheet-overlay" onclick="hideRankInfo()"></div>
+<div class="rank-sheet" id="rank-sheet">
+  <div class="rank-sheet-header">
+    <h3>关于贡献值</h3>
+    <button class="rank-sheet-close" onclick="hideRankInfo()">×</button>
+  </div>
+  <div class="rank-sheet-content">
+    <p><strong>什么是贡献值？</strong></p>
+    <p>贡献值是你在星球中完成任务、参与互动获得的能量累计，代表你对星球的贡献程度。</p>
+    <p><strong>如何获得贡献值？</strong></p>
+    <ul>
+      <li>完成每日任务和挑战任务</li>
+      <li>参与星球互动活动</li>
+      <li>邀请好友加入星球</li>
+    </ul>
+    <p><strong>贡献值的作用</strong></p>
+    <p>贡献值决定你在榜单中的排名，排名越高可获得更多专属奖励和特权。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="locked-toast"><h3 id="toast-title">🔒 星球未开放</h3><p id="toast-desc">即将开放，敬请期待</p><button class="close-toast" onclick="hideToast()">我知道了</button></div>
+
+<script>
+const starsBg = document.getElementById('stars-bg');
+for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*3+'s';s.style.width=s.style.height=(Math.random()*2+1)+'px';starsBg.appendChild(s);}
+function goToPage(id){document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active');p.classList.add('slide-right');});document.getElementById(id).classList.remove('slide-right');document.getElementById(id).classList.add('active');}
+function goToDetail(planet){if(planet==='co-creation')goToPage('page-detail-cocreation');else if(planet==='guardian')goToPage('page-detail-guardian');else if(planet==='promotion')goToPage('page-detail-promotion');}
+function showLockedToast(n,d){document.getElementById('toast-title').textContent='🔒 '+n;document.getElementById('toast-desc').textContent=d;document.getElementById('locked-toast').classList.add('show');}
+function hideToast(){document.getElementById('locked-toast').classList.remove('show');}
+function showRankInfo(){document.getElementById('rank-sheet-overlay').classList.add('show');document.getElementById('rank-sheet').classList.add('show');}
+function hideRankInfo(){document.getElementById('rank-sheet-overlay').classList.remove('show');document.getElementById('rank-sheet').classList.remove('show');}
+
+// Level swiper
+document.querySelectorAll('.level-swiper').forEach(swiper=>{
+  let startX=0,curX=0,idx=parseInt(swiper.dataset.current)||0;
+  const total=swiper.children.length;
+  const dots=swiper.parentElement.querySelector('.level-dots');
+  function updatePos(animate){
+    swiper.style.transition=animate?'transform 0.3s ease':'none';
+    swiper.style.transform='translateX(-'+(idx*100)+'%)';
+    if(dots)dots.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===idx);});
+  }
+  swiper.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;curX=startX;swiper.style.transition='none';});
+  swiper.addEventListener('touchmove',e=>{curX=e.touches[0].clientX;const diff=curX-startX;swiper.style.transform='translateX(calc(-'+(idx*100)+'% + '+diff+'px))';});
+  swiper.addEventListener('touchend',()=>{const diff=curX-startX;if(diff<-50&&idx<total-1)idx++;else if(diff>50&&idx>0)idx--;updatePos(true);});
+  let dragging=false;
+  swiper.addEventListener('mousedown',e=>{dragging=true;startX=e.clientX;curX=startX;swiper.style.transition='none';e.preventDefault();});
+  swiper.addEventListener('mousemove',e=>{if(!dragging)return;curX=e.clientX;const diff=curX-startX;swiper.style.transform='translateX(calc(-'+(idx*100)+'% + '+diff+'px))';});
+  swiper.addEventListener('mouseup',()=>{if(!dragging)return;dragging=false;const diff=curX-startX;if(diff<-50&&idx<total-1)idx++;else if(diff>50&&idx>0)idx--;updatePos(true);});
+  swiper.addEventListener('mouseleave',()=>{if(!dragging)return;dragging=false;updatePos(true);});
+  updatePos(false);
+});
+
+function setMode(mode) {
+  const btns = document.querySelectorAll('.mode-toggle button');
+  btns.forEach(b => b.classList.remove('active'));
+  if (mode === 'demo') {
+    document.body.classList.add('demo-mode');
+    btns[1].classList.add('active');
+  } else {
+    document.body.classList.remove('demo-mode');
+    btns[0].classList.add('active');
+  }
+}
+
+function navToProto(pageId) {
+  goToPage(pageId);
+}
+</script>
+</div><!-- /demo-panel -->
+</div><!-- /app-layout -->
+</body>
+</html>

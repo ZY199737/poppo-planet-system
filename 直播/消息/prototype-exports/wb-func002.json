@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "nodes": [
+    {
+      "type": "frame", "id": "func2-row", "layout": "horizontal", "gap": 40, "padding": 32,
+      "width": "fit-content", "height": "fit-content",
+      "children": [
+        {
+          "type": "frame", "id": "card-1", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-1", "width": 240, "height": 520, "image": { "src": "DVEfbXvmRoL6iExV4vSleofBgAg" } },
+            { "type": "text", "id": "t-1", "text": "1. 转文字模式", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-2", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-2", "width": 240, "height": 520, "image": { "src": "MJIGbXLcroro6KxzLjUl4mhkgbb" } },
+            { "type": "text", "id": "t-2", "text": "2. 录制识别中", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-3", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-3", "width": 240, "height": 520, "image": { "src": "Jtu6bF5Jaow5AZxRnxllCs2MgAg" } },
+            { "type": "text", "id": "t-3", "text": "3. 文字预览编辑", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-4", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-4", "width": 240, "height": 520, "image": { "src": "JkGeb9nERoGbGQxfBpTlOkO9gze" } },
+            { "type": "text", "id": "t-4", "text": "4. 文字消息发送", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        }
+      ]
+    }
+  ]
+}

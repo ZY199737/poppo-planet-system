@@ -1,0 +1,84 @@
+<whiteboard type="svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400">
+  <defs>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  <text x="450" y="35" font-family="Inter, sans-serif" font-size="20" font-weight="700" fill="#1A1A1A" text-anchor="middle">FUNC-003 语音消息播放 · 页面流程图</text>
+  <!-- Screen 1: Static -->
+  <rect x="30" y="60" width="200" height="300" rx="16" fill="#FFFFFF" stroke="#DDDDDD" stroke-width="2"/>
+  <rect x="30" y="60" width="200" height="30" rx="16" fill="#F5F5F5"/>
+  <text x="130" y="120" font-family="Inter, sans-serif" font-size="13" fill="#1A1A1A" text-anchor="middle">语音气泡（静态）</text>
+  <!-- Voice bubble static -->
+  <rect x="55" y="150" width="150" height="55" rx="12" fill="#F0F0F0"/>
+  <text x="75" y="168" font-family="Inter, sans-serif" font-size="9" fill="#00C853" font-weight="600">用户B</text>
+  <text x="75" y="190" font-family="Inter, sans-serif" font-size="14" fill="#222">▶</text>
+  <rect x="95" y="181" width="8" height="14" rx="2" fill="#C7C7CC"/>
+  <rect x="107" y="177" width="8" height="22" rx="2" fill="#C7C7CC"/>
+  <rect x="119" y="183" width="8" height="10" rx="2" fill="#C7C7CC"/>
+  <rect x="131" y="175" width="8" height="26" rx="2" fill="#C7C7CC"/>
+  <rect x="143" y="180" width="8" height="16" rx="2" fill="#C7C7CC"/>
+  <rect x="155" y="177" width="8" height="22" rx="2" fill="#C7C7CC"/>
+  <rect x="167" y="183" width="8" height="10" rx="2" fill="#C7C7CC"/>
+  <text x="180" y="192" font-family="Inter, sans-serif" font-size="9" fill="#999">0:05</text>
+  <text x="130" y="260" font-family="Inter, sans-serif" font-size="10" fill="#666" text-anchor="middle">波形静态灰色</text>
+  <text x="130" y="280" font-family="Inter, sans-serif" font-size="10" fill="#666" text-anchor="middle">点击可播放</text>
+  <!-- Arrow 1→2 -->
+  <line x1="240" y1="200" x2="298" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="269" y="190" font-family="Inter, sans-serif" font-size="10" fill="#7B2BFF" text-anchor="middle">点击播放</text>
+  <!-- Screen 2: Playing -->
+  <rect x="310" y="60" width="200" height="300" rx="16" fill="#FFFFFF" stroke="#7B2BFF" stroke-width="2"/>
+  <rect x="310" y="60" width="200" height="30" rx="16" fill="#F5F5F5"/>
+  <text x="410" y="120" font-family="Inter, sans-serif" font-size="13" fill="#1A1A1A" text-anchor="middle">播放中</text>
+  <!-- Voice bubble playing -->
+  <rect x="335" y="150" width="150" height="55" rx="12" fill="#F3E8FF" stroke="#7B2BFF" stroke-width="1.5"/>
+  <text x="355" y="168" font-family="Inter, sans-serif" font-size="9" fill="#00C853" font-weight="600">用户B</text>
+  <text x="355" y="190" font-family="Inter, sans-serif" font-size="14" fill="#7B2BFF">⏸</text>
+  <rect x="375" y="181" width="8" height="14" rx="2" fill="#7B2BFF"/>
+  <rect x="387" y="177" width="8" height="22" rx="2" fill="#7B2BFF"/>
+  <rect x="399" y="183" width="8" height="10" rx="2" fill="#7B2BFF"/>
+  <rect x="411" y="175" width="8" height="26" rx="2" fill="#7B2BFF"/>
+  <rect x="423" y="180" width="8" height="16" rx="2" fill="#C7C7CC"/>
+  <rect x="435" y="177" width="8" height="22" rx="2" fill="#C7C7CC"/>
+  <rect x="447" y="183" width="8" height="10" rx="2" fill="#C7C7CC"/>
+  <text x="462" y="192" font-family="Inter, sans-serif" font-size="9" fill="#7B2BFF" font-weight="600">0:03/0:05</text>
+  <text x="410" y="240" font-family="Inter, sans-serif" font-size="10" fill="#7B2BFF" text-anchor="middle">波形紫色动画</text>
+  <text x="410" y="258" font-family="Inter, sans-serif" font-size="10" fill="#666" text-anchor="middle">显示播放进度</text>
+  <text x="410" y="280" font-family="Inter, sans-serif" font-size="9" fill="#999" text-anchor="middle">再次点击 → 暂停</text>
+  <text x="410" y="300" font-family="Inter, sans-serif" font-size="9" fill="#999" text-anchor="middle">播放完毕 → 恢复静态</text>
+  <!-- Arrow 2→3 -->
+  <line x1="520" y1="200" x2="578" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="549" y="185" font-family="Inter, sans-serif" font-size="9" fill="#7B2BFF" text-anchor="middle">点击另一条</text>
+  <text x="549" y="198" font-family="Inter, sans-serif" font-size="9" fill="#7B2BFF" text-anchor="middle">语音消息</text>
+  <!-- Screen 3: Mutex -->
+  <rect x="590" y="60" width="200" height="300" rx="16" fill="#FFFFFF" stroke="#FF3B5C" stroke-width="2"/>
+  <rect x="590" y="60" width="200" height="30" rx="16" fill="#F5F5F5"/>
+  <text x="690" y="120" font-family="Inter, sans-serif" font-size="13" fill="#1A1A1A" text-anchor="middle">暂停 / 互斥切换</text>
+  <!-- Paused bubble -->
+  <rect x="615" y="145" width="150" height="55" rx="12" fill="#F0F0F0"/>
+  <text x="635" y="163" font-family="Inter, sans-serif" font-size="9" fill="#00C853" font-weight="600">用户B</text>
+  <text x="635" y="185" font-family="Inter, sans-serif" font-size="14" fill="#222">▶</text>
+  <rect x="655" y="176" width="8" height="14" rx="2" fill="#A855F7"/>
+  <rect x="667" y="172" width="8" height="22" rx="2" fill="#A855F7"/>
+  <rect x="679" y="178" width="8" height="10" rx="2" fill="#A855F7"/>
+  <rect x="691" y="170" width="8" height="26" rx="2" fill="#C7C7CC"/>
+  <rect x="703" y="175" width="8" height="16" rx="2" fill="#C7C7CC"/>
+  <text x="720" y="187" font-family="Inter, sans-serif" font-size="8" fill="#999">0:03/0:05</text>
+  <text x="745" y="163" font-family="Inter, sans-serif" font-size="8" fill="#999">已暂停</text>
+  <!-- New playing bubble -->
+  <rect x="615" y="215" width="150" height="55" rx="12" fill="#F3E8FF" stroke="#7B2BFF" stroke-width="1.5"/>
+  <text x="635" y="233" font-family="Inter, sans-serif" font-size="9" fill="#7B2BFF" font-weight="600">用户D</text>
+  <text x="635" y="255" font-family="Inter, sans-serif" font-size="14" fill="#7B2BFF">⏸</text>
+  <rect x="655" y="246" width="8" height="14" rx="2" fill="#7B2BFF"/>
+  <rect x="667" y="242" width="8" height="22" rx="2" fill="#7B2BFF"/>
+  <rect x="679" y="248" width="8" height="10" rx="2" fill="#7B2BFF"/>
+  <rect x="691" y="240" width="8" height="26" rx="2" fill="#7B2BFF"/>
+  <rect x="703" y="245" width="8" height="16" rx="2" fill="#C7C7CC"/>
+  <text x="720" y="257" font-family="Inter, sans-serif" font-size="8" fill="#7B2BFF" font-weight="600">0:02/0:08</text>
+  <text x="745" y="233" font-family="Inter, sans-serif" font-size="8" fill="#7B2BFF">播放中</text>
+  <text x="690" y="300" font-family="Inter, sans-serif" font-size="10" fill="#FF3B5C" text-anchor="middle">互斥: 同一时间只能</text>
+  <text x="690" y="316" font-family="Inter, sans-serif" font-size="10" fill="#FF3B5C" text-anchor="middle">播放一条语音消息</text>
+  <text x="690" y="345" font-family="Inter, sans-serif" font-size="9" fill="#999" text-anchor="middle">新语音播放 → 旧语音自动暂停</text>
+</svg>
+</whiteboard>

@@ -1,0 +1,20 @@
+Uploading: Jp0If.png (29.6 KB) -> Drive root folder
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "file_name": "Jp0If.png",
+    "file_token": "KHgIbpNzEo9LuExML16l6DJgggh",
+    "size": 30358,
+    "url": "https://uf1iawhques.sg.larksuite.com/file/KHgIbpNzEo9LuExML16l6DJgggh",
+    "version": "7660462537766391526"
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

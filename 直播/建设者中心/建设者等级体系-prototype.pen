@@ -1,0 +1,67 @@
+{
+  "version": "2.14",
+  "children": [],
+  "variables": {
+    "bg-primary": {
+      "type": "color",
+      "value": "#0D0B2E"
+    },
+    "bg-secondary": {
+      "type": "color",
+      "value": "#1A1545"
+    },
+    "bg-card": {
+      "type": "color",
+      "value": "#252052"
+    },
+    "bg-card-light": {
+      "type": "color",
+      "value": "#2E2863"
+    },
+    "brand-primary": {
+      "type": "color",
+      "value": "#7B2BFF"
+    },
+    "brand-light": {
+      "type": "color",
+      "value": "#A855F7"
+    },
+    "accent-gold": {
+      "type": "color",
+      "value": "#FFD700"
+    },
+    "accent-blue": {
+      "type": "color",
+      "value": "#4FC3F7"
+    },
+    "accent-green": {
+      "type": "color",
+      "value": "#00C853"
+    },
+    "accent-red": {
+      "type": "color",
+      "value": "#FF3B5C"
+    },
+    "text-primary": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "text-secondary": {
+      "type": "color",
+      "value": "#B0A8D0"
+    },
+    "text-tertiary": {
+      "type": "color",
+      "value": "#7A7199"
+    },
+    "overlay": {
+      "type": "color",
+      "value": "#00000080"
+    },
+    "border-purple": {
+      "type": "color",
+      "value": "#3D2E6B"
+    }
+  },
+  "fileToken": "32b47d20-e315-47b7-a209-fe0f8e980c22"
+}

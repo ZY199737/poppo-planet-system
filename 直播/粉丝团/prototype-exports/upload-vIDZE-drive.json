@@ -1,0 +1,20 @@
+Uploading: vIDZE.png (32.5 KB) -> Drive root folder
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "file_name": "vIDZE.png",
+    "file_token": "MiXabXx8zo46Exxc4Txlaco0gIh",
+    "size": 33249,
+    "url": "https://uf1iawhques.sg.larksuite.com/file/MiXabXx8zo46Exxc4Txlaco0gIh",
+    "version": "7660462693710597854"
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

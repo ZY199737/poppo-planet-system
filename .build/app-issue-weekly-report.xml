@@ -1,0 +1,69 @@
+<title>APP 体验问题跟踪周报 — 2026.06.22~06.28</title>
+<callout emoji="📊" background-color="blue"><p><b>数据来源：APP体验问题录入多维表格</b> | 统计周期：2026.06.22（周一）~ 2026.06.28（周日） | 生成时间：2026.07.01</p></callout>
+<hr/>
+<h1>一、本周概览</h1>
+<h2>1.1 进度总览</h2>
+<table>
+<colgroup><col/><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th>指标</th><th>本周</th><th>累计全部</th><th></th><th></th><th></th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>📥 新增问题</p></td><td vertical-align="top"><p><b>18</b></p></td><td vertical-align="top"><p>47</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>✅ 已优化</p></td><td vertical-align="top"><p><b>12</b></p></td><td vertical-align="top"><p>28</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>🔄 优化中</p></td><td vertical-align="top"><p>4</p></td><td vertical-align="top"><p>6</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>⏳ 待优化</p></td><td vertical-align="top"><p>2</p></td><td vertical-align="top"><p>11</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>🚫 已拒绝</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>2</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>📈 解决率</p></td><td vertical-align="top"><p><b>66.7%</b></p></td><td vertical-align="top"><p><b>59.6%</b></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+</tbody>
+</table>
+<callout emoji="💡" background-color="green"><p>本周解决 12 个问题，新增 18 个，净增 6 个待处理。解决率 66.7%，高于累计水平。</p></callout>
+<h2>1.2 优先级分布</h2>
+<table>
+<colgroup><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th>优先级</th><th>本周新增</th><th>累计总数</th><th>累计未解决</th><th>未解决率</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>🔴 P1-阻塞体验</p></td><td vertical-align="top"><p>2</p></td><td vertical-align="top"><p>5</p></td><td vertical-align="top"><p><b>1</b></p></td><td vertical-align="top"><p>20%</p></td></tr>
+<tr><td vertical-align="top"><p>🟡 P2-影响体验</p></td><td vertical-align="top"><p>7</p></td><td vertical-align="top"><p>19</p></td><td vertical-align="top"><p><b>6</b></p></td><td vertical-align="top"><p>31.6%</p></td></tr>
+<tr><td vertical-align="top"><p>🟢 P3-体验优化</p></td><td vertical-align="top"><p>9</p></td><td vertical-align="top"><p>23</p></td><td vertical-align="top"><p>10</p></td><td vertical-align="top"><p>43.5%</p></td></tr>
+</tbody>
+</table>
+<callout emoji="⚠️" background-color="red"><p><b>关注：</b>1 个 P1 问题仍未解决 | 6 个 P2 问题待处理</p></callout>
+<hr/>
+<h1>二、模块分布</h1>
+<table>
+<colgroup><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th>所属模块</th><th>本周新增</th><th>累计总数</th><th>累计未解决</th><th>占比</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>直播</p></td><td vertical-align="top"><p>8</p></td><td vertical-align="top"><p>22</p></td><td vertical-align="top"><p>8</p></td><td vertical-align="top"><p>46.8%</p></td></tr>
+<tr><td vertical-align="top"><p>IM/消息</p></td><td vertical-align="top"><p>4</p></td><td vertical-align="top"><p>10</p></td><td vertical-align="top"><p>4</p></td><td vertical-align="top"><p>21.3%</p></td></tr>
+<tr><td vertical-align="top"><p>我的</p></td><td vertical-align="top"><p>2</p></td><td vertical-align="top"><p>5</p></td><td vertical-align="top"><p>2</p></td><td vertical-align="top"><p>10.6%</p></td></tr>
+<tr><td vertical-align="top"><p>短视频</p></td><td vertical-align="top"><p>2</p></td><td vertical-align="top"><p>4</p></td><td vertical-align="top"><p>1</p></td><td vertical-align="top"><p>8.5%</p></td></tr>
+<tr><td vertical-align="top"><p>登录/注册</p></td><td vertical-align="top"><p>1</p></td><td vertical-align="top"><p>3</p></td><td vertical-align="top"><p>1</p></td><td vertical-align="top"><p>6.4%</p></td></tr>
+<tr><td vertical-align="top"><p>搜索</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>2</p></td><td vertical-align="top"><p>1</p></td><td vertical-align="top"><p>4.3%</p></td></tr>
+<tr><td vertical-align="top"><p>其他</p></td><td vertical-align="top"><p>1</p></td><td vertical-align="top"><p>1</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>2.1%</p></td></tr>
+</tbody>
+</table>
+<callout emoji="📌" background-color="grey"><p><b>Top3 模块：</b>直播（46.8%）、IM/消息（21.3%）、我的（10.6%）—— 直播模块问题最集中，建议重点排查</p></callout>
+<hr/>
+<h1>三、处理方分布</h1>
+<table>
+<colgroup><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th>处理方</th><th>跟进人</th><th>本周新增</th><th>累计待处理</th><th>累计已解决</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>产品</p></td><td vertical-align="top"><p>叶金鑫</p></td><td vertical-align="top"><p>10</p></td><td vertical-align="top"><p>9</p></td><td vertical-align="top"><p>16</p></td></tr>
+<tr><td vertical-align="top"><p>设计</p></td><td vertical-align="top"><p>杨葳</p></td><td vertical-align="top"><p>8</p></td><td vertical-align="top"><p>8</p></td><td vertical-align="top"><p>12</p></td></tr>
+</tbody>
+</table>
+<hr/>
+<h1>四、积压预警</h1>
+<callout emoji="🚨" background-color="red"><p><b>以下问题已超过 7 天未处理，请尽快跟进</b></p></callout>
+<table>
+<colgroup><col/><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th>编号</th><th>问题描述</th><th>模块</th><th>优先级</th><th>跟进人</th><th>提出日期</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p><a href="https://uf1iawhques.sg.larksuite.com/record/YHCprM6GRelOqYrM">003</a></p></td><td vertical-align="top"><p>PK结算页面排名数据错误</p></td><td vertical-align="top"><p>直播</p></td><td vertical-align="top"><p>P1-阻塞体验</p></td><td vertical-align="top"><p>叶金鑫</p></td><td vertical-align="top"><p>2026/06/20</p></td></tr>
+<tr><td vertical-align="top"><p><a href="https://uf1iawhques.sg.larksuite.com/record/X7kVrQa8WeN5dgrL">008</a></p></td><td vertical-align="top"><p>粉丝团图标在暗色模式下不可见</p></td><td vertical-align="top"><p>直播</p></td><td vertical-align="top"><p>P2-影响体验</p></td><td vertical-align="top"><p>杨葳</p></td><td vertical-align="top"><p>2026/06/21</p></td></tr>
+<tr><td vertical-align="top"><p><a href="https://uf1iawhques.sg.larksuite.com/record/P3mNrK2LHe9RqWrJ">012</a></p></td><td vertical-align="top"><p>消息列表头像加载状态缺失</p></td><td vertical-align="top"><p>IM/消息</p></td><td vertical-align="top"><p>P2-影响体验</p></td><td vertical-align="top"><p>杨葳</p></td><td vertical-align="top"><p>2026/06/22</p></td></tr>
+</tbody>
+</table>
+<hr/>
+<callout emoji="🤖" background-color="grey"><p>本报告由 APP 体验问题录入机器人自动生成 | 数据截止：2026-07-01 22:00</p></callout>

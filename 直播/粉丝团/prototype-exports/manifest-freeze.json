@@ -1,0 +1,37 @@
+{
+  "pen_file": "粉丝团冻结点亮-prototype.pen",
+  "doc_token": "G9BsdftenoMavnxbLpblWPiNgLc",
+  "groups": [
+    {
+      "func": "FUNC-003",
+      "whiteboard_token": "M1sMwHJ6nhQYUYbwkCWleyfagwe",
+      "screens": [
+        { "nodeId": "Pygon", "label": "1. 粉丝团卡片-点亮态", "media_token": "N0eubys0WoOaqgxqj04lFChvg0d" },
+        { "nodeId": "fO6St", "label": "2. 粉丝团卡片-冻结态", "media_token": "BE0rbfvV2oCMr6xpqDjlKcwfgyg" }
+      ]
+    },
+    {
+      "func": "FUNC-004",
+      "whiteboard_token": "HKJewKhwfhKfaEbP9fZlJr05gHf",
+      "screens": [
+        { "nodeId": "JfNcf", "label": "1. 粉丝团列表页", "media_token": "Pm1JbQ2W3okkzUxm0rIlJNbKgJh" },
+        { "nodeId": "L4lZ8x", "label": "2. 冻结粉丝团列表页", "media_token": "JVHobVh5DoNDyrxlbXtlQHtVgAh" }
+      ]
+    },
+    {
+      "func": "FUNC-005",
+      "whiteboard_token": "GCHOw4fAYhYAujbOc9UllFBXgHg",
+      "screens": [
+        { "nodeId": "a38ew", "label": "1. 贡献榜-用户视角", "media_token": "OV0PbL3WZo2DQhxaOrbl8TIVgSe" },
+        { "nodeId": "v6ivT", "label": "2. 贡献榜-主播视角", "media_token": "EdYLbKXijoEuJex74GKlqIsYggd" }
+      ]
+    },
+    {
+      "func": "FUNC-007",
+      "whiteboard_token": "VI0zwAzm3hPRVNbTcrclzRMCggB",
+      "screens": [
+        { "nodeId": "acrlI", "label": "1. 直播间亲密度动效", "media_token": "JfMGbZGOioWfbIxZ1TwlkVY7gFg" }
+      ]
+    }
+  ]
+}

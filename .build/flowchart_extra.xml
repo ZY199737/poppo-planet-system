@@ -1,0 +1,4 @@
+<h2>额外曝光入口</h2><whiteboard type="mermaid">flowchart LR
+    BA1[首页Banner] -->|点击| T[话题详情页]
+    BA2[开屏Banner] -->|点击| T
+    UF[用户反馈页 意见反馈 文案错误] -->|新增跳转入口| T</whiteboard>

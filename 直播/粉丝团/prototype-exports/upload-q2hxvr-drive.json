@@ -1,0 +1,20 @@
+Uploading: q2hxvr.png (32.0 KB) -> Drive root folder
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "file_name": "q2hxvr.png",
+    "file_token": "BNzubs1HRoe4GXxFFjRlut42gAL",
+    "size": 32808,
+    "url": "https://uf1iawhques.sg.larksuite.com/file/BNzubs1HRoe4GXxFFjRlut42gAL",
+    "version": "7660462705999908585"
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

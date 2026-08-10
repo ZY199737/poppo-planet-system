@@ -1,0 +1,21 @@
+Uploading: Jp0If.png (30358 bytes)
+{
+  "ok": false,
+  "identity": "user",
+  "error": {
+    "type": "api_error",
+    "code": 1061001,
+    "message": "upload media failed: [1061001] unknown error.",
+    "detail": {
+      "log_id": "20260709174040FEFFF57237B4CABC1253"
+    }
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

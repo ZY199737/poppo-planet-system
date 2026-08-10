@@ -1,0 +1,73 @@
+<title>UI 体验优化问题跟踪 — 7月</title>
+<callout emoji="🎯" background-color="blue"><p><b>7月目标：至少解决 100 个 UI 体验问题</b> | 进度在群内同步，本文档用于录入和查看</p></callout>
+<hr/>
+<h1>一、进度总览</h1>
+<table>
+<colgroup><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th>已录入</th><th>已解决</th><th>进行中</th><th>待处理</th><th>完成率</th></tr></thead>
+<tbody><tr><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0%</p></td></tr></tbody>
+</table>
+<callout emoji="📌" background-color="grey"><p>请各位在发现问题后直接在下方表格新增一行，按编号递增填写。</p></callout>
+<hr/>
+<h1>二、问题清单</h1>
+<h2>2.1 录入规范</h2>
+<table>
+<colgroup><col/><col/></colgroup>
+<tbody>
+<tr><td vertical-align="top"><p><b>编号</b></p></td><td vertical-align="top"><p>按 UI-001、UI-002 顺序递增</p></td></tr>
+<tr><td vertical-align="top"><p><b>问题描述</b></p></td><td vertical-align="top"><p>写清「在哪里 → 做什么操作 → 出现什么问题」，例：登录页输入框聚焦时无高亮反馈</p></td></tr>
+<tr><td vertical-align="top"><p><b>优先级</b></p></td><td vertical-align="top"><p>P0 = 阻塞核心操作，当天修 | P1 = 明显影响体验，3日内修 | P2 = 体验不佳但不阻塞，本周内修 | P3 = 锦上添花，排期处理</p></td></tr>
+<tr><td vertical-align="top"><p><b>状态</b></p></td><td vertical-align="top"><p>待处理 → 进行中 → 已解决 / 不修复</p></td></tr>
+<tr><td vertical-align="top"><p><b>所属模块</b></p></td><td vertical-align="top"><p>登录/注册 | 首页/导航 | 列表/搜索 | 详情页 | 表单/输入 | 弹窗/提示 | 加载/动画 | 直播间 | IM/消息 | 个人主页 | 其他</p></td></tr>
+</tbody>
+</table>
+<h2>2.2 问题列表</h2>
+<table>
+<colgroup><col/><col/><col/><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th>编号</th><th>问题描述</th><th>所属模块</th><th>优先级</th><th>状态</th><th>负责人</th><th>录入人</th><th>录入日期</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>UI-001</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-002</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-003</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-004</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-005</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-006</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-007</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-008</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-009</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+<tr><td vertical-align="top"><p>UI-010</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p>待处理</p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td><td vertical-align="top"><p></p></td></tr>
+</tbody>
+</table>
+<callout emoji="✏️" background-color="yellow"><p>表格行数不够时，直接在表格底部添加新行，编号继续递增即可。</p></callout>
+<hr/>
+<h1>三、每周小结</h1>
+<h2>第1周（7/1 — 7/6）</h2>
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th>本周新增</th><th>本周解决</th><th>累计解决</th><th>目标进度</th></tr></thead>
+<tbody><tr><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0 / 100</p></td><td vertical-align="top"><p>0%</p></td></tr></tbody>
+</table>
+<h2>第2周（7/7 — 7/13）</h2>
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th>本周新增</th><th>本周解决</th><th>累计解决</th><th>目标进度</th></tr></thead>
+<tbody><tr><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0 / 100</p></td><td vertical-align="top"><p>0%</p></td></tr></tbody>
+</table>
+<h2>第3周（7/14 — 7/20）</h2>
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th>本周新增</th><th>本周解决</th><th>累计解决</th><th>目标进度</th></tr></thead>
+<tbody><tr><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0 / 100</p></td><td vertical-align="top"><p>0%</p></td></tr></tbody>
+</table>
+<h2>第4周（7/21 — 7/27）</h2>
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th>本周新增</th><th>本周解决</th><th>累计解决</th><th>目标进度</th></tr></thead>
+<tbody><tr><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0 / 100</p></td><td vertical-align="top"><p>0%</p></td></tr></tbody>
+</table>
+<h2>第5周（7/28 — 7/31）</h2>
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th>本周新增</th><th>本周解决</th><th>累计解决</th><th>目标进度</th></tr></thead>
+<tbody><tr><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0</p></td><td vertical-align="top"><p>0 / 100</p></td><td vertical-align="top"><p>0%</p></td></tr></tbody>
+</table>

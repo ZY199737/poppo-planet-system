@@ -614,6 +614,10 @@ body.demo-mode .doc-details { display: none; }
     <div class="co-badge">④</div><div class="co-page">共创星详情</div>
     <div class="co-title">本月星球排行</div>
     <div class="co-body">展示该星球本月能量<strong class="hl">Top10 建设者</strong>，第 1 名带 👑 领主标识；按自然月能量累计计算，每月 1 日 0:00 重置。</div>
+    <div class="co-body"><ul>
+      <li><strong class="hl">星球领主：</strong>每月能量排名第 1 名获封「星球领主」，在星球首页和详情页展示头像 + 昵称 + 👑 标识；权益：领主专属称号、头像框、额外金币奖励</li>
+      <li><strong class="hl">星球护卫：</strong>月末排名第 2-10 名获封「星球护卫」；权益：护卫称号、专属头像框、额外金币奖励</li>
+    </ul></div>
   </div>
   <div class="anno right" data-page="page-detail-cocreation" data-target="m-dc-5" style="top:440px;">
     <div class="co-badge">⑤</div><div class="co-page">详情页通用</div>
@@ -650,15 +654,15 @@ body.demo-mode .doc-details { display: none; }
 
 
   <!-- Level pages -->
-  <div class="anno left" data-page="page-level-cocreation" data-target="m-lc-1" style="top:172px;">
+  <div class="anno left" data-page="page-level-cocreation" data-target="m-lc-1" style="top:120px;">
     <div class="co-badge">①</div><div class="co-page">共创星 · 等级</div>
     <div class="co-title">等级成长路径</div>
     <div class="co-body">展示该星球 <strong class="hl">T1-T4 完整成长路径</strong>，支持左右滑动切换（指示点跟随）。当前等级高亮展示能量进度；未解锁等级展示「需累计 N 能量解锁」与还需能量。</div>
     <div class="co-body"><ul>
-      <li>T1 体验官 Tester · 200 能量 · 1500 金币</li>
-      <li>T2 活跃建设者 Contributor · 1000 能量 · 5000 金币</li>
-      <li>T3 资深共创者 Veteran Co-Creator · 3000 能量 · 15000 金币</li>
-      <li>T4 先锋共创者 Pioneer · 5000 能量 · 30000 金币</li>
+      <li>T1 体验官 Tester · 0-199 能量 · 被采纳获 1000 金币/条</li>
+      <li>T2 反馈师 Contributor · 200-999 能量 · 被采纳获 1200 金币/条</li>
+      <li>T3 代言人 Advocate · 1000-2999 能量 · 被采纳获 1500 金币/条</li>
+      <li>T4 共创者 Co-Creator · 3000+ 能量 · 被采纳获 2000 金币/条</li>
     </ul></div>
   </div>
   <div class="anno right" data-page="page-level-cocreation" data-target="m-lc-2" style="top:392px;">
@@ -666,21 +670,22 @@ body.demo-mode .doc-details { display: none; }
     <div class="co-title">能量获取规则</div>
     <div class="co-body">展示该星球的<strong class="hl">能量获取规则</strong>：</div>
     <div class="co-body"><ul>
-      <li>被采纳：+30 能量</li>
-      <li>连续 7 天签到：+50 能量</li>
-      <li>单月被采纳 ≥10 条：+100 能量</li>
+      <li>建议被采纳：<strong class="hl">+30</strong> 能量</li>
+      <li>连续 7 天有采纳：<strong class="hl">+50</strong> 额外</li>
+      <li>单月采纳 ≥10 条：<strong class="hl">+100</strong> 额外</li>
     </ul></div>
+    <div class="co-sub">能量用于等级成长：T1 体验官 → T4 共创者，等级越高金币奖励越丰厚。</div>
   </div>
 
-  <div class="anno left" data-page="page-level-promotion" data-target="m-lp-1" style="top:172px;">
+  <div class="anno left" data-page="page-level-promotion" data-target="m-lp-1" style="top:120px;">
     <div class="co-badge">①</div><div class="co-page">传播星 · 等级</div>
     <div class="co-title">等级成长路径</div>
-    <div class="co-body">展示该星球 <strong class="hl">T1-T4 完整成长路径</strong>，支持左右滑动切换。</div>
+    <div class="co-body">展示该星球 <strong class="hl">T1-T4 完整成长路径</strong>，支持左右滑动切换。当前等级高亮展示能量进度；未解锁等级展示「需累计 N 能量解锁」。</div>
     <div class="co-body"><ul>
-      <li>T1 传播新手 Sharer · 200 能量 · 1500 金币</li>
-      <li>T2 传播达人 Spreader · 1000 能量 · 5000 金币</li>
-      <li>T3 传播大使 Ambassador · 3000 能量 · 15000 金币</li>
-      <li>T4 传播领袖 Leader · 5000 能量 · 30000 金币</li>
+      <li>T1 传播新手 Sharer · 0-199 能量 · 合格获 1000 金币/条</li>
+      <li>T2 推广达人 Promoter · 200-999 能量 · 合格获 1200 金币/条</li>
+      <li>T3 营销专家 Marketer · 1000-2999 能量 · 合格获 1500 金币/条</li>
+      <li>T4 增长大师 Growth Master · 3000+ 能量 · 合格获 2000 金币/条</li>
     </ul></div>
   </div>
   <div class="anno right" data-page="page-level-promotion" data-target="m-lp-2" style="top:392px;">
@@ -688,86 +693,27 @@ body.demo-mode .doc-details { display: none; }
     <div class="co-title">能量获取规则</div>
     <div class="co-body">展示该星球的<strong class="hl">能量获取规则</strong>：</div>
     <div class="co-body"><ul>
-      <li>合格产出：+30 能量</li>
-      <li>优质产出：+50 能量</li>
-      <li>单月优质 ≥3 条：+100 能量</li>
+      <li>评为合格建议：<strong class="hl">+30</strong> 能量</li>
+      <li>评为优质建议：<strong class="hl">+50</strong> 能量</li>
+      <li>优质建议达到 3 条：<strong class="hl">+100</strong> 额外</li>
     </ul></div>
+    <div class="co-sub">传播质量越高（优质 > 合格），单条能量回报越高。</div>
   </div>
 
 
   <!-- Profile -->
 </div><!-- /stage -->
 
-<!-- ==================== 需求明细（文档内容） ==================== -->
+<!-- ==================== 文档内容 ==================== -->
 <div class="doc-details" id="docDetails">
-  <div class="dd-head"><h2>需求明细</h2><span class="dd-badge">PRD</span></div>
-  <p class="dd-sub">标注版将 PRD 文档内容直接落于原型之上，以下为完整需求数据明细。</p>
 
   <div class="d-grid">
     <div class="d-card span3">
-      <h3>一、背景与目标</h3>
-      <p><b>1.1 现状：</b>建设者中心一期已上线，仅开放「翻译查错」场景，验证了「用户提交建议 → 人工审核 → 平台奖励」的核心闭环。当前问题：激励为单次金币，无成长体系；身份无差异，无竞争目标；贡献不可见，无荣誉感。</p>
-      <p><b>1.2 目标：</b>将建设者中心改造为<b>「Poppo 宇宙」</b>世界观——用户不是在做任务，而是在<b>建设属于自己的星球</b>。通过星球分类、等级成长、排行竞争、领主荣誉，驱动用户持续参与。</p>
+      <h3>背景与目标</h3>
+      <p><b>现状：</b>建设者中心一期已上线，仅开放「翻译查错」场景，验证了「用户提交建议 → 人工审核 → 平台奖励」的核心闭环。当前问题：激励为单次金币，无成长体系；身份无差异，无竞争目标；贡献不可见，无荣誉感。</p>
+      <p><b>目标：</b>将建设者中心改造为<b>「Poppo 宇宙」</b>世界观——用户不是在做任务，而是在<b>建设属于自己的星球</b>。通过星球分类、等级成长、排行竞争、领主荣誉，驱动用户持续参与。</p>
     </div>
 
-    <div class="d-card">
-      <h3>共创星 · 等级成长（4.1）</h3>
-      <table class="d-table">
-        <thead><tr><th>等级</th><th>称号</th><th>能量门槛</th><th>奖励</th></tr></thead>
-        <tbody>
-          <tr><td>T1</td><td>体验官 Tester</td><td>0-199</td><td>被采纳获 1000 金币/条</td></tr>
-          <tr><td>T2</td><td>反馈师 Contributor</td><td>200-999</td><td>被采纳获 1200 金币/条</td></tr>
-          <tr><td>T3</td><td>代言人 Advocate</td><td>1000-2999</td><td>被采纳获 1500 金币/条</td></tr>
-          <tr><td>T4</td><td>共创者 Co-Creator</td><td>3000+</td><td>被采纳获 2000 金币/条</td></tr>
-        </tbody>
-      </table>
-      <span class="d-nav-link" onclick="navToProto('page-level-cocreation')">▶ 查看原型</span>
-    </div>
-
-    <div class="d-card">
-      <h3>传播星 · 等级成长（4.2）</h3>
-      <table class="d-table">
-        <thead><tr><th>等级</th><th>称号</th><th>能量门槛</th><th>奖励</th></tr></thead>
-        <tbody>
-          <tr><td>T1</td><td>传播新手 Sharer</td><td>0-199</td><td>合格获 1000 金币/条</td></tr>
-          <tr><td>T2</td><td>推广达人 Promoter</td><td>200-999</td><td>合格获 1200 金币/条</td></tr>
-          <tr><td>T3</td><td>营销专家 Marketer</td><td>1000-2999</td><td>合格获 1500 金币/条</td></tr>
-          <tr><td>T4</td><td>增长大师 Growth Master</td><td>3000+</td><td>合格获 2000 金币/条</td></tr>
-        </tbody>
-      </table>
-      <span class="d-nav-link" onclick="navToProto('page-level-promotion')">▶ 查看原型</span>
-    </div>
-
-    <div class="d-card">
-      <h3>守护星 · 等级成长（4.3）</h3>
-      <table class="d-table">
-        <thead><tr><th>等级</th><th>称号</th><th>能量门槛</th><th>奖励</th></tr></thead>
-        <tbody>
-          <tr><td>T1</td><td>见习守护 Guardian Trainee</td><td>0-199</td><td>被采纳获 1000 金币/条</td></tr>
-          <tr><td>T2</td><td>正义守卫 Justice Guard</td><td>200-999</td><td>被采纳获 1200 金币/条</td></tr>
-          <tr><td>T3</td><td>秩序裁决 Order Judge</td><td>1000-2999</td><td>被采纳获 1500 金币/条</td></tr>
-          <tr><td>T4</td><td>星球守护者 Planet Guardian</td><td>3000+</td><td>被采纳获 2000 金币/条</td></tr>
-        </tbody>
-      </table>
-      <span class="d-nav-link" onclick="navToProto('page-level-guardian')">▶ 查看原型</span>
-    </div>
-
-    <div class="d-card">
-      <h3>能量获取规则</h3>
-      <ul class="rule-list">
-        <li><b>共创星：</b>建议被采纳 +30；连续 7 天有采纳 +50（额外）；单月采纳 ≥10 条 +100（额外）</li>
-        <li><b>传播星：</b>评为合格建议 +30；评为优质建议 +50；优质建议达到 3 条 +100（额外）</li>
-        <li><b>守护星：</b>评判被采纳 +30；连续 7 天有采纳 +50（额外）；单月采纳 ≥10 条 +100（额外）</li>
-      </ul>
-    </div>
-
-    <div class="d-card span2">
-      <h3>五、排行与荣誉</h3>
-      <ul class="rule-list">
-        <li><b>5.1 星球领主：</b>每月能量排名第 1 名获封「星球领主」，在星球首页和详情页展示头像 + 昵称 + 👑 标识；每月 1 日 0:00 重置，统计自然月内能量获取总量；权益：领主专属称号、头像框、额外金币奖励。</li>
-        <li><b>5.2 星球护卫：</b>月末排名第 2-10 名获封「星球护卫」；权益：护卫称号、专属头像框、额外金币奖励。</li>
-      </ul>
-    </div>
   </div>
 
 </div>

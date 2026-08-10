@@ -1,0 +1,63 @@
+<h3>页面流程图</h3>
+<whiteboard type="svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 400" width="1100" height="400">
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  <text x="550" y="35" font-family="Inter, sans-serif" font-size="20" font-weight="700" fill="#1A1A1A" text-anchor="middle">FUNC-002 语音转文字发送 · 页面流程图</text>
+  <!-- Screen 1 -->
+  <rect x="30" y="60" width="180" height="300" rx="16" fill="#FFFFFF" stroke="#7B2BFF" stroke-width="2"/>
+  <rect x="30" y="60" width="180" height="30" rx="16" fill="#F5F5F5"/>
+  <text x="120" y="180" font-family="Inter, sans-serif" font-size="13" fill="#1A1A1A" text-anchor="middle">转文字模式</text>
+  <rect x="55" y="210" width="55" height="22" rx="4" fill="#F0F0F0"/>
+  <text x="82" y="225" font-family="Inter, sans-serif" font-size="8" fill="#666" text-anchor="middle">语音消息</text>
+  <rect x="115" y="210" width="55" height="22" rx="4" fill="#7B2BFF"/>
+  <text x="142" y="225" font-family="Inter, sans-serif" font-size="8" fill="#FFF" text-anchor="middle">转文字</text>
+  <rect x="55" y="255" width="130" height="28" rx="14" fill="#7B2BFF"/>
+  <text x="120" y="274" font-family="Inter, sans-serif" font-size="10" fill="#FFF" text-anchor="middle">Hold to talk</text>
+  <text x="120" y="310" font-family="Inter, sans-serif" font-size="9" fill="#999" text-anchor="middle">长按录音 实时转文字</text>
+  <!-- Arrow -->
+  <line x1="220" y1="200" x2="278" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="249" y="190" font-family="Inter, sans-serif" font-size="10" fill="#7B2BFF" text-anchor="middle">长按录音</text>
+  <!-- Screen 2 -->
+  <rect x="290" y="60" width="180" height="300" rx="16" fill="#FFFFFF" stroke="#FF3B5C" stroke-width="2"/>
+  <rect x="290" y="60" width="180" height="30" rx="16" fill="#F5F5F5"/>
+  <text x="380" y="160" font-family="Inter, sans-serif" font-size="13" fill="#1A1A1A" text-anchor="middle">录制 + 识别中</text>
+  <circle cx="380" cy="210" r="20" fill="#7B2BFF"/>
+  <text x="380" y="215" font-family="Inter, sans-serif" font-size="12" fill="#FFF" text-anchor="middle">🎤</text>
+  <text x="380" y="250" font-family="Inter, sans-serif" font-size="10" fill="#222" text-anchor="middle">● 0:03</text>
+  <rect x="315" y="270" width="130" height="40" rx="8" fill="#F5F5F5"/>
+  <text x="380" y="286" font-family="Inter, sans-serif" font-size="8" fill="#999" text-anchor="middle">实时识别中...</text>
+  <text x="380" y="302" font-family="Inter, sans-serif" font-size="10" fill="#222" text-anchor="middle">今天的直播好有趣</text>
+  <text x="380" y="330" font-family="Inter, sans-serif" font-size="9" fill="#999" text-anchor="middle">松开结束录音</text>
+  <!-- Arrow -->
+  <line x1="480" y1="200" x2="538" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="509" y="190" font-family="Inter, sans-serif" font-size="10" fill="#7B2BFF" text-anchor="middle">松开结束</text>
+  <!-- Screen 3 -->
+  <rect x="550" y="60" width="180" height="300" rx="16" fill="#FFFFFF" stroke="#7B2BFF" stroke-width="2"/>
+  <rect x="550" y="60" width="180" height="30" rx="16" fill="#F5F5F5"/>
+  <text x="640" y="160" font-family="Inter, sans-serif" font-size="13" fill="#1A1A1A" text-anchor="middle">文字预览编辑</text>
+  <rect x="575" y="180" width="130" height="60" rx="8" fill="#F5F5F5" stroke="#7B2BFF" stroke-width="1.5"/>
+  <text x="640" y="200" font-family="Inter, sans-serif" font-size="10" fill="#222" text-anchor="middle">今天的直播好有趣</text>
+  <text x="640" y="215" font-family="Inter, sans-serif" font-size="10" fill="#222" text-anchor="middle">主播唱歌真好听</text>
+  <text x="640" y="258" font-family="Inter, sans-serif" font-size="8" fill="#999" text-anchor="middle">16/200 · 可编辑修改</text>
+  <rect x="575" y="280" width="55" height="26" rx="13" fill="#F0F0F0"/>
+  <text x="602" y="298" font-family="Inter, sans-serif" font-size="9" fill="#666" text-anchor="middle">取消</text>
+  <rect x="640" y="280" width="55" height="26" rx="13" fill="#7B2BFF"/>
+  <text x="667" y="298" font-family="Inter, sans-serif" font-size="9" fill="#FFF" text-anchor="middle">发送</text>
+  <!-- Arrow -->
+  <line x1="740" y1="200" x2="798" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="769" y="190" font-family="Inter, sans-serif" font-size="10" fill="#7B2BFF" text-anchor="middle">点击发送</text>
+  <!-- Screen 4 -->
+  <rect x="810" y="60" width="180" height="300" rx="16" fill="#FFFFFF" stroke="#00C853" stroke-width="2"/>
+  <rect x="810" y="60" width="180" height="30" rx="16" fill="#F5F5F5"/>
+  <text x="900" y="180" font-family="Inter, sans-serif" font-size="13" fill="#1A1A1A" text-anchor="middle">文字消息发送</text>
+  <rect x="840" y="210" width="120" height="50" rx="10" fill="#F3E8FF" stroke="#7B2BFF" stroke-width="1"/>
+  <text x="900" y="228" font-family="Inter, sans-serif" font-size="9" fill="#7B2BFF">我</text>
+  <text x="900" y="244" font-family="Inter, sans-serif" font-size="9" fill="#222">今天的直播好有趣...</text>
+  <rect x="856" y="260" width="70" height="14" rx="3" fill="none"/>
+  <text x="891" y="270" font-family="Inter, sans-serif" font-size="7" fill="#A855F7">🎤 语音转文字</text>
+</svg>
+</whiteboard>

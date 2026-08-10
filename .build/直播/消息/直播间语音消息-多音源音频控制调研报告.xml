@@ -1,0 +1,83 @@
+<title>直播间语音消息 — 多音源场景下的音频控制调研报告</title>
+<callout emoji="📋" background-color="grey"><p><b>日期：</b>2026-07-16 | <b>背景：</b>直播间拟支持语音消息功能，需解决多音源（主播麦克风、连麦、BGM、音效、语音消息）场景下的收音与播放控制问题</p><p><b>竞品参考：</b>抖音 / TikTok / 快手 / BIGO Live | <b>底层 SDK：</b>声网 Agora RTC</p></callout>
+<hr/>
+<h1>一、直播间音源全景</h1>
+<p>一个直播间同时存在以下音源，语音消息功能的核心决策在于「给谁听」以及「如何与现有音源共存」。</p>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>音源</th><th>类型</th><th>传输方式</th></tr></thead><tbody><tr><td>主播麦克风</td><td>实时</td><td>RTC 推流 → CDN</td></tr><tr><td>连麦用户麦克风</td><td>实时</td><td>RTC 推流 → 混流</td></tr><tr><td>BGM / 背景音乐</td><td>持续</td><td>RTC 伴奏通道 or 本地</td></tr><tr><td>音效 / 礼物特效音</td><td>短触发</td><td>本地播放</td></tr><tr><td><b>语音消息</b></td><td><b>短触发</b></td><td><b>取决于播放模式（见下文）</b></td></tr><tr><td>系统提示音</td><td>短触发</td><td>本地播放</td></tr></tbody></table>
+<hr/>
+<h1>二、竞品做法</h1>
+<h2>2.1 抖音 / TikTok</h2>
+<ul><li>直播间支持「语音弹幕」功能：长按录制，松开发送，公屏显示语音气泡 + ASR 转写文字</li><li>播放方式：<b>纯本地播放</b>，点击语音条后仅点击者自己能听到，不影响房间其他人</li><li>支持自动连播：播放完一条后自动播放下一条未听语音</li><li>直播间声音可单独静音（系统层面做了音频通道隔离）</li></ul>
+<h2>2.2 快手</h2>
+<ul><li>直播间底部 "...—语音聊天" 入口，主播可控制是否允许观众语音聊天</li><li>播放方式同抖音，纯本地播放</li></ul>
+<h2>2.3 BIGO Live</h2>
+<ul><li>语音直播间（Audio Live 模式）支持 4/6/9/12 座位多嘉宾配置</li><li>多麦位场景下，<b>媒体服务器将多路音频流混合成一路</b>再返回客户端，客户端只需维护一路流</li><li>麦克风队列系统支持自动模式（到期自动切换）和手动模式（主播控制）</li></ul>
+<h2>2.4 竞品共性结论</h2>
+<callout emoji="💡" background-color="blue"><p><b>所有主流平台均采用「纯本地播放」作为语音消息的默认方案</b>：点击语音条后仅本人听到，不推入 RTC 流，不影响其他人。这是最简单、最稳健的方案。</p></callout>
+<hr/>
+<h1>三、两种主流播放模式</h1>
+<h2>3.1 模式 A：纯本地播放（主流方案）</h2>
+<p>语音消息在点击者的设备上本地播放，不推入 RTC 流，不影响其他人。</p>
+<p><b>各角色体验：</b></p>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>角色</th><th>操作</th><th>听到什么</th><th>收音影响</th></tr></thead><tbody><tr><td>观众（纯拉流）</td><td>点击语音条</td><td>语音消息 + 直播音频（ducking 降低）</td><td>无麦克风，无影响</td></tr><tr><td>上麦用户（戴耳机）</td><td>点击语音条</td><td>语音消息 + 直播音频（ducking）</td><td>耳机隔离，零影响</td></tr><tr><td>上麦用户（外放）</td><td>点击语音条</td><td>语音消息 + 直播音频（ducking）</td><td><b>有风险</b>：扬声器声音可能被麦克风采集，AEC 对非 RTC 音源效果有限</td></tr><tr><td>主播（戴耳机）</td><td>点击语音条</td><td>语音消息 + 其他音源（ducking）</td><td>零影响</td></tr><tr><td>主播（外放）</td><td>点击语音条</td><td>语音消息 + 其他音源（ducking）</td><td>同上麦用户外放风险</td></tr></tbody></table>
+<p><b>Audio Ducking 策略：</b>播放语音消息时，将直播音频流音量降至 20-30%（类似手机导航语音打断音乐的体验），语音消息播放结束后恢复。</p>
+<h2>3.2 模式 B：全房间同步播放（特殊场景）</h2>
+<p>通过 IM 信令驱动所有客户端同步播放，或主播端通过 RTC 伴奏通道推入。适用于语音房 PK、答题互动等特殊玩法。</p>
+<hr/>
+<h1>四、核心难点：上麦用户/主播的收音控制</h1>
+<h2>4.1 问题链路</h2>
+<callout emoji="⚠️" background-color="yellow"><p>语音消息 → 设备扬声器播放 → 麦克风采集到 → 推入 RTC → 其他人听到回声/杂音</p></callout>
+<h2>4.2 场景分类</h2>
+<p><b>耳机场景（无问题）：</b>语音消息通过耳机播放，不经过扬声器，麦克风采集不到，各平台均不做额外处理。</p>
+<p><b>外放场景（核心挑战）：</b></p>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>策略</th><th>做法</th><th>优劣</th></tr></thead><tbody><tr><td>依赖 AEC</td><td>信任 RTC SDK 的回声消除能力</td><td>对 RTC 内部音源效果好，对外部本地播放的音源效果有限</td></tr><tr><td>播放时降低采集音量</td><td>语音消息播放期间，将麦克风采集增益降至 30%</td><td>不完全 mute，保留说话能力</td></tr><tr><td>播放走 RTC 伴奏通道</td><td>不经过扬声器-麦克风链路，直接从文件注入 RTC 混音</td><td>最干净，但仅主播/上麦者自己触发的才能走此通道</td></tr><tr><td>提示用户戴耳机</td><td>UI 提示"建议佩戴耳机后播放"</td><td>兜底方案</td></tr></tbody></table>
+<hr/>
+<h1>五、声网 SDK 能力与可落地方案</h1>
+<h2>5.1 可用的核心 API</h2>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>API</th><th>用途</th><th>限制</th></tr></thead><tbody><tr><td>startAudioMixing(file, loopback, cycle)</td><td>混音播放一个音频文件</td><td><b>同时只能播一个文件</b></td></tr><tr><td>playEffect(soundId, file, ...)</td><td>播放短音效</td><td>可同时播放多个（不同 soundId）</td></tr><tr><td>adjustAudioMixingPlayoutVolume(vol)</td><td>调整混音文件的本地播放音量</td><td>0-100</td></tr><tr><td>adjustAudioMixingPublishVolume(vol)</td><td>调整混音文件的远端推流音量</td><td>0-100</td></tr><tr><td>adjustPlaybackSignalVolume(vol)</td><td>调整所有远端用户的播放音量</td><td>0-400</td></tr><tr><td>adjustRecordingSignalVolume(vol)</td><td>调整麦克风采集音量</td><td>0-400</td></tr><tr><td>createCustomAudioTrack(MIXABLE)</td><td>创建自定义音频轨道混入推流</td><td>高级用法，需手动推帧</td></tr></tbody></table>
+<h2>5.2 方案 A：纯本地播放（推荐，最稳健）</h2>
+<callout emoji="✅" background-color="green"><p><b>适用：</b>所有角色的默认播放模式 | <b>原理：</b>本地 AudioPlayer 播放，不走 RTC</p></callout>
+<p><b>实现流程：</b></p>
+<ul><li>用户点击语音条 → 本地 AudioPlayer 播放（不走 RTC）</li><li>同时调用 adjustPlaybackSignalVolume(30) 降低直播流音量</li><li>播放结束 → adjustPlaybackSignalVolume(100) 恢复</li></ul>
+<p><b>各角色影响：</b></p>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>角色</th><th>行为</th><th>收音影响</th></tr></thead><tbody><tr><td>观众</td><td>本地播放，ducking 直播流</td><td>无麦克风，零影响</td></tr><tr><td>上麦用户（戴耳机）</td><td>本地播放，ducking 直播流</td><td>耳机隔离，零影响</td></tr><tr><td>上麦用户（外放）</td><td>本地播放</td><td>扬声器声音可能被麦克风采集，AEC 效果有限</td></tr><tr><td>主播（戴耳机）</td><td>本地播放</td><td>零影响</td></tr><tr><td>主播（外放）</td><td>本地播放</td><td>同上麦用户外放</td></tr></tbody></table>
+<p><b>外放兜底：</b>检测到上麦/主播未戴耳机时，UI 提示"建议佩戴耳机后播放语音消息"。</p>
+<h2>5.3 方案 B：RTC 混音通道（主播播给全房间，无 BGM）</h2>
+<callout emoji="🔊" background-color="blue"><p><b>适用：</b>主播播放给所有人 + 当前无 BGM | <b>原理：</b>startAudioMixing(loopback=false)</p></callout>
+<p><b>实现流程：</b></p>
+<ul><li>主播点击"播放给所有人" → startAudioMixing(voiceFile, loopback=false, cycle=1)</li><li>adjustAudioMixingPublishVolume(80) 控制远端音量</li><li>adjustAudioMixingPlayoutVolume(80) 控制本地音量</li><li>主播麦克风不受影响（SDK 引擎内部混音，不走扬声器→麦克风链路）</li><li>onAudioMixingStateChanged 回调 → 播放结束</li></ul>
+<p><b>限制：</b>同一时刻只能播一个文件，<b>会中断正在播放的 BGM</b>。</p>
+<h2>5.4 方案 C：playEffect 通道（主播播给全房间，有 BGM，推荐）</h2>
+<callout emoji="🎵" background-color="blue"><p><b>适用：</b>主播播放给所有人 + 当前有 BGM | <b>原理：</b>playEffect(publish=true) 走独立音效通道</p></callout>
+<p><b>实现流程：</b></p>
+<ul><li>主播点击 → playEffect(soundId=uniqueId, filePath, loopCount=0, pitch=1.0, pan=0, gain=80, publish=true)</li><li>BGM 不中断，可同时播放多条语音消息（不同 soundId）</li><li>publish=true → 远端可听；publish=false → 仅本地</li><li>播放语音消息时手动 adjustAudioMixingVolume(30) 降低 BGM 音量</li></ul>
+<h2>5.5 方案 B vs 方案 C 对比</h2>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>维度</th><th>方案 B (startAudioMixing)</th><th>方案 C (playEffect)</th></tr></thead><tbody><tr><td>与 BGM 共存</td><td>不行，会中断 BGM</td><td><b>可以</b>，独立通道</td></tr><tr><td>同时播多条</td><td>不行，单文件限制</td><td><b>可以</b>（不同 soundId）</td></tr><tr><td>独立音量控制</td><td>有（Playout/Publish 分离）</td><td>有（gain 参数）</td></tr><tr><td>适合场景</td><td>无 BGM 的语音直播间</td><td>有 BGM 的直播间</td></tr><tr><td>推流控制</td><td>loopback 参数</td><td>publish 参数</td></tr></tbody></table>
+<hr/>
+<h1>六、推荐组合策略</h1>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>场景</th><th>方案</th><th>说明</th></tr></thead><tbody><tr><td>观众点击语音条</td><td>方案 A（本地播放 + ducking）</td><td>仅自己听到</td></tr><tr><td>上麦用户点击语音条</td><td>方案 A + 耳机检测提示</td><td>未戴耳机时提示</td></tr><tr><td>主播默认点击语音条</td><td>方案 A</td><td>仅自己听到</td></tr><tr><td>主播「播放给所有人」+ 无 BGM</td><td>方案 B（startAudioMixing）</td><td>全房间可听</td></tr><tr><td>主播「播放给所有人」+ 有 BGM</td><td>方案 C（playEffect）</td><td>全房间可听，BGM 不中断</td></tr></tbody></table>
+<hr/>
+<h1>七、音频优先级模型</h1>
+<p>直播间多音源需要统一的优先级体系，确保各音源播放时音量关系合理。</p>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>优先级</th><th>音源</th><th>策略</th></tr></thead><tbody><tr><td>P0（不可压）</td><td>主播/连麦用户麦克风实时语音</td><td>永不被静音或降低音量</td></tr><tr><td>P1（临时前景）</td><td>语音消息播放</td><td>播放时 duck 掉 P2/P3</td></tr><tr><td>P2（可 duck）</td><td>BGM / 背景音乐</td><td>被 P1 duck 至 20-30%</td></tr><tr><td>P3（可 duck / 排队）</td><td>礼物音效 / 系统提示音</td><td>被 P1 duck 至 20-30%；多个 P3 排队播放</td></tr></tbody></table>
+<p><b>Audio Ducking 参数建议：</b></p>
+<ul><li>ducking 过渡时间：200ms 内平滑降低音量（避免突变）</li><li>恢复过渡时间：500ms 内平滑恢复原音量</li><li>背景音乐建议比人声低 6-12 dB（约为原音量的 1/3 到 1/2）</li></ul>
+<hr/>
+<h1>八、技术实现要点</h1>
+<h2>8.1 RTC 音频处理管线</h2>
+<p>声网 SDK 内部的音频处理管线（发送端）：</p>
+<p>麦克风采集 → 高通滤波 → AEC（回声消除）→ 噪音抑制 → AGC（自动增益控制）→ 混音器 → Opus 编码 → RTP 打包 → 网络发送</p>
+<p>接收端：</p>
+<p>网络 → RTP 解包 → NetEQ（抖动缓冲）→ 解码 → 混音器 → APM 后处理 → 扬声器</p>
+<h2>8.2 startAudioMixing 的关键参数</h2>
+<ul><li><b>loopback = true：</b>音乐文件仅在本地播放，不发送给远端用户</li><li><b>loopback = false：</b>本地和远端用户均可听到音乐文件</li><li>调用后可独立控制本地和远端音量（adjustAudioMixingPlayoutVolume / adjustAudioMixingPublishVolume）</li></ul>
+<h2>8.3 playEffect 的关键参数</h2>
+<ul><li><b>publish = true：</b>音效发布到远端，其他用户可听到</li><li><b>publish = false：</b>仅本地播放</li><li>通过不同 soundId 可同时播放多个音效，互不干扰</li></ul>
+<h2>8.4 AudioSession / AudioFocus 管理</h2>
+<p><b>iOS（AVAudioSession）：</b></p>
+<ul><li>播放语音消息时设置 category 为 .playback，options 为 [.mixWithOthers, .duckOthers]</li><li>.duckOthers 可自动降低其他 session 音量</li></ul>
+<p><b>Android（AudioFocus）：</b></p>
+<ul><li>请求 AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK，系统自动降低当前播放器音量至约 20%</li><li>Android 8.0+ 系统自动处理 ducking，无需回调</li><li>语音内容（CONTENT_TYPE_SPEECH）不执行自动 ducking，应设置 setWillPauseWhenDucked(true)</li></ul>
+<hr/>
+<h1>九、参考来源</h1>
+<ul><li>声网 Agora SDK 音频混音与音效文档：https://docs.agora.io/en/broadcast-streaming/advanced-features/audio-mixing-and-sound-effects</li><li>声网 startAudioMixing API 参考：https://api-ref.agora.io/en/lite-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startaudiomixing(_:loopback:cycle:)</li><li>声网音频流选流：https://doc.shengwang.cn/doc/rtc/android/advanced-features/audio-stream-filter</li><li>Android AudioFocus 官方文档：https://developer.android.com/guide/topics/media-apps/audio-focus</li><li>Apple AVAudioSession.duckOthers 文档：https://developer.apple.com/documentation/avfaudio/avaudiosession/categoryoptions/1616618-duckothers</li><li>WebRTC 音频管线深度解析：https://www.gaudiolab.com/blog/137</li></ul>

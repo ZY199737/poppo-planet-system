@@ -1,0 +1,20 @@
+Uploading: gTTd0.png (54.6 KB) -> Drive root folder
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "file_name": "gTTd0.png",
+    "file_token": "GO7zbcdMco7dcHx7JpolxuOoghd",
+    "size": 55877,
+    "url": "https://uf1iawhques.sg.larksuite.com/file/GO7zbcdMco7dcHx7JpolxuOoghd",
+    "version": "7660462687087775451"
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

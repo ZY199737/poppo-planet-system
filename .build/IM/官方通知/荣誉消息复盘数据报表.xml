@@ -1,0 +1,259 @@
+<title>荣誉消息通知 &amp; 荣誉分享 — 复盘数据报表设计</title>
+
+<callout emoji="📊" background-color="light-blue" border-color="blue">
+<p><b>报表用途</b></p>
+<p>功能上线后，供产品/运营团队定期复盘，评估荣誉消息的触达效果、用户互动意愿、分享传播能力和拉新转化价值。</p>
+</callout>
+
+<hr/>
+
+<h1>一、核心指标概览（顶部卡片区）</h1>
+
+<p>一排关键数字卡片，一眼看到全局表现：</p>
+
+<table>
+<thead><tr><th background-color="light-gray">指标卡片</th><th background-color="light-gray">数值示例</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><b>触发通知数</b></td><td>125,430</td><td>统计周期内触发的荣誉通知总量</td></tr>
+<tr><td><b>送达率</b></td><td>98.2%</td><td>成功送达 / 触发</td></tr>
+<tr><td><b>消息打开率</b></td><td>34.7%</td><td>打开消息 / 送达</td></tr>
+<tr><td><b>卡片查看率</b></td><td>78.5%</td><td>查看H5卡片 / 打开消息</td></tr>
+<tr><td><b>海报生成率</b></td><td>45.2%</td><td>生成海报 / 查看卡片</td></tr>
+<tr><td><b>分享次数</b></td><td>8,320</td><td>触发分享的总次数</td></tr>
+<tr><td><b>分享用户数</b></td><td>5,104</td><td>去重分享用户数</td></tr>
+<tr><td><b>拉新注册数</b></td><td>312</td><td>通过荣誉海报带来的新注册用户</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>二、全链路漏斗（核心看板）</h1>
+
+<p>漏斗图形式呈现，从上到下逐步收窄，每一步标注人数和转化率：</p>
+
+<table>
+<thead><tr><th background-color="light-gray">漏斗环节</th><th background-color="light-gray">人数/次数</th><th background-color="light-gray">环节转化率</th><th background-color="light-gray">累计转化率</th></tr></thead>
+<tbody>
+<tr><td>触发通知</td><td>125,430</td><td>—</td><td>100%</td></tr>
+<tr><td>成功送达</td><td>123,172</td><td>98.2%</td><td>98.2%</td></tr>
+<tr><td>打开消息</td><td>42,739</td><td>34.7%</td><td>34.1%</td></tr>
+<tr><td>查看荣誉卡片</td><td>33,550</td><td>78.5%</td><td>26.7%</td></tr>
+<tr><td>生成海报</td><td>15,165</td><td>45.2%</td><td>12.1%</td></tr>
+<tr><td>保存到相册</td><td>11,204</td><td>73.9%</td><td>8.9%</td></tr>
+<tr><td>触发分享</td><td>8,320</td><td>54.9%</td><td>6.6%</td></tr>
+<tr><td>分享成功</td><td>6,987</td><td>84.0%</td><td>5.6%</td></tr>
+</tbody>
+</table>
+
+<callout emoji="🔍" background-color="light-gray">
+<p><b>筛选维度：</b>日期范围、荣誉大类、荣誉小类、平台（iOS/Android）</p>
+</callout>
+
+<hr/>
+
+<h1>三、各荣誉类型对比</h1>
+
+<h2>3.1 各类型核心指标对比表</h2>
+
+<p>横向对比 8 种荣誉类型的关键表现：</p>
+
+<table>
+<thead><tr><th background-color="light-gray">荣誉类型</th><th background-color="light-gray">触发量</th><th background-color="light-gray">打开率</th><th background-color="light-gray">卡片查看率</th><th background-color="light-gray">海报生成率</th><th background-color="light-gray">分享率</th><th background-color="light-gray">分享成功数</th><th background-color="light-gray">拉新注册数</th></tr></thead>
+<tbody>
+<tr><td>直播之星</td><td>32,150</td><td>41.2%</td><td>82.3%</td><td>52.1%</td><td>38.4%</td><td>2,104</td><td>87</td></tr>
+<tr><td>随机PK胜利者</td><td>28,430</td><td>38.7%</td><td>79.1%</td><td>48.3%</td><td>35.2%</td><td>1,856</td><td>72</td></tr>
+<tr><td>亲密度荣誉</td><td>18,200</td><td>35.4%</td><td>76.8%</td><td>43.7%</td><td>31.6%</td><td>980</td><td>45</td></tr>
+<tr><td>活跃之星</td><td>15,620</td><td>32.1%</td><td>74.2%</td><td>40.5%</td><td>28.3%</td><td>712</td><td>33</td></tr>
+<tr><td>时薪主播升级</td><td>12,340</td><td>29.8%</td><td>71.5%</td><td>38.2%</td><td>25.1%</td><td>498</td><td>28</td></tr>
+<tr><td>时薪主播周报</td><td>8,750</td><td>27.3%</td><td>68.9%</td><td>35.6%</td><td>22.4%</td><td>352</td><td>18</td></tr>
+<tr><td>SVIP</td><td>6,280</td><td>45.6%</td><td>85.2%</td><td>58.3%</td><td>42.7%</td><td>612</td><td>21</td></tr>
+<tr><td>王者守护</td><td>3,660</td><td>48.2%</td><td>88.1%</td><td>61.5%</td><td>45.3%</td><td>373</td><td>8</td></tr>
+</tbody>
+</table>
+
+<p>排序支持：点击任意列头可按该指标排序，快速找到表现最好/最差的类型。</p>
+
+<h2>3.2 各类型漏斗转化率对比（柱状图/雷达图）</h2>
+
+<p>选取关键转化节点，按荣誉类型并列对比：</p>
+<ul>
+<li>X轴：8种荣誉类型</li>
+<li>Y轴：转化率</li>
+<li>系列：打开率 / 卡片查看率 / 海报生成率 / 分享率（多系列柱状图）</li>
+</ul>
+<p><b>看点：</b>哪类荣誉的用户互动意愿最强？哪类荣誉分享传播性最好？</p>
+
+<hr/>
+
+<h1>四、分享渠道分析</h1>
+
+<h2>4.1 站内 vs 站外分享占比（饼图/环形图）</h2>
+
+<table>
+<thead><tr><th background-color="light-gray">分享范围</th><th background-color="light-gray">分享次数</th><th background-color="light-gray">占比</th><th background-color="light-gray">分享成功率</th></tr></thead>
+<tbody>
+<tr><td>站内分享（APP内聊天）</td><td>3,245</td><td>39.0%</td><td>92.3%</td></tr>
+<tr><td>站外分享</td><td>5,075</td><td>61.0%</td><td>78.7%</td></tr>
+<tr><td><b>合计</b></td><td><b>8,320</b></td><td><b>100%</b></td><td><b>84.0%</b></td></tr>
+</tbody>
+</table>
+
+<h2>4.2 站外各渠道明细（柱状图 + 表格）</h2>
+
+<table>
+<thead><tr><th background-color="light-gray">分享渠道</th><th background-color="light-gray">分享次数</th><th background-color="light-gray">占站外比例</th><th background-color="light-gray">分享成功率</th><th background-color="light-gray">带来点击数</th><th background-color="light-gray">带来注册数</th><th background-color="light-gray">渠道ROI</th></tr></thead>
+<tbody>
+<tr><td>Facebook</td><td>1,820</td><td>35.9%</td><td>81.2%</td><td>534</td><td>98</td><td>5.4%</td></tr>
+<tr><td>WhatsApp</td><td>1,450</td><td>28.6%</td><td>85.3%</td><td>412</td><td>76</td><td>5.2%</td></tr>
+<tr><td>X (Twitter)</td><td>890</td><td>17.5%</td><td>72.4%</td><td>203</td><td>35</td><td>3.9%</td></tr>
+<tr><td>Instagram</td><td>520</td><td>10.2%</td><td>68.7%</td><td>89</td><td>12</td><td>2.3%</td></tr>
+<tr><td>Telegram</td><td>280</td><td>5.5%</td><td>79.1%</td><td>67</td><td>9</td><td>3.2%</td></tr>
+<tr><td>LINE</td><td>85</td><td>1.7%</td><td>74.5%</td><td>18</td><td>3</td><td>3.5%</td></tr>
+<tr><td>其他</td><td>30</td><td>0.6%</td><td>66.7%</td><td>5</td><td>0</td><td>0%</td></tr>
+</tbody>
+</table>
+
+<callout emoji="📌" background-color="light-gray">
+<p><b>渠道ROI</b> = 该渠道带来的注册数 / 该渠道分享次数</p>
+</callout>
+
+<h2>4.3 各荣誉类型 × 分享渠道交叉表</h2>
+
+<table>
+<thead><tr><th background-color="light-gray">荣誉类型</th><th background-color="light-gray">站内</th><th background-color="light-gray">Facebook</th><th background-color="light-gray">WhatsApp</th><th background-color="light-gray">X</th><th background-color="light-gray">Instagram</th><th background-color="light-gray">其他</th></tr></thead>
+<tbody>
+<tr><td>直播之星</td><td>812</td><td>498</td><td>387</td><td>234</td><td>112</td><td>61</td></tr>
+<tr><td>随机PK胜利者</td><td>705</td><td>432</td><td>356</td><td>198</td><td>98</td><td>67</td></tr>
+<tr><td>亲密度荣誉</td><td>420</td><td>215</td><td>178</td><td>95</td><td>48</td><td>24</td></tr>
+<tr><td>活跃之星</td><td>312</td><td>167</td><td>124</td><td>62</td><td>31</td><td>16</td></tr>
+<tr><td>SVIP</td><td>287</td><td>124</td><td>98</td><td>56</td><td>32</td><td>15</td></tr>
+<tr><td>王者守护</td><td>183</td><td>78</td><td>62</td><td>28</td><td>14</td><td>8</td></tr>
+<tr><td>时薪主播升级</td><td>298</td><td>89</td><td>62</td><td>31</td><td>12</td><td>6</td></tr>
+<tr><td>时薪主播周报</td><td>228</td><td>62</td><td>38</td><td>15</td><td>6</td><td>3</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>五、邀请回流转化（拉新分析）</h1>
+
+<h2>5.1 回流转化漏斗</h2>
+
+<table>
+<thead><tr><th background-color="light-gray">转化环节</th><th background-color="light-gray">人数</th><th background-color="light-gray">环节转化率</th></tr></thead>
+<tbody>
+<tr><td>海报链接/二维码点击</td><td>1,328</td><td>—</td></tr>
+<tr><td>APP 下载</td><td>687</td><td>51.7%</td></tr>
+<tr><td>完成注册</td><td>312</td><td>45.4%</td></tr>
+<tr><td>邀请绑定成功</td><td>278</td><td>89.1%</td></tr>
+</tbody>
+</table>
+
+<h2>5.2 各荣誉类型拉新效果对比</h2>
+
+<table>
+<thead><tr><th background-color="light-gray">荣誉类型</th><th background-color="light-gray">分享成功数</th><th background-color="light-gray">链接点击数</th><th background-color="light-gray">注册数</th><th background-color="light-gray">绑定数</th><th background-color="light-gray">每次分享拉新率</th></tr></thead>
+<tbody>
+<tr><td>直播之星</td><td>2,104</td><td>412</td><td>87</td><td>76</td><td>4.1%</td></tr>
+<tr><td>随机PK胜利者</td><td>1,856</td><td>356</td><td>72</td><td>65</td><td>3.9%</td></tr>
+<tr><td>亲密度荣誉</td><td>980</td><td>187</td><td>45</td><td>41</td><td>4.6%</td></tr>
+<tr><td>活跃之星</td><td>712</td><td>128</td><td>33</td><td>30</td><td>4.6%</td></tr>
+<tr><td>SVIP</td><td>612</td><td>145</td><td>21</td><td>19</td><td>3.4%</td></tr>
+<tr><td>时薪主播升级</td><td>498</td><td>78</td><td>28</td><td>25</td><td>5.6%</td></tr>
+<tr><td>时薪主播周报</td><td>352</td><td>52</td><td>18</td><td>16</td><td>5.1%</td></tr>
+<tr><td>王者守护</td><td>373</td><td>98</td><td>8</td><td>7</td><td>2.1%</td></tr>
+</tbody>
+</table>
+
+<callout emoji="📌" background-color="light-gray">
+<p><b>每次分享拉新率</b> = 注册数 / 分享成功数，衡量单次分享的拉新效率</p>
+</callout>
+
+<h2>5.3 回流渠道归因</h2>
+
+<table>
+<thead><tr><th background-color="light-gray">回流来源</th><th background-color="light-gray">点击数</th><th background-color="light-gray">注册数</th><th background-color="light-gray">注册转化率</th></tr></thead>
+<tbody>
+<tr><td>二维码扫描</td><td>487</td><td>112</td><td>23.0%</td></tr>
+<tr><td>分享链接点击</td><td>841</td><td>200</td><td>23.8%</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>六、新老版本对比</h1>
+
+<p>对比有分享功能的新版本 vs 只有保存功能的老版本用户行为差异：</p>
+
+<table>
+<thead><tr><th background-color="light-gray">指标</th><th background-color="light-gray">新版本用户</th><th background-color="light-gray">老版本用户</th><th background-color="light-gray">差异</th></tr></thead>
+<tbody>
+<tr><td>用户数</td><td>89,230</td><td>36,200</td><td>—</td></tr>
+<tr><td>消息打开率</td><td>36.2%</td><td>31.0%</td><td><span text-color="green">+5.2pp</span></td></tr>
+<tr><td>卡片查看率</td><td>80.1%</td><td>74.3%</td><td><span text-color="green">+5.8pp</span></td></tr>
+<tr><td>海报生成率</td><td>47.8%</td><td>39.5%</td><td><span text-color="green">+8.3pp</span></td></tr>
+<tr><td>保存到相册</td><td>68.2%</td><td>85.1%</td><td><span text-color="red">-16.9pp</span></td></tr>
+<tr><td>触发分享</td><td>54.9%</td><td>—</td><td>新增功能</td></tr>
+<tr><td>分享成功</td><td>84.0%</td><td>—</td><td>新增功能</td></tr>
+</tbody>
+</table>
+
+<callout emoji="ℹ️" background-color="light-gray">
+<p>老版本仅有「保存到相册」按钮，无分享功能。新版本保存率下降是因为部分用户转向了分享操作。</p>
+</callout>
+
+<hr/>
+
+<h1>七、趋势分析（折线图）</h1>
+
+<h2>7.1 每日核心指标趋势</h2>
+
+<p>X轴：日期，Y轴：数值/比率</p>
+
+<p><b>图表 1 — 量级趋势（双Y轴折线图）：</b></p>
+<ul>
+<li>左Y轴：每日触发通知数、每日分享次数</li>
+<li>右Y轴：每日拉新注册数</li>
+</ul>
+
+<p><b>图表 2 — 转化率趋势（折线图）：</b></p>
+<ul>
+<li>打开率、卡片查看率、海报生成率、分享率，4条线叠加</li>
+</ul>
+
+<p><b>图表 3 — 各荣誉类型每日分享量趋势（堆叠面积图）：</b></p>
+<ul>
+<li>每种荣誉类型一个色块，看各类型的分享量占比变化</li>
+</ul>
+
+<h2>7.2 每日明细数据表</h2>
+
+<table>
+<thead><tr><th background-color="light-gray">日期</th><th background-color="light-gray">触发数</th><th background-color="light-gray">送达率</th><th background-color="light-gray">打开率</th><th background-color="light-gray">卡片查看率</th><th background-color="light-gray">海报生成率</th><th background-color="light-gray">保存数</th><th background-color="light-gray">分享数</th><th background-color="light-gray">分享成功率</th><th background-color="light-gray">拉新注册</th></tr></thead>
+<tbody>
+<tr><td>07-01</td><td>18,230</td><td>98.1%</td><td>33.5%</td><td>77.2%</td><td>44.1%</td><td>1,580</td><td>1,120</td><td>83.2%</td><td>42</td></tr>
+<tr><td>07-02</td><td>17,890</td><td>98.3%</td><td>34.2%</td><td>78.1%</td><td>44.8%</td><td>1,620</td><td>1,185</td><td>84.1%</td><td>45</td></tr>
+<tr><td>07-03</td><td>19,120</td><td>98.0%</td><td>35.1%</td><td>79.3%</td><td>45.5%</td><td>1,740</td><td>1,230</td><td>84.5%</td><td>48</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+</tbody>
+</table>
+
+<p>支持导出 CSV，供进一步分析使用。</p>
+
+<hr/>
+
+<h1>八、报表筛选维度</h1>
+
+<p>所有板块均支持以下筛选条件联动：</p>
+
+<table>
+<thead><tr><th background-color="light-gray">筛选项</th><th background-color="light-gray">可选值</th></tr></thead>
+<tbody>
+<tr><td>日期范围</td><td>自定义起止日期</td></tr>
+<tr><td>荣誉大类</td><td>全部 / 勋章荣誉 / 主播等级荣誉 / 用户荣誉</td></tr>
+<tr><td>荣誉小类</td><td>全部 / 直播之星 / 随机PK / 亲密度 / 活跃之星 / 时薪升级 / 时薪周报 / SVIP / 王者守护</td></tr>
+<tr><td>荣誉等级</td><td>全部 / 具体等级（如 Lv3-Lv10）</td></tr>
+<tr><td>平台</td><td>全部 / iOS / Android</td></tr>
+<tr><td>客户端版本</td><td>全部 / 新版本（有分享） / 老版本（仅保存）</td></tr>
+</tbody>
+</table>

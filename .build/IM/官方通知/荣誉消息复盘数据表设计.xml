@@ -1,0 +1,313 @@
+<title>荣誉消息通知 &amp; 荣誉分享 — 复盘数据表设计</title>
+
+<h1>一、表总览</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">表名</th><th background-color="light-gray">用途</th><th background-color="light-gray">类型</th></tr></thead>
+<tbody>
+<tr><td><code>honor_notification_event</code></td><td>荣誉通知触发与送达事件</td><td>事实表（明细）</td></tr>
+<tr><td><code>honor_poster_action</code></td><td>海报/卡片互动行为</td><td>事实表（明细）</td></tr>
+<tr><td><code>honor_share_tracking</code></td><td>分享渠道追踪</td><td>事实表（明细）</td></tr>
+<tr><td><code>honor_invite_conversion</code></td><td>分享回流与邀请转化</td><td>事实表（明细）</td></tr>
+<tr><td><code>honor_daily_stats</code></td><td>日维度汇总统计</td><td>聚合表</td></tr>
+<tr><td><code>honor_type_config</code></td><td>荣誉类型配置（维度表）</td><td>维度表</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>二、表结构</h1>
+
+<h2>1. honor_type_config — 荣誉类型配置表</h2>
+
+<p>维度表，枚举所有荣誉类型及其层级，供其他表关联。</p>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>INT, PK, AUTO_INCREMENT</td><td>主键</td></tr>
+<tr><td><code>honor_category</code></td><td>VARCHAR(32)</td><td>荣誉大类：medal(勋章荣誉) / host_level(主播等级荣誉) / user_honor(用户荣誉)</td></tr>
+<tr><td><code>honor_type</code></td><td>VARCHAR(64)</td><td>荣誉小类：live_star / random_pk / intimacy / active_star / hourly_host_upgrade / hourly_host_weekly / svip / king_guardian</td></tr>
+<tr><td><code>honor_name</code></td><td>VARCHAR(128)</td><td>荣誉展示名称，如"直播之星"、"随机PK胜利者"</td></tr>
+<tr><td><code>level_min</code></td><td>INT</td><td>该类型最低触发等级（如直播之星为3）</td></tr>
+<tr><td><code>level_max</code></td><td>INT</td><td>该类型最高触发等级（如直播之星为10）</td></tr>
+<tr><td><code>has_level</code></td><td>TINYINT(1)</td><td>是否有等级概念（SVIP/王者守护为0，勋章类为1）</td></tr>
+<tr><td><code>template_title_key</code></td><td>VARCHAR(128)</td><td>消息模版标题 key</td></tr>
+<tr><td><code>template_text_key</code></td><td>VARCHAR(128)</td><td>消息模版文案 key</td></tr>
+<tr><td><code>created_at</code></td><td>DATETIME</td><td>创建时间</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h2>2. honor_notification_event — 荣誉通知触发与送达事件表</h2>
+
+<p>记录每一条荣誉通知从触发到送达、打开的全链路状态。<b>全链路漏斗的核心表。</b></p>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>BIGINT, PK, AUTO_INCREMENT</td><td>主键</td></tr>
+<tr><td><code>event_id</code></td><td>VARCHAR(64), UNIQUE</td><td>事件唯一标识（去重用）</td></tr>
+<tr><td><code>user_id</code></td><td>BIGINT, INDEX</td><td>接收通知的用户 UID</td></tr>
+<tr><td><code>user_role</code></td><td>VARCHAR(16)</td><td>用户身份：host(主播) / viewer(观众) / both</td></tr>
+<tr><td><code>honor_type</code></td><td>VARCHAR(64), INDEX</td><td>荣誉小类（关联 honor_type_config.honor_type）</td></tr>
+<tr><td><code>honor_category</code></td><td>VARCHAR(32), INDEX</td><td>荣誉大类</td></tr>
+<tr><td><code>honor_level</code></td><td>INT</td><td>触发的具体等级（无等级的填0）</td></tr>
+<tr><td><code>honor_extra_value</code></td><td>DECIMAL(12,2)</td><td>附加数值：时薪金额 / SVIP金币金额 / 守护金币金额（无则为0）</td></tr>
+<tr><td><code>trigger_time</code></td><td>DATETIME, INDEX</td><td>触发时间</td></tr>
+<tr><td><code>is_delivered</code></td><td>TINYINT(1), DEFAULT 0</td><td>是否成功送达（消息到达客户端）</td></tr>
+<tr><td><code>delivered_time</code></td><td>DATETIME</td><td>送达时间</td></tr>
+<tr><td><code>is_opened</code></td><td>TINYINT(1), DEFAULT 0</td><td>是否打开消息（用户点击消息列表）</td></tr>
+<tr><td><code>opened_time</code></td><td>DATETIME</td><td>打开时间</td></tr>
+<tr><td><code>is_card_viewed</code></td><td>TINYINT(1), DEFAULT 0</td><td>是否查看 H5 荣誉卡片</td></tr>
+<tr><td><code>card_viewed_time</code></td><td>DATETIME</td><td>卡片查看时间</td></tr>
+<tr><td><code>is_poster_generated</code></td><td>TINYINT(1), DEFAULT 0</td><td>是否生成了海报（点击保存或分享时触发）</td></tr>
+<tr><td><code>poster_generated_time</code></td><td>DATETIME</td><td>海报生成时间</td></tr>
+<tr><td><code>client_version</code></td><td>VARCHAR(32)</td><td>客户端版本号（用于区分新/老版本行为差异）</td></tr>
+<tr><td><code>platform</code></td><td>VARCHAR(16)</td><td>平台：ios / android</td></tr>
+<tr><td><code>created_at</code></td><td>DATETIME</td><td>记录创建时间</td></tr>
+<tr><td><code>updated_at</code></td><td>DATETIME</td><td>记录更新时间</td></tr>
+</tbody>
+</table>
+
+<callout emoji="📌" background-color="light-blue" border-color="blue">
+<p><b>索引建议</b></p>
+<p>idx_user_time: (user_id, trigger_time)</p>
+<p>idx_type_time: (honor_type, trigger_time)</p>
+<p>idx_category_time: (honor_category, trigger_time)</p>
+</callout>
+
+<hr/>
+
+<h2>3. honor_poster_action — 海报互动行为表</h2>
+
+<p>记录用户在荣誉卡片页面的每一次操作（保存、分享）。一个通知事件可对应多条行为。</p>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>BIGINT, PK, AUTO_INCREMENT</td><td>主键</td></tr>
+<tr><td><code>event_id</code></td><td>VARCHAR(64), INDEX</td><td>关联 honor_notification_event.event_id</td></tr>
+<tr><td><code>user_id</code></td><td>BIGINT, INDEX</td><td>操作用户 UID</td></tr>
+<tr><td><code>honor_type</code></td><td>VARCHAR(64), INDEX</td><td>荣誉小类（冗余，便于直接按类型查询）</td></tr>
+<tr><td><code>honor_category</code></td><td>VARCHAR(32)</td><td>荣誉大类（冗余）</td></tr>
+<tr><td><code>honor_level</code></td><td>INT</td><td>触发等级</td></tr>
+<tr><td><code>action_type</code></td><td>VARCHAR(16)</td><td>操作类型：save(保存到相册) / share(触发分享)</td></tr>
+<tr><td><code>action_time</code></td><td>DATETIME, INDEX</td><td>操作时间</td></tr>
+<tr><td><code>platform</code></td><td>VARCHAR(16)</td><td>平台：ios / android</td></tr>
+<tr><td><code>client_version</code></td><td>VARCHAR(32)</td><td>客户端版本</td></tr>
+<tr><td><code>created_at</code></td><td>DATETIME</td><td>记录创建时间</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h2>4. honor_share_tracking — 分享渠道追踪表</h2>
+
+<p>记录每次分享的渠道、类型和结果。粒度到单次分享行为。</p>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>BIGINT, PK, AUTO_INCREMENT</td><td>主键</td></tr>
+<tr><td><code>share_id</code></td><td>VARCHAR(64), UNIQUE</td><td>分享唯一标识</td></tr>
+<tr><td><code>event_id</code></td><td>VARCHAR(64), INDEX</td><td>关联 honor_notification_event.event_id</td></tr>
+<tr><td><code>user_id</code></td><td>BIGINT, INDEX</td><td>分享用户 UID</td></tr>
+<tr><td><code>honor_type</code></td><td>VARCHAR(64), INDEX</td><td>荣誉小类</td></tr>
+<tr><td><code>honor_category</code></td><td>VARCHAR(32)</td><td>荣誉大类</td></tr>
+<tr><td><code>honor_level</code></td><td>INT</td><td>触发等级</td></tr>
+<tr><td><code>share_scope</code></td><td>VARCHAR(16)</td><td>分享范围：internal(站内) / external(站外)</td></tr>
+<tr><td><code>share_channel</code></td><td>VARCHAR(32)</td><td>分享渠道：in_app_chat(站内聊天) / facebook / x / whatsapp / instagram / telegram / line / other</td></tr>
+<tr><td><code>share_time</code></td><td>DATETIME, INDEX</td><td>分享时间</td></tr>
+<tr><td><code>share_result</code></td><td>VARCHAR(16)</td><td>分享结果：success / cancel / fail</td></tr>
+<tr><td><code>target_user_id</code></td><td>BIGINT</td><td>站内分享时的接收方 UID（站外为空）</td></tr>
+<tr><td><code>share_link</code></td><td>VARCHAR(512)</td><td>站外分享携带的链接（含邀请码）</td></tr>
+<tr><td><code>invite_code</code></td><td>VARCHAR(64), INDEX</td><td>分享链接中的邀请码（用于关联回流转化）</td></tr>
+<tr><td><code>platform</code></td><td>VARCHAR(16)</td><td>平台</td></tr>
+<tr><td><code>created_at</code></td><td>DATETIME</td><td>记录创建时间</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h2>5. honor_invite_conversion — 分享回流与邀请转化表</h2>
+
+<p>追踪通过荣誉海报二维码/链接带来的新用户回流和邀请绑定。</p>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>BIGINT, PK, AUTO_INCREMENT</td><td>主键</td></tr>
+<tr><td><code>invite_code</code></td><td>VARCHAR(64), INDEX</td><td>邀请码（关联 honor_share_tracking.invite_code）</td></tr>
+<tr><td><code>share_id</code></td><td>VARCHAR(64), INDEX</td><td>关联 honor_share_tracking.share_id</td></tr>
+<tr><td><code>sharer_user_id</code></td><td>BIGINT, INDEX</td><td>分享者 UID</td></tr>
+<tr><td><code>new_user_id</code></td><td>BIGINT, INDEX</td><td>新用户 UID</td></tr>
+<tr><td><code>conversion_type</code></td><td>VARCHAR(32)</td><td>转化类型：qr_scan(扫码) / link_click(链接点击)</td></tr>
+<tr><td><code>source_channel</code></td><td>VARCHAR(32)</td><td>来源渠道（同 share_channel）</td></tr>
+<tr><td><code>honor_type</code></td><td>VARCHAR(64)</td><td>触发转化的荣誉类型</td></tr>
+<tr><td><code>is_app_downloaded</code></td><td>TINYINT(1), DEFAULT 0</td><td>是否下载了 APP</td></tr>
+<tr><td><code>is_registered</code></td><td>TINYINT(1), DEFAULT 0</td><td>是否完成注册</td></tr>
+<tr><td><code>is_invite_bound</code></td><td>TINYINT(1), DEFAULT 0</td><td>是否成功建立邀请绑定关系</td></tr>
+<tr><td><code>click_time</code></td><td>DATETIME</td><td>扫码/点击链接时间</td></tr>
+<tr><td><code>download_time</code></td><td>DATETIME</td><td>下载时间</td></tr>
+<tr><td><code>register_time</code></td><td>DATETIME</td><td>注册时间</td></tr>
+<tr><td><code>bound_time</code></td><td>DATETIME</td><td>邀请绑定时间</td></tr>
+<tr><td><code>created_at</code></td><td>DATETIME</td><td>记录创建时间</td></tr>
+<tr><td><code>updated_at</code></td><td>DATETIME</td><td>记录更新时间</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h2>6. honor_daily_stats — 日维度汇总统计表</h2>
+
+<p>按天、按荣誉类型聚合核心指标，支持快速查询复盘看板。</p>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>id</code></td><td>BIGINT, PK, AUTO_INCREMENT</td><td>主键</td></tr>
+<tr><td><code>stat_date</code></td><td>DATE, INDEX</td><td>统计日期</td></tr>
+<tr><td><code>honor_category</code></td><td>VARCHAR(32)</td><td>荣誉大类</td></tr>
+<tr><td><code>honor_type</code></td><td>VARCHAR(64)</td><td>荣誉小类</td></tr>
+<tr><td><code>honor_level</code></td><td>INT</td><td>等级（0表示全等级汇总）</td></tr>
+<tr><td><code>platform</code></td><td>VARCHAR(16)</td><td>平台（all 表示全平台汇总）</td></tr>
+</tbody>
+</table>
+
+<callout emoji="📊" background-color="light-green" border-color="green">
+<p><b>全链路漏斗指标</b></p>
+</callout>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>trigger_count</code></td><td>INT, DEFAULT 0</td><td>触发通知数</td></tr>
+<tr><td><code>trigger_user_count</code></td><td>INT, DEFAULT 0</td><td>触发通知用户数（去重）</td></tr>
+<tr><td><code>delivered_count</code></td><td>INT, DEFAULT 0</td><td>送达数</td></tr>
+<tr><td><code>delivered_rate</code></td><td>DECIMAL(5,4)</td><td>送达率 = delivered / trigger</td></tr>
+<tr><td><code>opened_count</code></td><td>INT, DEFAULT 0</td><td>打开数</td></tr>
+<tr><td><code>opened_rate</code></td><td>DECIMAL(5,4)</td><td>打开率 = opened / delivered</td></tr>
+<tr><td><code>card_viewed_count</code></td><td>INT, DEFAULT 0</td><td>卡片查看数</td></tr>
+<tr><td><code>card_viewed_rate</code></td><td>DECIMAL(5,4)</td><td>卡片查看率 = card_viewed / opened</td></tr>
+<tr><td><code>poster_generated_count</code></td><td>INT, DEFAULT 0</td><td>海报生成数</td></tr>
+<tr><td><code>poster_generated_rate</code></td><td>DECIMAL(5,4)</td><td>海报生成率 = poster_generated / card_viewed</td></tr>
+</tbody>
+</table>
+
+<callout emoji="🔗" background-color="light-blue" border-color="blue">
+<p><b>互动指标</b></p>
+</callout>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>save_count</code></td><td>INT, DEFAULT 0</td><td>保存次数</td></tr>
+<tr><td><code>save_user_count</code></td><td>INT, DEFAULT 0</td><td>保存用户数</td></tr>
+<tr><td><code>share_count</code></td><td>INT, DEFAULT 0</td><td>分享次数</td></tr>
+<tr><td><code>share_user_count</code></td><td>INT, DEFAULT 0</td><td>分享用户数</td></tr>
+<tr><td><code>share_success_count</code></td><td>INT, DEFAULT 0</td><td>分享成功次数</td></tr>
+</tbody>
+</table>
+
+<callout emoji="📡" background-color="light-gray">
+<p><b>分享渠道分布</b></p>
+</callout>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>internal_share_count</code></td><td>INT, DEFAULT 0</td><td>站内分享次数</td></tr>
+<tr><td><code>external_share_count</code></td><td>INT, DEFAULT 0</td><td>站外分享次数</td></tr>
+<tr><td><code>facebook_share_count</code></td><td>INT, DEFAULT 0</td><td>Facebook 分享次数</td></tr>
+<tr><td><code>whatsapp_share_count</code></td><td>INT, DEFAULT 0</td><td>WhatsApp 分享次数</td></tr>
+<tr><td><code>x_share_count</code></td><td>INT, DEFAULT 0</td><td>X(Twitter) 分享次数</td></tr>
+<tr><td><code>other_share_count</code></td><td>INT, DEFAULT 0</td><td>其他渠道分享次数</td></tr>
+</tbody>
+</table>
+
+<callout emoji="🎯" background-color="light-green" border-color="green">
+<p><b>回流转化指标</b></p>
+</callout>
+
+<table>
+<thead><tr><th background-color="light-gray">字段</th><th background-color="light-gray">类型</th><th background-color="light-gray">说明</th></tr></thead>
+<tbody>
+<tr><td><code>link_click_count</code></td><td>INT, DEFAULT 0</td><td>链接/二维码点击数</td></tr>
+<tr><td><code>app_download_count</code></td><td>INT, DEFAULT 0</td><td>APP 下载数</td></tr>
+<tr><td><code>register_count</code></td><td>INT, DEFAULT 0</td><td>新用户注册数</td></tr>
+<tr><td><code>invite_bound_count</code></td><td>INT, DEFAULT 0</td><td>邀请绑定成功数</td></tr>
+<tr><td><code>invite_conversion_rate</code></td><td>DECIMAL(5,4)</td><td>邀请转化率 = invite_bind / link_click</td></tr>
+<tr><td><code>created_at</code></td><td>DATETIME</td><td>记录创建时间</td></tr>
+<tr><td><code>updated_at</code></td><td>DATETIME</td><td>记录更新时间</td></tr>
+</tbody>
+</table>
+
+<callout emoji="📌" background-color="light-blue" border-color="blue">
+<p><b>唯一索引：</b>uk_date_type: (stat_date, honor_type, honor_level, platform)</p>
+</callout>
+
+<hr/>
+
+<h1>三、核心复盘查询场景</h1>
+
+<h2>场景 1：全链路漏斗（某日/某段时间）</h2>
+
+<p>查 honor_daily_stats，按 stat_date 筛选，看 trigger → delivered → opened → card_viewed → poster_generated → (save + share) 各环节转化率。</p>
+
+<pre lang="text"><code>触发 → 送达 → 打开 → 查看卡片 → 生成海报 → 保存/分享</code></pre>
+
+<h2>场景 2：各荣誉类型对比</h2>
+
+<p>查 honor_daily_stats，按 honor_category 或 honor_type 分组，对比：</p>
+<ul>
+<li>哪类荣誉触发量最大？</li>
+<li>哪类荣誉打开率最高？（用户对哪类荣誉最感兴趣）</li>
+<li>哪类荣誉分享率最高？（哪类荣誉社交传播意愿最强）</li>
+<li>哪类荣誉带来的回流新用户最多？</li>
+</ul>
+
+<h2>场景 3：分享渠道效果分析</h2>
+
+<p>查 honor_daily_stats 的渠道字段，或明细查 honor_share_tracking：</p>
+<ul>
+<li>站内 vs 站外分享占比</li>
+<li>各站外渠道（Facebook/WhatsApp/X）的分享量和成功率</li>
+<li>各渠道带来的回流转化率</li>
+</ul>
+
+<h2>场景 4：新老版本对比</h2>
+
+<p>查 honor_notification_event，按 client_version 分组：</p>
+<ul>
+<li>新版本用户的分享率 vs 老版本用户的保存率（老版本只有保存按钮）</li>
+<li>新版本上线后，整体分享量的增长趋势</li>
+</ul>
+
+<h2>场景 5：邀请回流归因</h2>
+
+<p>查 honor_invite_conversion + honor_share_tracking：</p>
+<ul>
+<li>单个荣誉海报能带来多少新用户？</li>
+<li>从扫码/点击 → 下载 → 注册 → 绑定邀请关系，每步的流失率</li>
+<li>哪类荣誉的海报拉新效果最好？</li>
+</ul>
+
+<hr/>
+
+<h1>四、ER 关系</h1>
+
+<pre lang="text"><code>honor_type_config (1) ──── (N) honor_notification_event
+                                    │
+                                    ├── (1:N) honor_poster_action
+                                    │
+                                    └── (1:N) honor_share_tracking
+                                                    │
+                                                    └── (1:N) honor_invite_conversion</code></pre>
+
+<ul>
+<li>一条通知事件 → 可触发多次海报操作（保存+分享）</li>
+<li>一条通知事件 → 可产生多次分享（不同渠道）</li>
+<li>一次分享 → 可带来多个回流用户</li>
+</ul>

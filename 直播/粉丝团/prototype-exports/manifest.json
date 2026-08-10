@@ -1,0 +1,32 @@
+{
+  "pen_file": "直播-粉丝团-粉丝团功能全量需求整合260707-prototype.pen",
+  "doc_token": "OYjFdBt1howVBJxccARliPmZgic",
+  "groups": [
+    {
+      "func": "FUNC-001",
+      "whiteboard_token": "C5vCwt5oBh1lgKb7dIilIkOCgcc",
+      "screens": [
+        { "nodeId": "P8BPL", "label": "1. 粉丝团卡片-未加入" },
+        { "nodeId": "cvzON", "label": "2. 粉丝团卡片-点亮状态" },
+        { "nodeId": "Q6g13", "label": "3. 粉丝团卡片-冻结状态" },
+        { "nodeId": "DlwOG", "label": "4. 粉丝团卡片-主播视角" }
+      ]
+    },
+    {
+      "func": "FUNC-003",
+      "whiteboard_token": "GqJ0wwmFXhV7GobntA2lrPN6gcf",
+      "screens": [
+        { "nodeId": "YpDfa", "label": "5. 成长历程页面" },
+        { "nodeId": "AhJXT", "label": "6. 粉丝团列表页" }
+      ]
+    },
+    {
+      "func": "FUNC-013",
+      "whiteboard_token": "EyUlw0dNLhuOcubZysClyAjvgtc",
+      "screens": [
+        { "nodeId": "YgwBI", "label": "7. 礼物面板-粉丝团Tab" },
+        { "nodeId": "gPYeP", "label": "8. 直播间交互" }
+      ]
+    }
+  ]
+}

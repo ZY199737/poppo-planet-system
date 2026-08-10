@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>直播-PK-好友PK与随机PK图标样式区分 原型</title>
+<style>
+/* ========== Design Tokens ========== */
+:root {
+  --brand-primary: #7B2BFF;
+  --brand-light: #A855F7;
+  --brand-bg: #F3E8FF;
+  --accent-red: #FF3B5C;
+  --accent-orange: #FF8A24;
+  --accent-green: #00C853;
+  --accent-blue: #2196F3;
+  --neutral-900: #1A1A1A;
+  --neutral-700: #4A4A4A;
+  --neutral-500: #8E8E93;
+  --neutral-300: #C7C7CC;
+  --neutral-100: #F2F2F7;
+  --neutral-50: #F8F8FA;
+  --white: #FFFFFF;
+  --divider: #E3E4E5;
+  --overlay: rgba(0,0,0,0.5);
+  --text-primary: rgba(0,0,0,0.9);
+  --text-secondary: rgba(0,0,0,0.7);
+  --text-placeholder: rgba(0,0,0,0.5);
+  --text-disabled: rgba(0,0,0,0.5);
+  --text-on-brand: #FFFFFF;
+  --radius-s: 4px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+  --radius-full: 9999px;
+  --spacing-xs: 4px;
+  --spacing-s: 8px;
+  --spacing-m: 12px;
+  --spacing-l: 16px;
+  --spacing-xl: 24px;
+  --page-margin: 16px;
+  --font-family: -apple-system, 'SF Pro', 'Roboto', 'Helvetica Neue', sans-serif;
+  --safe-top: 59px;
+  --safe-bottom: 34px;
+  --navbar-height: 44px;
+  --tabbar-height: 83px;
+  --statusbar-height: 54px;
+  /* PK specific */
+  --pk-friend-primary: #FF8A24;
+  --pk-friend-light: #FFD18C;
+  --pk-friend-bg: #FFF3E0;
+  --pk-random-primary: #7B2BFF;
+  --pk-random-light: #B794FF;
+  --pk-random-bg: #F3E8FF;
+}
+
+/* ========== Reset & Base ========== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-family);
+  background: #1a1a2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text-primary);
+}
+
+/* ========== Phone Frame ========== */
+.phone-frame {
+  width: 393px;
+  height: 852px;
+  background: var(--white);
+  border-radius: 47px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 0 11px #1a1a1a, 0 0 0 13px #333, 0 25px 60px rgba(0,0,0,0.4);
+}
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 126px; height: 37px;
+  background: #1a1a1a;
+  border-radius: 0 0 20px 20px;
+  z-index: 100;
+}
+.screen {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: var(--neutral-50);
+}
+
+/* ========== Page System ========== */
+.page {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: none;
+  flex-direction: column;
+  background: var(--neutral-50);
+}
+.page.active { display: flex; }
+
+/* ========== Status Bar ========== */
+.status-bar {
+  height: var(--statusbar-height);
+  padding: 14px var(--page-margin) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--white);
+  flex-shrink: 0;
+  z-index: 10;
+}
+.status-bar .time { margin-left: 4px; }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+.status-bar--transparent { background: transparent; position: absolute; width: 100%; z-index: 10; color: white; }
+
+/* ========== Navigation Bar ========== */
+.navbar {
+  height: var(--navbar-height);
+  padding: 0 var(--page-margin);
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  flex-shrink: 0;
+  position: relative;
+}
+.navbar__back {
+  width: 24px; height: 24px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.navbar__back::before {
+  content: '';
+  width: 10px; height: 10px;
+  border-left: 2px solid var(--neutral-900);
+  border-bottom: 2px solid var(--neutral-900);
+  transform: rotate(45deg);
+  margin-left: 4px;
+}
+.navbar__back--white::before {
+  border-color: white;
+}
+.navbar__title {
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  font-size: 18px; font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ========== Live Room ========== */
+.live-room {
+  position: relative;
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, #2d1b69 0%, #1a0a3e 100%);
+}
+.live-room .status-bar { background: transparent; color: white; }
+.live-room__top {
+  position: absolute;
+  top: var(--statusbar-height);
+  left: 0; right: 0;
+  padding: var(--spacing-s) var(--page-margin);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 5;
+}
+.live-room__host {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  background: rgba(0,0,0,0.3);
+  border-radius: var(--radius-full);
+  padding: 4px 12px 4px 4px;
+}
+.live-room__host-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--brand-light);
+}
+.live-room__host-name {
+  font-size: 13px; color: white; font-weight: 500;
+}
+.live-room__viewers {
+  font-size: 12px; color: rgba(255,255,255,0.8);
+}
+.live-room__chat {
+  position: absolute;
+  bottom: 90px; left: 0;
+  width: 75%;
+  padding: 0 var(--page-margin);
+  z-index: 5;
+}
+.live-room__msg {
+  background: rgba(0,0,0,0.3);
+  border-radius: var(--radius-m);
+  padding: 6px 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: white;
+}
+.live-room__msg-name { color: var(--brand-light); font-weight: 500; }
+.live-room__bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: var(--spacing-s) var(--page-margin);
+  padding-bottom: calc(var(--safe-bottom) + var(--spacing-s));
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  z-index: 5;
+}
+.live-room__input {
+  flex: 1;
+  height: 36px;
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--radius-full);
+  padding: 0 16px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  display: flex; align-items: center;
+  cursor: pointer;
+}
+.live-room__action {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* ========== PK Icon Components ========== */
+.pk-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pk-icon--friend {
+  background: linear-gradient(135deg, var(--pk-friend-primary) 0%, #FF6B00 100%);
+}
+.pk-icon--random {
+  background: linear-gradient(135deg, var(--pk-random-primary) 0%, #5B1BC7 100%);
+}
+.pk-icon--32 { width: 32px; height: 32px; font-size: 16px; }
+.pk-icon--16 { width: 16px; height: 16px; font-size: 8px; }
+.pk-icon--12 { width: 12px; height: 12px; font-size: 6px; }
+.pk-icon svg { fill: white; }
+
+/* ========== PK Status Bar ========== */
+.pk-status-bar {
+  position: absolute;
+  top: calc(var(--statusbar-height) + 48px);
+  left: var(--page-margin);
+  right: var(--page-margin);
+  height: 56px;
+  border-radius: var(--radius-m);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  z-index: 5;
+}
+.pk-status-bar__left,
+.pk-status-bar__right {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  position: relative;
+}
+.pk-status-bar__left {
+  background: linear-gradient(90deg, rgba(123,43,255,0.8) 0%, rgba(123,43,255,0.4) 100%);
+  justify-content: flex-start;
+}
+.pk-status-bar__right {
+  background: linear-gradient(90deg, rgba(255,138,36,0.4) 0%, rgba(255,138,36,0.8) 100%);
+  justify-content: flex-end;
+}
+.pk-status-bar__score {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+.pk-status-bar__vs {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.5);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  z-index: 2;
+}
+.pk-status-bar__type-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 3;
+}
+
+/* ========== Bottom Sheet ========== */
+.bottom-sheet-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--overlay);
+  display: none;
+  align-items: flex-end;
+  z-index: 50;
+}
+.bottom-sheet-overlay.active { display: flex; }
+.bottom-sheet {
+  background: var(--white);
+  border-radius: var(--radius-l) var(--radius-l) 0 0;
+  width: 100%;
+  max-height: 70%;
+  padding-bottom: var(--safe-bottom);
+}
+.bottom-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-l);
+  border-bottom: 0.5px solid var(--divider);
+}
+.bottom-sheet__title { font-size: 18px; font-weight: 600; }
+.bottom-sheet__close {
+  width: 24px; height: 24px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--neutral-500);
+}
+.bottom-sheet__body {
+  padding: var(--spacing-l);
+  overflow-y: auto;
+  max-height: 50vh;
+}
+
+/* ========== PK Type Select Panel ========== */
+.pk-select-panel {
+  display: flex;
+  gap: var(--spacing-m);
+  padding: var(--spacing-xl) var(--spacing-l);
+}
+.pk-select-card {
+  flex: 1;
+  border-radius: var(--radius-l);
+  padding: var(--spacing-xl) var(--spacing-l);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-m);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 2px solid transparent;
+}
+.pk-select-card:active { transform: scale(0.97); }
+.pk-select-card--friend {
+  background: var(--pk-friend-bg);
+  border-color: var(--pk-friend-primary);
+}
+.pk-select-card--random {
+  background: var(--pk-random-bg);
+  border-color: var(--pk-random-primary);
+}
+.pk-select-card__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.pk-select-card--friend .pk-select-card__icon {
+  background: linear-gradient(135deg, var(--pk-friend-primary) 0%, #FF6B00 100%);
+  box-shadow: 0 4px 16px rgba(255,138,36,0.4);
+}
+.pk-select-card--random .pk-select-card__icon {
+  background: linear-gradient(135deg, var(--pk-random-primary) 0%, #5B1BC7 100%);
+  box-shadow: 0 4px 16px rgba(123,43,255,0.4);
+}
+.pk-select-card__title {
+  font-size: 16px;
+  font-weight: 600;
+}
+.pk-select-card--friend .pk-select-card__title { color: #CC6E1D; }
+.pk-select-card--random .pk-select-card__title { color: #5B1BC7; }
+.pk-select-card__desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ========== Matching Page ========== */
+.matching-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: var(--spacing-xl);
+}
+.matching-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  animation: matchPulse 2s ease-in-out infinite;
+}
+.matching-icon--friend {
+  background: linear-gradient(135deg, var(--pk-friend-primary) 0%, #FF6B00 100%);
+  box-shadow: 0 0 40px rgba(255,138,36,0.4);
+}
+.matching-icon--random {
+  background: linear-gradient(135deg, var(--pk-random-primary) 0%, #5B1BC7 100%);
+  box-shadow: 0 0 40px rgba(123,43,255,0.4);
+}
+@keyframes matchPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.matching-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+.matching-dots {
+  display: flex;
+  gap: 8px;
+}
+.matching-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  animation: dotBounce 1.4s ease-in-out infinite;
+}
+.matching-dots span:nth-child(2) { animation-delay: 0.2s; }
+.matching-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.matching-cancel {
+  padding: 10px 32px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.8);
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  font-family: var(--font-family);
+}
+.matching-cancel:active { opacity: 0.7; }
+
+/* ========== PK Result Page ========== */
+.pk-result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  gap: var(--spacing-xl);
+}
+.pk-result__type {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+.pk-result__type-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+.pk-result__outcome {
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(180deg, #FFD700 0%, #FF8C00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pk-result__scores {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  width: 80%;
+}
+.pk-result__player {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+.pk-result__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid;
+}
+.pk-result__avatar--win { border-color: #FFD700; }
+.pk-result__avatar--lose { border-color: var(--neutral-300); }
+.pk-result__name {
+  font-size: 14px;
+  color: white;
+  font-weight: 500;
+}
+.pk-result__score-val {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+}
+.pk-result__vs {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ========== PK Record List ========== */
+.pk-record {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-m) var(--page-margin);
+  gap: var(--spacing-m);
+  position: relative;
+}
+.pk-record + .pk-record::before {
+  content: '';
+  position: absolute;
+  top: 0; left: var(--page-margin); right: 0;
+  height: 0.5px;
+  background: var(--divider);
+}
+.pk-record__avatar-wrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+.pk-record__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--neutral-100);
+}
+.pk-record__type-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+}
+.pk-record__info {
+  flex: 1;
+  min-width: 0;
+}
+.pk-record__name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.pk-record__time {
+  font-size: 12px;
+  color: var(--text-placeholder);
+  margin-top: 2px;
+}
+.pk-record__result {
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.pk-record__result--win { color: var(--accent-orange); }
+.pk-record__result--lose { color: var(--text-placeholder); }
+.pk-record__result--draw { color: var(--accent-blue); }
+
+/* ========== Toast ========== */
+.toast {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.75);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-m);
+  font-size: 14px;
+  z-index: 100;
+  display: none;
+  text-align: center;
+  max-width: 250px;
+}
+.toast.active {
+  display: block;
+  animation: toastFade 2s ease forwards;
+}
+@keyframes toastFade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ========== Sidebar Navigation ========== */
+.page-nav { display: none; }
+@media (min-width: 800px) {
+  body { gap: 24px; }
+  .page-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: fixed;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .page-nav__item {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    font-family: var(--font-family);
+    border: 1px solid transparent;
+  }
+  .page-nav__item:hover { background: rgba(255,255,255,0.15); }
+  .page-nav__item.active {
+    background: var(--brand-primary);
+    color: white;
+    border-color: var(--brand-light);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Page Navigation Sidebar -->
+<nav class="page-nav" id="pageNav"></nav>
+
+<!-- Phone Frame -->
+<div class="phone-frame">
+  <div class="screen" id="screen">
+
+    <!-- ====== PAGE 1: 直播间 - PK入口 ====== -->
+    <div class="page active" data-page="live-room" data-title="直播间-PK入口">
+      <div class="live-room">
+        <div class="status-bar" style="background:transparent;color:white;">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <span>●●●●</span>
+            <span>WiFi</span>
+            <span>100%</span>
+          </span>
+        </div>
+        <div class="live-room__top">
+          <div class="live-room__host">
+            <div class="live-room__host-avatar"></div>
+            <div>
+              <div class="live-room__host-name">Star主播</div>
+              <div class="live-room__viewers">1,234 观看</div>
+            </div>
+          </div>
+        </div>
+        <div class="live-room__chat">
+          <div class="live-room__msg">
+            <span class="live-room__msg-name">小明：</span>主播加油！
+          </div>
+          <div class="live-room__msg">
+            <span class="live-room__msg-name">花花：</span>PK PK！
+          </div>
+        </div>
+        <div class="live-room__bottom">
+          <div class="live-room__input">Say something...</div>
+          <div class="live-room__action" style="background:rgba(255,255,255,0.15);" onclick="toggleSheet('pkSelectSheet')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M15 3H9v2h6V3zm-4 8V7H9v4H5v2h4v4h2v-4h4v-2h-4zm8-4h-2v6h-6v2h6v6h2v-6h6v-2h-6V7z" opacity="0.9"/><text x="12" y="18" text-anchor="middle" fill="white" font-size="10" font-weight="700">PK</text></svg>
+          </div>
+          <div class="live-room__action" style="background:rgba(255,255,255,0.15);">🎁</div>
+          <div class="live-room__action" style="background:rgba(255,255,255,0.15);">↗</div>
+        </div>
+
+        <!-- PK Type Select Bottom Sheet -->
+        <div class="bottom-sheet-overlay" id="pkSelectSheet">
+          <div class="bottom-sheet" onclick="event.stopPropagation()">
+            <div class="bottom-sheet__header">
+              <span class="bottom-sheet__title">选择PK模式</span>
+              <span class="bottom-sheet__close" onclick="toggleSheet('pkSelectSheet')">✕</span>
+            </div>
+            <div class="pk-select-panel">
+              <div class="pk-select-card pk-select-card--friend" onclick="toggleSheet('pkSelectSheet');navigateTo('matching-friend')">
+                <div class="pk-select-card__icon">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <circle cx="10" cy="10" r="5" fill="white" opacity="0.9"/>
+                    <circle cx="18" cy="10" r="5" fill="white" opacity="0.7"/>
+                    <path d="M14 16l-2-3h4l-2 3z" fill="white"/>
+                    <path d="M4 24c0-4 3-7 7-7h6c4 0 7 3 7 7" stroke="white" stroke-width="1.5" fill="none"/>
+                  </svg>
+                </div>
+                <div class="pk-select-card__title">好友PK</div>
+                <div class="pk-select-card__desc">邀请好友进行PK对决</div>
+              </div>
+              <div class="pk-select-card pk-select-card--random" onclick="toggleSheet('pkSelectSheet');navigateTo('matching-random')">
+                <div class="pk-select-card__icon">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <path d="M7 7l14 14M7 21l14-14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="21" cy="7" r="4" fill="white" opacity="0.8"/>
+                    <text x="21" y="10" text-anchor="middle" fill="#5B1BC7" font-size="8" font-weight="700">?</text>
+                    <circle cx="7" cy="21" r="4" fill="white" opacity="0.8"/>
+                    <text x="7" y="24" text-anchor="middle" fill="#5B1BC7" font-size="8" font-weight="700">?</text>
+                  </svg>
+                </div>
+                <div class="pk-select-card__title">随机PK</div>
+                <div class="pk-select-card__desc">随机匹配主播PK</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE 2: 好友PK匹配等待 ====== -->
+    <div class="page" data-page="matching-friend" data-title="好友PK匹配中">
+      <div class="live-room">
+        <div class="status-bar" style="background:transparent;color:white;">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <span>●●●●</span>
+            <span>WiFi</span>
+            <span>100%</span>
+          </span>
+        </div>
+        <div class="matching-page">
+          <div class="matching-icon matching-icon--friend">
+            <svg width="36" height="36" viewBox="0 0 28 28" fill="none">
+              <circle cx="10" cy="10" r="5" fill="white" opacity="0.9"/>
+              <circle cx="18" cy="10" r="5" fill="white" opacity="0.7"/>
+              <path d="M14 16l-2-3h4l-2 3z" fill="white"/>
+              <path d="M4 24c0-4 3-7 7-7h6c4 0 7 3 7 7" stroke="white" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="matching-text">好友PK匹配中...</div>
+          <div class="matching-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <button class="matching-cancel" onclick="navigateTo('live-room')">取消匹配</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE 3: 随机PK匹配等待 ====== -->
+    <div class="page" data-page="matching-random" data-title="随机PK匹配中">
+      <div class="live-room">
+        <div class="status-bar" style="background:transparent;color:white;">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <span>●●●●</span>
+            <span>WiFi</span>
+            <span>100%</span>
+          </span>
+        </div>
+        <div class="matching-page">
+          <div class="matching-icon matching-icon--random">
+            <svg width="36" height="36" viewBox="0 0 28 28" fill="none">
+              <path d="M7 7l14 14M7 21l14-14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="21" cy="7" r="4" fill="white" opacity="0.8"/>
+              <text x="21" y="10" text-anchor="middle" fill="#5B1BC7" font-size="8" font-weight="700">?</text>
+              <circle cx="7" cy="21" r="4" fill="white" opacity="0.8"/>
+              <text x="7" y="24" text-anchor="middle" fill="#5B1BC7" font-size="8" font-weight="700">?</text>
+            </svg>
+          </div>
+          <div class="matching-text">随机PK匹配中...</div>
+          <div class="matching-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <button class="matching-cancel" onclick="navigateTo('live-room')">取消匹配</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE 4: 好友PK进行中（观众/主播端） ====== -->
+    <div class="page" data-page="pk-live-friend" data-title="好友PK进行中">
+      <div class="live-room">
+        <div class="status-bar" style="background:transparent;color:white;">
+          <span class="time">9:42</span>
+          <span class="icons">
+            <span>●●●●</span>
+            <span>WiFi</span>
+            <span>98%</span>
+          </span>
+        </div>
+        <div class="live-room__top">
+          <div class="live-room__host">
+            <div class="live-room__host-avatar"></div>
+            <div>
+              <div class="live-room__host-name">Star主播</div>
+              <div class="live-room__viewers">2,567 观看</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PK Status Bar with Friend PK Badge -->
+        <div class="pk-status-bar">
+          <div class="pk-status-bar__type-badge">
+            <div class="pk-icon pk-icon--friend pk-icon--16">
+              <svg width="8" height="8" viewBox="0 0 28 28" fill="none">
+                <circle cx="10" cy="10" r="5" fill="white" opacity="0.9"/>
+                <circle cx="18" cy="10" r="5" fill="white" opacity="0.7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="pk-status-bar__left">
+            <span class="pk-status-bar__score">1,280</span>
+          </div>
+          <div class="pk-status-bar__vs">VS</div>
+          <div class="pk-status-bar__right">
+            <span class="pk-status-bar__score">960</span>
+          </div>
+        </div>
+
+        <div class="live-room__chat" style="bottom: 90px;">
+          <div class="live-room__msg">
+            <span class="live-room__msg-name">小红：</span>好友PK太精彩了！
+          </div>
+          <div class="live-room__msg">
+            <span class="live-room__msg-name">大力：</span>加油加油！
+          </div>
+        </div>
+        <div class="live-room__bottom">
+          <div class="live-room__input">Say something...</div>
+          <div class="live-room__action" style="background:rgba(255,255,255,0.15);">🎁</div>
+          <div class="live-room__action" style="background:rgba(255,255,255,0.15);">↗</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE 5: 随机PK进行中 ====== -->
+    <div class="page" data-page="pk-live-random" data-title="随机PK进行中">
+      <div class="live-room">
+        <div class="status-bar" style="background:transparent;color:white;">
+          <span class="time">9:42</span>
+          <span class="icons">
+            <span>●●●●</span>
+            <span>WiFi</span>
+            <span>98%</span>
+          </span>
+        </div>
+        <div class="live-room__top">
+          <div class="live-room__host">
+            <div class="live-room__host-avatar"></div>
+            <div>
+              <div class="live-room__host-name">Star主播</div>
+              <div class="live-room__viewers">2,567 观看</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PK Status Bar with Random PK Badge -->
+        <div class="pk-status-bar">
+          <div class="pk-status-bar__type-badge">
+            <div class="pk-icon pk-icon--random pk-icon--16">
+              <svg width="8" height="8" viewBox="0 0 28 28" fill="none">
+                <path d="M7 7l14 14M7 21l14-14" stroke="white" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="pk-status-bar__left">
+            <span class="pk-status-bar__score">750</span>
+          </div>
+          <div class="pk-status-bar__vs">VS</div>
+          <div class="pk-status-bar__right">
+            <span class="pk-status-bar__score">820</span>
+          </div>
+        </div>
+
+        <div class="live-room__chat" style="bottom: 90px;">
+          <div class="live-room__msg">
+            <span class="live-room__msg-name">路人A：</span>随机到高手了！
+          </div>
+          <div class="live-room__msg">
+            <span class="live-room__msg-name">观众B：</span>比分好接近
+          </div>
+        </div>
+        <div class="live-room__bottom">
+          <div class="live-room__input">Say something...</div>
+          <div class="live-room__action" style="background:rgba(255,255,255,0.15);">🎁</div>
+          <div class="live-room__action" style="background:rgba(255,255,255,0.15);">↗</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE 6: PK结果页 ====== -->
+    <div class="page" data-page="pk-result" data-title="PK结果页">
+      <div class="live-room">
+        <div class="status-bar" style="background:transparent;color:white;">
+          <span class="time">9:45</span>
+          <span class="icons">
+            <span>●●●●</span>
+            <span>WiFi</span>
+            <span>97%</span>
+          </span>
+        </div>
+        <div class="pk-result">
+          <!-- PK Type Indicator -->
+          <div class="pk-result__type">
+            <div class="pk-icon pk-icon--friend pk-icon--32">
+              <svg width="16" height="16" viewBox="0 0 28 28" fill="none">
+                <circle cx="10" cy="10" r="5" fill="white" opacity="0.9"/>
+                <circle cx="18" cy="10" r="5" fill="white" opacity="0.7"/>
+                <path d="M4 24c0-4 3-7 7-7h6c4 0 7 3 7 7" stroke="white" stroke-width="1.5" fill="none"/>
+              </svg>
+            </div>
+            <span class="pk-result__type-text" style="color: var(--pk-friend-primary);">好友PK</span>
+          </div>
+
+          <div class="pk-result__outcome">Victory!</div>
+
+          <div class="pk-result__scores">
+            <div class="pk-result__player">
+              <div class="pk-result__avatar pk-result__avatar--win" style="background: var(--brand-light);"></div>
+              <div class="pk-result__name">Star主播</div>
+              <div class="pk-result__score-val">1,280</div>
+            </div>
+            <div class="pk-result__vs">VS</div>
+            <div class="pk-result__player">
+              <div class="pk-result__avatar pk-result__avatar--lose" style="background: var(--neutral-300);"></div>
+              <div class="pk-result__name">Luna</div>
+              <div class="pk-result__score-val">960</div>
+            </div>
+          </div>
+
+          <div style="margin-top:auto;padding:24px 16px;width:100;padding-bottom:calc(var(--safe-bottom) + 16px);">
+            <button style="width:100%;padding:14px;border-radius:9999px;background:var(--pk-friend-primary);color:white;font-size:16px;font-weight:600;border:none;cursor:pointer;font-family:var(--font-family);" onclick="navigateTo('pk-records')">查看PK记录</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== PAGE 7: PK记录列表 ====== -->
+    <div class="page" data-page="pk-records" data-title="PK记录列表">
+      <div class="status-bar">
+        <span class="time">9:46</span>
+        <span class="icons">
+          <span>●●●●</span>
+          <span>WiFi</span>
+          <span>96%</span>
+        </span>
+      </div>
+      <div class="navbar">
+        <div class="navbar__back" onclick="navigateTo('live-room')"></div>
+        <div class="navbar__title">PK记录</div>
+      </div>
+      <div class="content" style="background:var(--white);">
+        <!-- Record 1: Friend PK - Win -->
+        <div class="pk-record">
+          <div class="pk-record__avatar-wrap">
+            <div class="pk-record__avatar" style="background:linear-gradient(135deg, #A855F7, #7B2BFF);"></div>
+            <div class="pk-record__type-badge">
+              <div class="pk-icon pk-icon--friend pk-icon--12">
+                <svg width="6" height="6" viewBox="0 0 28 28" fill="none">
+                  <circle cx="10" cy="10" r="5" fill="white"/>
+                  <circle cx="18" cy="10" r="5" fill="white" opacity="0.7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="pk-record__info">
+            <div class="pk-record__name">Luna</div>
+            <div class="pk-record__time">今天 09:42 · 好友PK</div>
+          </div>
+          <div class="pk-record__result pk-record__result--win">胜 1280:960</div>
+        </div>
+
+        <!-- Record 2: Random PK - Lose -->
+        <div class="pk-record">
+          <div class="pk-record__avatar-wrap">
+            <div class="pk-record__avatar" style="background:linear-gradient(135deg, #FF6B6B, #EE5A24);"></div>
+            <div class="pk-record__type-badge">
+              <div class="pk-icon pk-icon--random pk-icon--12">
+                <svg width="6" height="6" viewBox="0 0 28 28" fill="none">
+                  <path d="M7 7l14 14M7 21l14-14" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="pk-record__info">
+            <div class="pk-record__name">DJ_Tiger</div>
+            <div class="pk-record__time">昨天 21:15 · 随机PK</div>
+          </div>
+          <div class="pk-record__result pk-record__result--lose">负 540:780</div>
+        </div>
+
+        <!-- Record 3: Friend PK - Draw -->
+        <div class="pk-record">
+          <div class="pk-record__avatar-wrap">
+            <div class="pk-record__avatar" style="background:linear-gradient(135deg, #00C853, #009624);"></div>
+            <div class="pk-record__type-badge">
+              <div class="pk-icon pk-icon--friend pk-icon--12">
+                <svg width="6" height="6" viewBox="0 0 28 28" fill="none">
+                  <circle cx="10" cy="10" r="5" fill="white"/>
+                  <circle cx="18" cy="10" r="5" fill="white" opacity="0.7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="pk-record__info">
+            <div class="pk-record__name">MissCherry</div>
+            <div class="pk-record__time">昨天 19:30 · 好友PK</div>
+          </div>
+          <div class="pk-record__result pk-record__result--draw">平 600:600</div>
+        </div>
+
+        <!-- Record 4: Random PK - Win -->
+        <div class="pk-record">
+          <div class="pk-record__avatar-wrap">
+            <div class="pk-record__avatar" style="background:linear-gradient(135deg, #2196F3, #1565C0);"></div>
+            <div class="pk-record__type-badge">
+              <div class="pk-icon pk-icon--random pk-icon--12">
+                <svg width="6" height="6" viewBox="0 0 28 28" fill="none">
+                  <path d="M7 7l14 14M7 21l14-14" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="pk-record__info">
+            <div class="pk-record__name">ShowTime</div>
+            <div class="pk-record__time">06/15 15:22 · 随机PK</div>
+          </div>
+          <div class="pk-record__result pk-record__result--win">胜 1050:890</div>
+        </div>
+
+        <!-- Record 5: Random PK - Win -->
+        <div class="pk-record">
+          <div class="pk-record__avatar-wrap">
+            <div class="pk-record__avatar" style="background:linear-gradient(135deg, #FFD700, #FF8C00);"></div>
+            <div class="pk-record__type-badge">
+              <div class="pk-icon pk-icon--random pk-icon--12">
+                <svg width="6" height="6" viewBox="0 0 28 28" fill="none">
+                  <path d="M7 7l14 14M7 21l14-14" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="pk-record__info">
+            <div class="pk-record__name">GoldenVoice</div>
+            <div class="pk-record__time">06/14 20:10 · 随机PK</div>
+          </div>
+          <div class="pk-record__result pk-record__result--win">胜 920:710</div>
+        </div>
+
+        <!-- Record 6: Friend PK - Lose -->
+        <div class="pk-record">
+          <div class="pk-record__avatar-wrap">
+            <div class="pk-record__avatar" style="background:linear-gradient(135deg, #E91E63, #C2185B);"></div>
+            <div class="pk-record__type-badge">
+              <div class="pk-icon pk-icon--friend pk-icon--12">
+                <svg width="6" height="6" viewBox="0 0 28 28" fill="none">
+                  <circle cx="10" cy="10" r="5" fill="white"/>
+                  <circle cx="18" cy="10" r="5" fill="white" opacity="0.7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="pk-record__info">
+            <div class="pk-record__name">SweetMelody</div>
+            <div class="pk-record__time">06/13 18:45 · 好友PK</div>
+          </div>
+          <div class="pk-record__result pk-record__result--lose">负 480:650</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Reusable: Toast ====== -->
+    <div class="toast" id="toast"></div>
+
+  </div>
+</div>
+
+<script>
+/* ========== Page Navigation ========== */
+function navigateTo(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.querySelector(`[data-page="${pageId}"]`);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.page-nav__item').forEach(n => {
+    n.classList.toggle('active', n.dataset.target === pageId);
+  });
+}
+
+/* ========== Toast ========== */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('active');
+  void t.offsetWidth;
+  t.classList.add('active');
+  setTimeout(() => t.classList.remove('active'), 2000);
+}
+
+/* ========== Bottom Sheet Toggle ========== */
+function toggleSheet(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('active');
+}
+
+/* ========== Build Page Nav ========== */
+(function() {
+  const nav = document.getElementById('pageNav');
+  document.querySelectorAll('.page').forEach(p => {
+    const btn = document.createElement('div');
+    btn.className = 'page-nav__item' + (p.classList.contains('active') ? ' active' : '');
+    btn.textContent = p.dataset.title || p.dataset.page;
+    btn.dataset.target = p.dataset.page;
+    btn.onclick = () => navigateTo(p.dataset.page);
+    nav.appendChild(btn);
+  });
+})();
+</script>
+</body>
+</html>

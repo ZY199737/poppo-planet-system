@@ -1,0 +1,38 @@
+<h2>4.1 交互流程图</h2><whiteboard type="mermaid">flowchart TD
+    A[直播间-文字输入模式] -->|点击麦克风图标| B[语音模式-选择子模式]
+    B -->|选择语音消息| C[语音消息模式]
+    B -->|选择语音转文字| D[语音转文字模式]
+
+    C -->|长按录音按钮| E{录制中}
+    E -->|松手且时长大于1s| F[上传音频文件]
+    E -->|松手且时长不足1s| G[Toast: Recording too short]
+    E -->|上滑取消| H[Toast: Cancelled]
+    E -->|录制达60s| F
+    F -->|上传成功| I[语音气泡展示在公屏]
+    F -->|上传失败| J[Toast: Failed 支持重试]
+    G --> C
+    H --> C
+
+    D -->|长按录音按钮| K{录制加识别中}
+    K -->|松手| L[ASR识别]
+    L -->|识别成功| M[文字预填到输入框]
+    L -->|识别失败| N[Toast: Voice recognition failed]
+    L -->|无语音内容| O[Toast: No speech detected]
+    M -->|用户确认发送| P[文字消息发送到公屏]
+    M -->|用户取消| D
+    N --> D
+    O --> D
+
+    I -->|其他用户点击语音气泡| Q{播放状态}
+    Q -->|点击播放| R[播放中-波形动画]
+    Q -->|再次点击| S[暂停播放]
+    R -->|播放完毕| T[恢复静态]
+    R -->|点击其他语音| U[停止当前-播放新的]
+
+    subgraph 异常场景
+        V[首次使用-无麦克风权限] -->|请求权限| W{用户选择}
+        W -->|允许| C
+        W -->|拒绝| X[Toast: 请在设置中开启麦克风权限]
+        Y[用户被禁言] --> Z[Toast: You are muted]
+        AA[主播关闭语音消息] --> AB[隐藏语音切换按钮]
+    end</whiteboard><h2>4.2 关键页面说明</h2><table><colgroup><col/><col/><col/></colgroup><thead><tr><th>页面/状态</th><th>布局描述</th><th>关联功能</th></tr></thead><tbody><tr><td>文字输入模式（默认）</td><td>直播间底部：文字输入框 + 麦克风切换按钮 + 礼物按钮 + 分享按钮</td><td>—</td></tr><tr><td>语音消息模式</td><td>底部切换为：语音消息/语音转文字 Tab + 长按录音按钮 + 键盘切换按钮</td><td>FUNC-001, FUNC-002</td></tr><tr><td>录制中</td><td>全屏遮罩 + 麦克风动画 + 录制计时 + 松手发送/上滑取消提示</td><td>FUNC-001</td></tr><tr><td>语音气泡（公屏）</td><td>发送者头像 + 播放按钮 + 波形动画条 + 时长标注</td><td>FUNC-001, FUNC-003</td></tr><tr><td>语音转文字预览</td><td>底部弹出面板：识别结果文本框（可编辑）+ 取消/发送按钮</td><td>FUNC-002</td></tr><tr><td>麦克风权限请求</td><td>系统权限弹窗：说明文案 + 拒绝/允许按钮</td><td>EC-001</td></tr><tr><td>禁言状态</td><td>输入框置灰显示 You are muted，语音按钮禁用</td><td>EC-007</td></tr></tbody></table>

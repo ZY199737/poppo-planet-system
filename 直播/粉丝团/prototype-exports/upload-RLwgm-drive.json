@@ -1,0 +1,20 @@
+Uploading: RLwgm.png (59.6 KB) -> Drive root folder
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "file_name": "RLwgm.png",
+    "file_token": "IUfybjlERoBRpsxebmOlu8jBg0d",
+    "size": 60989,
+    "url": "https://uf1iawhques.sg.larksuite.com/file/IUfybjlERoBRpsxebmOlu8jBg0d",
+    "version": "7660462680156245726"
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

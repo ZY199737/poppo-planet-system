@@ -1,0 +1,21 @@
+<table>
+<colgroup><col/><col/><col/></colgroup>
+<thead><tr><th vertical-align="top"><p>是否APP端</p></th><th vertical-align="top"><p>Key</p></th><th vertical-align="top"><p>中文</p></th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_switch_voice</p></td><td vertical-align="top"><p>语音</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_switch_keyboard</p></td><td vertical-align="top"><p>键盘</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_hold_to_talk</p></td><td vertical-align="top"><p>按住说话</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_release_to_send</p></td><td vertical-align="top"><p>松开发送，上滑取消</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_recording_too_short</p></td><td vertical-align="top"><p>录制时间太短</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_cancelled</p></td><td vertical-align="top"><p>已取消</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_send_failed</p></td><td vertical-align="top"><p>语音消息发送失败，请重试</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_recognition_failed</p></td><td vertical-align="top"><p>语音识别失败，请重试</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_no_speech</p></td><td vertical-align="top"><p>未检测到语音</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_mic_permission</p></td><td vertical-align="top"><p>请在设置中开启麦克风权限</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_please_wait</p></td><td vertical-align="top"><p>请等待上一条语音发送完成</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_muted</p></td><td vertical-align="top"><p>你已被禁言</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_loading_failed</p></td><td vertical-align="top"><p>加载失败，请重试</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_to_text</p></td><td vertical-align="top"><p>语音转文字</p></td></tr>
+<tr><td vertical-align="top"><p>是</p></td><td vertical-align="top"><p>live_voice_file_too_large</p></td><td vertical-align="top"><p>文件过大</p></td></tr>
+</tbody>
+</table>

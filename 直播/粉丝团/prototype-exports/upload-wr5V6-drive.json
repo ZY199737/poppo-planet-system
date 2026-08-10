@@ -1,0 +1,20 @@
+Uploading: wr5V6.png (32.5 KB) -> Drive root folder
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "file_name": "wr5V6.png",
+    "file_token": "NGrNbItA7o07DfxsVGLlJgzcg5c",
+    "size": 33249,
+    "url": "https://uf1iawhques.sg.larksuite.com/file/NGrNbItA7o07DfxsVGLlJgzcg5c",
+    "version": "7660462530405404382"
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

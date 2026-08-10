@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "nodes": [{
+    "type": "frame", "id": "func-row", "layout": "horizontal", "gap": 40, "padding": 32,
+    "width": "fit-content", "height": "fit-content",
+    "children": [
+      {
+        "type": "frame", "id": "card-5", "layout": "vertical", "gap": 8,
+        "padding": [0, 0, 12, 0], "width": 240, "height": "fit-content",
+        "children": [
+          { "type": "image", "id": "img-5", "width": 240, "height": 520, "image": { "src": "Getkb7vyroHlvYx20pPlfrN7gVf" } },
+          { "type": "text", "id": "t-5", "text": "5. 语音消息展示", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+        ]
+      },
+      {
+        "type": "frame", "id": "card-6", "layout": "vertical", "gap": 8,
+        "padding": [0, 0, 12, 0], "width": 240, "height": "fit-content",
+        "children": [
+          { "type": "image", "id": "img-6", "width": 240, "height": 520, "image": { "src": "QqShbDojZo6BxIxrFYPlI2Eqgog" } },
+          { "type": "text", "id": "t-6", "text": "6. 翻译操作卡", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+        ]
+      }
+    ]
+  }]
+}

@@ -1,0 +1,20 @@
+Uploading: n75Fgd.png (32.5 KB) -> Drive root folder
+{
+  "ok": true,
+  "identity": "user",
+  "data": {
+    "file_name": "n75Fgd.png",
+    "file_token": "IcnHboB0ioLtBvxBW7ElDLqEguQ",
+    "size": 33249,
+    "url": "https://uf1iawhques.sg.larksuite.com/file/IcnHboB0ioLtBvxBW7ElDLqEguQ",
+    "version": "7660462699574234844"
+  },
+  "_notice": {
+    "update": {
+      "command": "lark-cli update",
+      "current": "1.0.52",
+      "latest": "1.0.67",
+      "message": "lark-cli 1.0.67 available, current 1.0.52, run: lark-cli update"
+    }
+  }
+}

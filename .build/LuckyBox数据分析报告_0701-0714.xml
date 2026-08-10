@@ -1,0 +1,246 @@
+<title>Lucky Box 发放与领取数据分析报告（07-01 ~ 07-14）</title>
+<callout emoji="📊" background-color="light-blue" border-color="blue">
+<p><b>报告信息</b></p>
+<p>分析周期：2026-07-01 ~ 2026-07-14（14天） | 数据来源：Lucky Box 主播/观众发放明细 + 领取明细 | 报告日期：2026-07-15</p>
+</callout>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="blue" text-color="white">总发放价值</th><th background-color="blue" text-color="white">总领取价值</th><th background-color="blue" text-color="white">整体领取率</th><th background-color="blue" text-color="white">日均领取人数</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p><b>5.28 亿</b></p><p>日均 3,773万</p></td><td vertical-align="top"><p><b>4.34 亿</b></p><p>日均 3,098万</p></td><td vertical-align="top"><p><b><span text-color="green">82.1%</span></b></p><p>漏损约 9,446万</p></td><td vertical-align="top"><p><b>29.6 万</b></p><p>人均领取 104</p></td></tr>
+</tbody>
+</table>
+
+<h1>一、核心结论</h1>
+
+<callout emoji="📉" background-color="light-yellow" border-color="yellow">
+<p><b>1. 盘子稳定但缓慢缩水</b></p>
+<p>后7天较前7天发放价值下滑 6.9%（主播 -5.2%，观众 -12.7%），领取价值同步下滑 6.5%，呈<b>温和但一致的下行趋势</b>。</p>
+</callout>
+
+<callout emoji="🔴" background-color="light-red" border-color="red">
+<p><b>2. 发放人数萎缩快于金额——主要风险信号</b></p>
+<p>主播发放人数末3日较首3日下降 13.6%，观众下降 9.9%。目前靠"人均加码"在托底金额（07-14 观众人均发放价值 3,120 为全周期次高），这是典型的"头部化"结构，不可持续。</p>
+</callout>
+
+<callout emoji="⚠️" background-color="light-yellow" border-color="yellow">
+<p><b>3. 约 18% 的价值漏损</b></p>
+<p>日均约 675万 价值的盒子发出但未被领完（14天累计漏损约 9,446万）。这是已产生发放意愿但未转化为领取侧激励感知的沉没价值，是最直接的可优化空间。</p>
+</callout>
+
+<callout emoji="🔴" background-color="light-red" border-color="red">
+<p><b>4. 7-02 存在显著异常</b></p>
+<p>观众发放价值 3,876万，偏离剔除后日均 +105.8%；当日领取率跌至全周期最低 71.5%。疑似单个/少数大户集中发放（当日观众次均价值 1,375，为日常均值 ~680 的 2 倍），大额盒子的曝光/领取链路存在瓶颈。</p>
+</callout>
+
+<callout emoji="⚠️" background-color="light-yellow" border-color="yellow">
+<p><b>5. 观众才是价值主力</b></p>
+<p>观众侧发放价值占比 53.5%，人均发放价值（2,591）是主播的 2.3 倍。但观众发放人数（日均 ~7,800）仅为主播（~15,400）的一半——"少数人贡献大金额"的高风险模型。</p>
+</callout>
+
+<hr/>
+
+<h1>二、大盘总览</h1>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">指标</th><th background-color="light-gray">主播侧</th><th background-color="light-gray">观众侧</th><th background-color="light-gray">合计 / 领取侧</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>总发放价值</p></td><td vertical-align="top"><p>245,473,660</p></td><td vertical-align="top"><p>282,743,980</p></td><td vertical-align="top"><p>528,217,640</p></td></tr>
+<tr><td vertical-align="top"><p>日均发放价值</p></td><td vertical-align="top"><p>17,533,833</p></td><td vertical-align="top"><p>20,195,999</p></td><td vertical-align="top"><p>37,729,831</p></td></tr>
+<tr><td vertical-align="top"><p>价值占比</p></td><td vertical-align="top"><p>46.5%</p></td><td vertical-align="top"><p>53.5%</p></td><td vertical-align="top"><p>—</p></td></tr>
+<tr><td vertical-align="top"><p>日均发放人数</p></td><td vertical-align="top"><p>~15,400</p></td><td vertical-align="top"><p>~7,800</p></td><td vertical-align="top"><p>领取人数 ~296,175</p></td></tr>
+<tr><td vertical-align="top"><p>人均发放次数（均值）</p></td><td vertical-align="top"><p>3.12</p></td><td vertical-align="top"><p>3.55</p></td><td vertical-align="top"><p>领取 3.56 次/人</p></td></tr>
+<tr><td vertical-align="top"><p>人均发放价值（均值）</p></td><td vertical-align="top"><p>1,136</p></td><td vertical-align="top"><p>2,591</p></td><td vertical-align="top"><p>人均领取 104</p></td></tr>
+<tr><td vertical-align="top"><p>次均价值（均值）</p></td><td vertical-align="top"><p>364</p></td><td vertical-align="top"><p>731</p></td><td vertical-align="top"><p>次均领取 29</p></td></tr>
+<tr><td vertical-align="top"><p><b>整体领取率</b></p></td><td vertical-align="top"><p>—</p></td><td vertical-align="top"><p>—</p></td><td vertical-align="top"><p><b>82.1%</b></p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="💡" background-color="light-blue" border-color="blue">
+<p><b>专业视角</b></p>
+<p>发放侧与领取侧人数比约 <b>1 : 12.7</b>（2.3万发放者 vs 29.6万领取者），Lucky Box 是典型的"少数供给、大众消费"型互动玩法。人均领取价值仅 104、次均 29，单次激励感知偏弱——核心产品价值在于<b>拉活跃和停留时长</b>，而非直接付费转化。</p>
+</callout>
+
+<hr/>
+
+<h1>三、趋势分析</h1>
+
+<h2>3.1 发放侧：金额温和下滑，人数下滑更陡</h2>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">对比维度</th><th background-color="light-gray">前7天日均</th><th background-color="light-gray">后7天日均</th><th background-color="light-gray">变化</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>主播发放价值</p></td><td vertical-align="top"><p>17,945,109</p></td><td vertical-align="top"><p>17,008,267</p></td><td vertical-align="top"><p><span text-color="red"><b>-5.2%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>观众发放价值</p></td><td vertical-align="top"><p>21,625,111</p></td><td vertical-align="top"><p>18,881,090</p></td><td vertical-align="top"><p><span text-color="red"><b>-12.7%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>领取价值</p></td><td vertical-align="top"><p>32,025,388</p></td><td vertical-align="top"><p>29,939,333</p></td><td vertical-align="top"><p><span text-color="red"><b>-6.5%</b></span></p></td></tr>
+</tbody>
+</table>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">参与人数</th><th background-color="light-gray">首3日均值</th><th background-color="light-gray">末3日均值</th><th background-color="light-gray">变化</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>主播发放人数</p></td><td vertical-align="top"><p>16,879</p></td><td vertical-align="top"><p>14,579</p></td><td vertical-align="top"><p><span text-color="red"><b>-13.6%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>观众发放人数</p></td><td vertical-align="top"><p>8,275</p></td><td vertical-align="top"><p>7,454</p></td><td vertical-align="top"><p><span text-color="red"><b>-9.9%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>领取人数</p></td><td vertical-align="top"><p>303,358</p></td><td vertical-align="top"><p>290,010</p></td><td vertical-align="top"><p>-4.4%</p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="💡" background-color="light-blue" border-color="blue">
+<p><b>专业视角</b></p>
+<p><b>人数降幅 > 金额降幅</b>，意味着留下来的发放者在"加码"。短期看金额稳，但参与结构在向头部集中——头部化玩法一旦几个大户流失，金额会出现台阶式下跌。建议<b>拉取主播分层数据</b>确认：是腰尾部批量停发（可通过任务召回），还是整体均匀下滑（说明玩法疲劳）。</p>
+</callout>
+
+<h2>3.2 领取率：稳定在 83~86%，两个低点值得注意</h2>
+
+<p>全周期领取率（价值口径）均值 82.6%，剔除异常日后为 83.4%。</p>
+
+<ul type="bullet">
+<li><p><b>正常区间</b>：81% ~ 86.2%（最高 07-10）</p></li>
+<li><p><span text-color="red"><b>低点1：07-02，71.5%</b></span> — 与观众侧巨额发放（+105.8% 偏离）同日，大额盒子未被领完</p></li>
+<li><p><span text-color="red"><b>低点2：07-13，78.6%</b></span> — 周日，观众发放价值不低但领取率偏低，原因待排查</p></li>
+</ul>
+
+<callout emoji="💡" background-color="light-blue" border-color="blue">
+<p><b>专业视角</b></p>
+<p>83% 的领取率意味着每天约 600~700 万价值的盒子过期未领完。领取率是这个玩法的<b>转化效率指标</b>，建议纳入日监控，阈值告警线设在 80%。07-02 案例揭示：盒子面额越大，单场直播间的领取人数上限越容易成为瓶颈——大额盒子应有配套的跨房间曝光机制。</p>
+</callout>
+
+<h2>3.3 周末效应：主播和观众行为分化</h2>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">维度</th><th background-color="light-gray">周末日均</th><th background-color="light-gray">工作日日均</th><th background-color="light-gray">差异</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>主播发放价值</p></td><td vertical-align="top"><p>18,024,870</p></td><td vertical-align="top"><p>17,142,992</p></td><td vertical-align="top"><p><span text-color="green"><b>+5.1%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>观众发放价值</p></td><td vertical-align="top"><p>17,640,775</p></td><td vertical-align="top"><p>19,357,839</p></td><td vertical-align="top"><p><span text-color="red"><b>-8.9%</b></span></p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="💡" background-color="light-blue" border-color="blue">
+<p><b>专业视角</b></p>
+<p>主播周末更活跃，但观众发放反而工作日更高。推测观众发放与<b>大R用户的在线习惯</b>相关（工作日晚间集中消费），观众侧发放的运营抓手应按"大R运营日历"设计，优先排在周中。</p>
+</callout>
+
+<hr/>
+
+<h1>四、结构与效率分析</h1>
+
+<h2>4.1 主播 vs 观众：两种不同的发放模型</h2>
+
+<table>
+<colgroup><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">特征</th><th background-color="light-gray">主播侧</th><th background-color="light-gray">观众侧</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>模型</p></td><td vertical-align="top"><p>广覆盖、小面额（日均1.5万人 × 次均364）</p></td><td vertical-align="top"><p>窄覆盖、大面额（日均7.8千人 × 次均731）</p></td></tr>
+<tr><td vertical-align="top"><p>发放动机（推测）</p></td><td vertical-align="top"><p>暖场、拉停留、任务驱动</p></td><td vertical-align="top"><p>送礼氛围、身份展示、大R社交</p></td></tr>
+<tr><td vertical-align="top"><p>稳定性</p></td><td vertical-align="top"><p>人均价值 CV ≈ 7%</p></td><td vertical-align="top"><p>人均价值 CV ≈ 25%</p></td></tr>
+<tr><td vertical-align="top"><p>风险</p></td><td vertical-align="top"><p><span text-color="red">人数持续流失 -13.6%</span></p></td><td vertical-align="top"><p><span text-color="red">对头部大户依赖高</span></p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="💡" background-color="light-blue" border-color="blue">
+<p><b>专业视角</b></p>
+<p>观众侧变异系数（CV≈25%）远高于主播侧（≈7%），<b>证实观众侧金额由少数大户驱动</b>。建议补充发放金额分位数分布（P50/P90/P99），量化 Top 1% 发放者价值占比——若超过 40%，需建立大户专属维系机制（专属客服、发放特效、荣誉体系）。</p>
+</callout>
+
+<h2>4.2 领取侧：频次稳定，深度不足</h2>
+
+<ul type="bullet">
+<li><p>人均领取次数 3.4~3.7 次，与发放侧几乎一致——领取频次天花板受<b>发放频次供给</b>约束，而非用户意愿不足。</p></li>
+<li><p>次均领取价值仅 29，面额被大量领取人数摊薄——单次"惊喜感"极弱，长期会钝化点击动力。</p></li>
+</ul>
+
+<hr/>
+
+<h1>五、异常与数据质量说明</h1>
+
+<ol type="number">
+<li><p><b>07-02 观众发放异常（+105.8%）</b>：建议回查发放明细，确认是大户行为、运营活动还是数据问题。约 1,600 万价值当日未被消化。</p></li>
+<li><p><b>07-13 领取率 78.6% 偏低</b>：非发放异常日，建议排查领取链路产品问题（入口曝光、客户端版本、活动挤占）。</p></li>
+<li><p><b>数据口径建议</b>——当前报表缺少三个关键维度：</p>
+<ul type="bullet">
+<li><p><b>发放者分层</b>（新/老、大R等级、主播分层）：判断下滑来自哪个人群</p></li>
+<li><p><b>盒子过期未领的价值明细</b>：直接量化漏损归因（房间人数不足 / 曝光不足 / 面额过大）</p></li>
+<li><p><b>领取用户与发放用户的重合度</b>：判断玩法是"内循环"还是真正的拉活跃工具</p></li>
+</ul>
+</li>
+</ol>
+
+<hr/>
+
+<h1>六、建议（按优先级）</h1>
+
+<h2>P0 — 止住参与面收缩</h2>
+
+<callout emoji="🔴" background-color="light-red" border-color="red">
+<p><b>1. 主播侧发放人数召回</b></p>
+<p>针对 7 月以来停发的主播（约 2,000~3,000 人）定向下发"发盒子任务"（发放≥3次奖励流量券），先把参与面稳住。发放人数是先行指标，金额是滞后指标。</p>
+</callout>
+
+<callout emoji="🔴" background-color="light-red" border-color="red">
+<p><b>2. 建立日监控看板</b></p>
+<p>核心指标四个：发放人数（分端）、发放价值（分端）、领取率、Top1% 发放者价值占比。领取率 &lt;80% 或人数环比 -5% 触发告警。</p>
+</callout>
+
+<h2>P1 — 回收 18% 的价值漏损</h2>
+
+<callout emoji="⚠️" background-color="light-yellow" border-color="yellow">
+<p><b>3. 大额盒子曝光升级</b></p>
+<p>单盒价值超阈值（P95 面额）时触发跨房间飘屏/全站通知。7-02 案例显示大额发放的边际领取率显著衰减，这是曝光问题不是意愿问题。</p>
+</callout>
+
+<callout emoji="⚠️" background-color="light-yellow" border-color="yellow">
+<p><b>4. 未领完价值二次利用</b></p>
+<p>过期盒子剩余价值回流为发放者的"氛围值/榜单加成"，保护发放意愿这个稀缺资源。</p>
+</callout>
+
+<h2>P2 — 降低头部依赖、提升领取体验</h2>
+
+<callout emoji="📈" background-color="light-green" border-color="green">
+<p><b>5. 观众发放中腰部培育</b></p>
+<p>设计低门槛档位（小面额+专属动效），把日均 7,800 的发放人数向 1 万+ 拉，用人数增长对冲大户波动。</p>
+</callout>
+
+<callout emoji="📈" background-color="light-green" border-color="green">
+<p><b>6. 领取侧惊喜机制</b></p>
+<p>次均 29 的普惠模型叠加小概率大奖（1% 概率 10 倍面额），成本有限但显著提升点击预期，对抗领取行为钝化。</p>
+</callout>
+
+<callout emoji="📈" background-color="light-green" border-color="green">
+<p><b>7. 周中大R运营</b></p>
+<p>观众发放工作日高于周末 8.9%，发放刺激活动应优先排在周中。</p>
+</callout>
+
+<hr/>
+
+<h1>附录：每日明细</h1>
+
+<table>
+<colgroup><col/><col/><col/><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">日期</th><th background-color="light-gray">总发放价值</th><th background-color="light-gray">领取价值</th><th background-color="light-gray">领取率</th><th background-color="light-gray">主播发放人数</th><th background-color="light-gray">观众发放人数</th><th background-color="light-gray">领取人数</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>07-01</p></td><td vertical-align="top"><p>37,225,600</p></td><td vertical-align="top"><p>29,663,248</p></td><td vertical-align="top"><p>79.7%</p></td><td vertical-align="top"><p>16,556</p></td><td vertical-align="top"><p>8,227</p></td><td vertical-align="top"><p>300,373</p></td></tr>
+<tr><td vertical-align="top" background-color="light-red"><p>07-02</p></td><td vertical-align="top" background-color="light-red"><p>57,046,980</p></td><td vertical-align="top" background-color="light-red"><p>40,803,614</p></td><td vertical-align="top" background-color="light-red"><p><span text-color="red"><b>71.5% ⚠</b></span></p></td><td vertical-align="top" background-color="light-red"><p>17,028</p></td><td vertical-align="top" background-color="light-red"><p>8,324</p></td><td vertical-align="top" background-color="light-red"><p>304,170</p></td></tr>
+<tr><td vertical-align="top"><p>07-03</p></td><td vertical-align="top"><p>37,606,200</p></td><td vertical-align="top"><p>31,559,212</p></td><td vertical-align="top"><p>83.9%</p></td><td vertical-align="top"><p>17,052</p></td><td vertical-align="top"><p>8,274</p></td><td vertical-align="top"><p>305,532</p></td></tr>
+<tr><td vertical-align="top"><p>07-04</p></td><td vertical-align="top"><p>36,862,770</p></td><td vertical-align="top"><p>30,980,760</p></td><td vertical-align="top"><p>84.0%</p></td><td vertical-align="top"><p>15,886</p></td><td vertical-align="top"><p>8,187</p></td><td vertical-align="top"><p>306,413</p></td></tr>
+<tr><td vertical-align="top"><p>07-05</p></td><td vertical-align="top"><p>36,583,230</p></td><td vertical-align="top"><p>31,055,079</p></td><td vertical-align="top"><p>84.9%</p></td><td vertical-align="top"><p>15,250</p></td><td vertical-align="top"><p>7,960</p></td><td vertical-align="top"><p>300,176</p></td></tr>
+<tr><td vertical-align="top"><p>07-06</p></td><td vertical-align="top"><p>36,718,470</p></td><td vertical-align="top"><p>29,760,849</p></td><td vertical-align="top"><p>81.1%</p></td><td vertical-align="top"><p>15,156</p></td><td vertical-align="top"><p>7,556</p></td><td vertical-align="top"><p>290,246</p></td></tr>
+<tr><td vertical-align="top"><p>07-07</p></td><td vertical-align="top"><p>35,652,690</p></td><td vertical-align="top"><p>30,354,956</p></td><td vertical-align="top"><p>85.1%</p></td><td vertical-align="top"><p>16,733</p></td><td vertical-align="top"><p>7,813</p></td><td vertical-align="top"><p>309,202</p></td></tr>
+<tr><td vertical-align="top"><p>07-08</p></td><td vertical-align="top"><p>36,051,850</p></td><td vertical-align="top"><p>30,388,407</p></td><td vertical-align="top"><p>84.3%</p></td><td vertical-align="top"><p>15,326</p></td><td vertical-align="top"><p>7,629</p></td><td vertical-align="top"><p>287,584</p></td></tr>
+<tr><td vertical-align="top"><p>07-09</p></td><td vertical-align="top"><p>32,909,040</p></td><td vertical-align="top"><p>27,418,405</p></td><td vertical-align="top"><p>83.3%</p></td><td vertical-align="top"><p>14,974</p></td><td vertical-align="top"><p>7,736</p></td><td vertical-align="top"><p>288,537</p></td></tr>
+<tr><td vertical-align="top"><p>07-10</p></td><td vertical-align="top"><p>35,132,530</p></td><td vertical-align="top"><p>30,378,647</p></td><td vertical-align="top"><p><span text-color="green"><b>86.5%</b></span></p></td><td vertical-align="top"><p>14,649</p></td><td vertical-align="top"><p>7,427</p></td><td vertical-align="top"><p>293,884</p></td></tr>
+<tr><td vertical-align="top"><p>07-11</p></td><td vertical-align="top"><p>37,044,840</p></td><td vertical-align="top"><p>31,055,439</p></td><td vertical-align="top"><p>83.8%</p></td><td vertical-align="top"><p>14,272</p></td><td vertical-align="top"><p>7,654</p></td><td vertical-align="top"><p>290,032</p></td></tr>
+<tr><td vertical-align="top"><p>07-12</p></td><td vertical-align="top"><p>31,966,220</p></td><td vertical-align="top"><p>27,096,830</p></td><td vertical-align="top"><p>84.8%</p></td><td vertical-align="top"><p>13,817</p></td><td vertical-align="top"><p>7,379</p></td><td vertical-align="top"><p>288,631</p></td></tr>
+<tr><td vertical-align="top" background-color="light-red"><p>07-13</p></td><td vertical-align="top" background-color="light-red"><p>37,364,790</p></td><td vertical-align="top" background-color="light-red"><p>29,846,579</p></td><td vertical-align="top" background-color="light-red"><p><span text-color="red"><b>78.6% ⚠</b></span></p></td><td vertical-align="top" background-color="light-red"><p>14,902</p></td><td vertical-align="top" background-color="light-red"><p>7,452</p></td><td vertical-align="top" background-color="light-red"><p>291,469</p></td></tr>
+<tr><td vertical-align="top"><p>07-14</p></td><td vertical-align="top"><p>40,052,430</p></td><td vertical-align="top"><p>33,391,032</p></td><td vertical-align="top"><p>83.4%</p></td><td vertical-align="top"><p>15,018</p></td><td vertical-align="top"><p>7,530</p></td><td vertical-align="top"><p>289,901</p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="📝" background-color="light-gray" border-color="gray">
+<p><b>注</b></p>
+<p>数值由报表截图转录，个别位数可能存在 ±1% 以内的转录误差，不影响趋势与结论判断。领取率 = 当日领取价值 / 当日（主播+观众）发放价值，未考虑跨日领取的错期影响。</p>
+</callout>

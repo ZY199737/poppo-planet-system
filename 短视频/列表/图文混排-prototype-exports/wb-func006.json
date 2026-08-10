@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "nodes": [{
+    "type": "frame", "id": "func-row", "layout": "horizontal", "gap": 40, "padding": 32,
+    "width": "fit-content", "height": "fit-content",
+    "children": [
+      {
+        "type": "frame", "id": "card-1", "layout": "vertical", "gap": 8,
+        "padding": [0, 0, 12, 0], "width": 240, "height": "fit-content",
+        "children": [
+          { "type": "image", "id": "img-1", "width": 240, "height": 520, "image": { "src": "Pr65b7Q9gokxeax6cWXlCgLxgAh" } },
+          { "type": "text", "id": "t-1", "text": "1. 热门页-顶部banner", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+        ]
+      }
+    ]
+  }]
+}

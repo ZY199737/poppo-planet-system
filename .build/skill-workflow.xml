@@ -1,0 +1,190 @@
+<title>PRD Skill 能力与流程说明</title>
+
+<h1>概述</h1>
+<p>当前具备两个协作 Skill，覆盖从需求文档撰写到原型绘制再到飞书文档发布的完整流程。</p>
+
+<table>
+<thead><tr><th>Skill</th><th>触发词</th><th>职责</th></tr></thead>
+<tbody>
+<tr><td>/write-prd</td><td>"写PRD"、"生成PRD"、"出一份需求文档"</td><td>生成结构化PRD → 创建飞书文档 → 归档知识库</td></tr>
+<tr><td>/draw-prototype</td><td>"画原型"、"生成原型图"、"出一份交互稿"</td><td>Pencil绘制原型 → 导出PNG → 上传飞书画板</td></tr>
+</tbody>
+</table>
+
+<h1>Skill 1: /write-prd — AI友好型PRD编写</h1>
+
+<h2>Step 1: 收集需求信息</h2>
+<p>根据输入类型采取不同策略：</p>
+<ul>
+<li><b>需求池多维表格</b> — 通过 record_id 或关键词搜索定位记录，提取需求描述、来源、优先级等字段</li>
+<li><b>飞书文档链接</b> — lark-cli docs +fetch 读取文档内容</li>
+<li><b>口头描述</b> — 追问补齐关键信息（业务线、模块、核心交互、处理端等）</li>
+<li><b>已有PRD</b> — 读取后按模板结构重新组织</li>
+</ul>
+
+<h2>Step 1.5: 智能追问（最多3个问题）</h2>
+<ul>
+<li><b>业务定位追问</b> — 细分到具体模块方向（如 PK 的哪个玩法、礼物的哪个环节）</li>
+<li><b>关联需求追问</b> — 是否与已有功能联动、是否复用已有组件、是否有前置依赖</li>
+<li><b>覆盖范围追问</b> — 是否含后台管理端、数据统计、多端差异、端侧分工</li>
+</ul>
+
+<h2>Step 1.6: 生成需求名称</h2>
+<p>命名格式：<b>业务-模块-具体功能描述YYMMDD</b></p>
+<p>示例：直播-PK-PK中首次送礼PK分加成260615</p>
+
+<h2>Step 2: 判断复杂度</h2>
+<table>
+<thead><tr><th>条件</th><th>模板</th></tr></thead>
+<tbody>
+<tr><td>1-2个功能点</td><td>精简版（2章：背景 + 需求说明）</td></tr>
+<tr><td>3+功能点</td><td>完整版（4章：背景 + 需求说明 + 设计稿 + 多语言）</td></tr>
+</tbody>
+</table>
+
+<h2>Step 3: 生成PRD文档</h2>
+<p>按模板结构填充内容，核心写作规范：</p>
+<ul>
+<li><b>功能描述</b> — 产品语言，场景化描述，AI开发能直接读懂</li>
+<li><b>交互规则</b> — 每条标注处理端 [客户端] / [H5] / [服务端]</li>
+<li><b>异常处理</b> — 每个功能点覆盖：空数据、超长文本、网络异常、重复操作</li>
+<li><b>禁止</b> — 不写 YAML、不写 TypeScript interface、不写 API 定义、不写模糊词</li>
+</ul>
+
+<h2>Step 3.5: 生成流程图与原型</h2>
+<ul>
+<li><b>3.5.1 业务流程图</b> — Mermaid 格式，嵌入对应功能点（按需）</li>
+<li><b>3.5.2 Pencil 原型</b> — 调用 /draw-prototype skill，完成后生成 manifest.json</li>
+<li><b>3.5.3 设计稿章节</b> — 仅预留链接占位</li>
+</ul>
+
+<h2>Step 4: 输出并归档</h2>
+
+<h3>4.1 创建飞书云文档</h3>
+<p>Markdown → XML → lark-cli docs +create</p>
+
+<h3>4.1.1 原型上传到画板</h3>
+<p>读取 manifest.json，按 FUNC 分组执行：</p>
+<ol>
+<li>回填 doc_token 到 manifest</li>
+<li>docs +fetch 获取各画板 whiteboard_token，回填到 manifest</li>
+<li>docs +media-upload 上传 PNG 到画板域，获取 media token</li>
+<li>生成 DSL JSON（水平卡片布局：图片 240×520 + 底部文字标注）</li>
+<li>whiteboard-cli 转换 DSL → OpenAPI 格式</li>
+<li>lark-cli whiteboard +update 推送到画板</li>
+</ol>
+
+<h3>4.2 归档到知识库</h3>
+<p>lark-cli wiki +move → 根据业务/模块归入对应知识库目录</p>
+
+<h3>4.3 回填需求池</h3>
+<p>将文档链接写回多维表格记录的「产品文档」字段（如适用）</p>
+
+<h2>Step 5: 自检清单</h2>
+<ul>
+<li>需求名称符合 业务-模块-功能描述YYMMDD 格式</li>
+<li>每个功能点有功能描述</li>
+<li>交互规则每条标注处理端</li>
+<li>每个功能点有异常处理</li>
+<li>无模糊词（"大概"、"类似"、"美观"）</li>
+<li>不含 YAML/TypeScript/API 定义</li>
+</ul>
+
+<hr/>
+
+<h1>Skill 2: /draw-prototype — Pencil 原型图绘制</h1>
+
+<h2>Step 1: 分析输入，规划页面</h2>
+<ul>
+<li><b>来自 write-prd 衔接</b> — 直接读 PRD，提取 FUNC 功能点映射为原型页面</li>
+<li><b>独立调用</b> — 向用户确认功能、页面数量、特殊设计要求</li>
+</ul>
+
+<h2>Step 2: 准备画布</h2>
+<ul>
+<li>检查或创建 .pen 文件</li>
+<li>set_variables 初始化色彩变量（品牌色、文字色、功能色等）</li>
+<li>get_guidelines 加载 Pencil 设计指南</li>
+</ul>
+
+<h2>Step 3: 逐屏构建</h2>
+<p>每屏规格：750×1624px（iOS @2x），包含：</p>
+<ul>
+<li>StatusBar（h:108）— 时间、灵动岛、信号图标</li>
+<li>TitleBar（h:88）— 返回、标题、更多</li>
+<li>页面主体内容 — 按 FUNC 功能点构建</li>
+<li>BottomBar — 输入框、功能按钮</li>
+</ul>
+<p>每屏完成后验证：移除 placeholder → layout reset → snapshot_layout 检查无溢出</p>
+
+<h2>Step 4: 添加流程标注</h2>
+<p>屏幕上方添加文字标注，表示页面间跳转关系。格式："操作描述 →"（相邻）或 "操作描述 ─────→"（跨屏）</p>
+
+<h2>Step 5: 全局验证</h2>
+<ul>
+<li>document 级截图确认整体一致性</li>
+<li>所有屏幕尺寸统一 750×1624</li>
+<li>屏幕间距一致 80px</li>
+<li>流程标注对齐</li>
+</ul>
+
+<h2>Step 6: 导出与画板上传</h2>
+
+<h3>6.1 生成 manifest.json</h3>
+<p>在输出目录下创建映射文件，记录完整关系：</p>
+<ul>
+<li><b>pen_file</b> — Pencil 文件名</li>
+<li><b>doc_token</b> — 飞书文档 token（write-prd 回填）</li>
+<li><b>groups[].func</b> — FUNC-xxx 编号</li>
+<li><b>groups[].whiteboard_token</b> — 画板 token（write-prd 回填）</li>
+<li><b>groups[].screens[]</b> — nodeId + label（屏幕ID和标注文字）</li>
+</ul>
+<p>FUNC 分组规则：按画布 y 坐标行分组，行内按 x 坐标排序。</p>
+
+<h3>6.2 导出 PNG</h3>
+<p>export_nodes（scale=1），以 nodeId 命名文件。</p>
+
+<h3>6.3 上传图片并推送画板</h3>
+<ul>
+<li>有 whiteboard_token（更新场景）→ 直接上传+推送</li>
+<li>无 token（首次场景）→ 等 write-prd 创建文档后回填</li>
+</ul>
+
+<h3>6.4 边框处理</h3>
+<p>画板背景为白色，导出前为所有屏幕 Frame 添加黑色边框：stroke:#000000, strokeWidth:2</p>
+
+<h3>6.5 更新场景</h3>
+<p>修改原型后同步画板：重新导出 → 重新上传（新 token）→ 替换 DSL → 重新推送（--overwrite）</p>
+
+<hr/>
+
+<h1>两个 Skill 的协作关系</h1>
+
+<h2>协作桥梁：manifest.json</h2>
+<p>manifest.json 是两个 skill 之间的数据桥梁：</p>
+<table>
+<thead><tr><th>字段</th><th>写入方</th><th>时机</th></tr></thead>
+<tbody>
+<tr><td>pen_file</td><td>draw-prototype</td><td>Step 6.1 导出前</td></tr>
+<tr><td>groups[].func</td><td>draw-prototype</td><td>Step 6.1 按 y 坐标分组</td></tr>
+<tr><td>groups[].screens[]</td><td>draw-prototype</td><td>Step 6.1 记录 nodeId 和 label</td></tr>
+<tr><td>doc_token</td><td>write-prd</td><td>Step 4.1 创建文档后</td></tr>
+<tr><td>groups[].whiteboard_token</td><td>write-prd</td><td>Step 4.1.1 获取画板后</td></tr>
+</tbody>
+</table>
+
+<h2>协作流程</h2>
+<ol>
+<li>write-prd Step 3.5.2 → 衔接调用 draw-prototype（传递 PRD路径、页面清单、输出文件名）</li>
+<li>draw-prototype Step 1-6 → 绘制原型、导出 PNG、生成 manifest.json</li>
+<li>write-prd Step 4.1 → 创建飞书文档，回填 doc_token</li>
+<li>write-prd Step 4.1.1 → 读取 manifest，创建画板，上传图片，推送内容</li>
+</ol>
+
+<h2>独立更新场景</h2>
+<p>后续修改原型后，无需重新走 write-prd 全流程：</p>
+<ol>
+<li>修改 Pencil 画布内容</li>
+<li>读取已有 manifest.json（已有完整映射关系）</li>
+<li>重新导出 → 重新上传 → 更新 DSL → 推送画板（--overwrite）</li>
+</ol>

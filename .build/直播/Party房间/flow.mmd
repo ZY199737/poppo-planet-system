@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant C as 客户端
+    participant S as 服务端
+    participant DB as 用户数据库
+    C->>S: 请求观众列表
+    S->>DB: 查询观众列表
+    DB-->>S: 返回用户数据
+    S->>S: 附加 is_virtual_audience 标记
+    S-->>C: 返回带标记的观众列表
+    C->>C: 机器人用户强制展示在线

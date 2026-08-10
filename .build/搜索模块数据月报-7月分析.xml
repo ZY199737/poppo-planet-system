@@ -1,0 +1,194 @@
+<title>搜索模块数据月报 — 7月分析</title>
+<callout emoji="📊" background-color="light-blue" border-color="blue">
+<p><b>报告信息</b></p>
+<p>分析维度：搜索整体 + 全站对比 | 对比口径：7月日均 vs 6月日均 | 报告日期：2026-07-29</p>
+</callout>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="blue" text-color="white">搜索观看人数</th><th background-color="blue" text-color="white">观看转化率</th><th background-color="blue" text-color="white">打赏转化率</th><th background-color="blue" text-color="white">搜索变现效率倍数</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p><b>68,890</b></p><p>环比 <span text-color="green">+7.4%</span></p></td><td vertical-align="top"><p><b>35.43%</b></p><p>环比 <span text-color="green">+0.63pp</span></p></td><td vertical-align="top"><p><b>25.30%</b></p><p>环比 <span text-color="green">+0.82pp</span></p></td><td vertical-align="top"><p><b>2.3x</b></p><p>3%流量贡献7%收入</p></td></tr>
+</tbody>
+</table>
+
+<h1>一、数据概览</h1>
+
+<h2>1.1 搜索整体指标</h2>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">指标</th><th background-color="light-gray">7月日均</th><th background-color="light-gray">6月日均</th><th background-color="light-gray">环比变化</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>刷新用户</p></td><td vertical-align="top"><p>194,568</p></td><td vertical-align="top"><p>184,287</p></td><td vertical-align="top"><p><span text-color="green"><b>+5.6%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>刷新次数</p></td><td vertical-align="top"><p>1,018,780</p></td><td vertical-align="top"><p>963,010</p></td><td vertical-align="top"><p><span text-color="green"><b>+5.8%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>人均刷新次数</p></td><td vertical-align="top"><p>5.24</p></td><td vertical-align="top"><p>5.23</p></td><td vertical-align="top"><p>+0.2%</p></td></tr>
+<tr><td vertical-align="top"><p><b>观看人数</b></p></td><td vertical-align="top"><p><b>68,890</b></p></td><td vertical-align="top"><p>64,154</p></td><td vertical-align="top"><p><span text-color="green"><b>+7.4%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p><b>观看转化率</b></p></td><td vertical-align="top"><p><b>35.43%</b></p></td><td vertical-align="top"><p>34.80%</p></td><td vertical-align="top"><p><span text-color="green"><b>+0.63pp</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>观看次数</p></td><td vertical-align="top"><p>153,913</p></td><td vertical-align="top"><p>140,642</p></td><td vertical-align="top"><p><span text-color="green"><b>+9.4%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>人均观看次数</p></td><td vertical-align="top"><p>2.23</p></td><td vertical-align="top"><p>2.19</p></td><td vertical-align="top"><p><span text-color="green"><b>+1.8%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>观看总时长（秒）</p></td><td vertical-align="top"><p>78,799,743</p></td><td vertical-align="top"><p>71,722,131</p></td><td vertical-align="top"><p><span text-color="green"><b>+9.9%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>人均观看时长（秒）</p></td><td vertical-align="top"><p>1,145</p></td><td vertical-align="top"><p>1,118</p></td><td vertical-align="top"><p><span text-color="green"><b>+2.4%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p><b>打赏人数</b></p></td><td vertical-align="top"><p><b>17,465</b></p></td><td vertical-align="top"><p>15,727</p></td><td vertical-align="top"><p><span text-color="green"><b>+11.1%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p><b>打赏转化率</b></p></td><td vertical-align="top"><p><b>25.30%</b></p></td><td vertical-align="top"><p>24.48%</p></td><td vertical-align="top"><p><span text-color="green"><b>+0.82pp</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>打赏金额（金币）</p></td><td vertical-align="top"><p>1,962,232,688</p></td><td vertical-align="top"><p>1,934,996,351</p></td><td vertical-align="top"><p><span text-color="green"><b>+1.4%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>人均打赏金额</p></td><td vertical-align="top"><p>113,054</p></td><td vertical-align="top"><p>113,669</p></td><td vertical-align="top"><p><span text-color="red"><b>-0.5%</b></span></p></td></tr>
+</tbody>
+</table>
+
+<h2>1.2 全站对比</h2>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">指标</th><th background-color="light-gray">7月日均</th><th background-color="light-gray">6月日均</th><th background-color="light-gray">环比变化</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>全站观看用户数</p></td><td vertical-align="top"><p>2,307,016</p></td><td vertical-align="top"><p>2,263,442</p></td><td vertical-align="top"><p><span text-color="green"><b>+1.9%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p><b>搜索观看占全站比</b></p></td><td vertical-align="top"><p><b>2.99%</b></p></td><td vertical-align="top"><p>2.83%</p></td><td vertical-align="top"><p><span text-color="green"><b>+0.16pp</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>全站打赏用户数</p></td><td vertical-align="top"><p>978,127</p></td><td vertical-align="top"><p>952,266</p></td><td vertical-align="top"><p><span text-color="green"><b>+2.7%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p>全站打赏金额</p></td><td vertical-align="top"><p>27,892,803,875</p></td><td vertical-align="top"><p>26,773,869,645</p></td><td vertical-align="top"><p><span text-color="green"><b>+4.2%</b></span></p></td></tr>
+<tr><td vertical-align="top"><p><b>搜索打赏占全站比</b></p></td><td vertical-align="top"><p><b>7.03%</b></p></td><td vertical-align="top"><p>7.23%</p></td><td vertical-align="top"><p><span text-color="red"><b>-0.20pp</b></span></p></td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>二、核心结论</h1>
+
+<callout emoji="📈" background-color="light-green" border-color="green">
+<p><b>1. 搜索流量健康增长，转化效率全面提升</b></p>
+<p>搜索刷新用户环比增长 5.6%，但观看人数增长 7.4%，高于用户增速——说明搜索→观看的转化率在改善（+0.63pp 至 35.43%）。用户找到想看内容的概率更高了，搜索结果匹配质量有进步。</p>
+</callout>
+
+<callout emoji="📈" background-color="light-green" border-color="green">
+<p><b>2. 搜索变现效率提升，付费人数增长最快</b></p>
+<p>打赏人数环比增长 11.1%，是所有指标中增幅最大的。打赏转化率从 24.48% 提升至 25.30%（+0.82pp），意味着每 4 个搜索观看用户中就有 1 个产生付费行为。搜索在「找到付费意愿用户」这件事上效率在持续提升。</p>
+</callout>
+
+<callout emoji="⚠️" background-color="light-yellow" border-color="yellow">
+<p><b>3. 人均打赏略降，新增付费用户偏低 ARPU</b></p>
+<p>虽然打赏人数和金额都在增长，但人均打赏金额微降 0.5%（113,669 → 113,054）。说明新增的付费用户平均贡献低于存量付费用户。这是「规模扩张期」的典型表现——转化漏斗变宽，但单用户深度还没跟上。</p>
+</callout>
+
+<callout emoji="⚠️" background-color="light-yellow" border-color="yellow">
+<p><b>4. 搜索打赏占全站比微降，全站增速更快</b></p>
+<p>搜索打赏金额增长 1.4%，而全站打赏增长 4.2%，导致搜索打赏占全站比从 7.23% 降至 7.03%。搜索自身在增长，但全站其他场景（推荐流/直播广场等）增长更猛。搜索在全站变现大盘里的份额被稀释。</p>
+</callout>
+
+<hr/>
+
+<h1>三、漏斗拆解</h1>
+
+<h2>3.1 搜索漏斗转化链路</h2>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">漏斗阶段</th><th background-color="light-gray">7月日均</th><th background-color="light-gray">转化率</th><th background-color="light-gray">环比变化</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>刷新用户（搜索曝光）</p></td><td vertical-align="top"><p>194,568</p></td><td vertical-align="top"><p>—</p></td><td vertical-align="top"><p>+5.6%</p></td></tr>
+<tr><td vertical-align="top"><p>观看用户（搜索→观看）</p></td><td vertical-align="top"><p>68,890</p></td><td vertical-align="top"><p>35.43%</p></td><td vertical-align="top"><p><span text-color="green">+0.63pp</span></p></td></tr>
+<tr><td vertical-align="top"><p>打赏用户（观看→付费）</p></td><td vertical-align="top"><p>17,465</p></td><td vertical-align="top"><p>25.30%</p></td><td vertical-align="top"><p><span text-color="green">+0.82pp</span></p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="💡" background-color="light-blue" border-color="blue">
+<p><b>专业视角</b></p>
+<p>搜索全链路转化率（刷新→打赏）= 35.43% × 25.30% = <b>8.96%</b>，即每 100 个搜索用户中约有 9 个最终产生付费。6月同口径为 8.52%，环比提升 0.44pp。漏斗每一层都在变宽，且第二层（观看→付费）提升幅度更大，说明搜索精准匹配了有付费意愿的用户。</p>
+</callout>
+
+<h2>3.2 搜索用户消费深度</h2>
+
+<table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">深度指标</th><th background-color="light-gray">7月日均</th><th background-color="light-gray">6月日均</th><th background-color="light-gray">环比</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>人均刷新次数</p></td><td vertical-align="top"><p>5.24 次</p></td><td vertical-align="top"><p>5.23 次</p></td><td vertical-align="top"><p>+0.2%</p></td></tr>
+<tr><td vertical-align="top"><p>人均观看次数</p></td><td vertical-align="top"><p>2.23 次</p></td><td vertical-align="top"><p>2.19 次</p></td><td vertical-align="top"><p>+1.8%</p></td></tr>
+<tr><td vertical-align="top"><p>人均观看时长</p></td><td vertical-align="top"><p>19.1 分钟</p></td><td vertical-align="top"><p>18.6 分钟</p></td><td vertical-align="top"><p>+2.4%</p></td></tr>
+<tr><td vertical-align="top"><p>人均打赏金额</p></td><td vertical-align="top"><p>113,054</p></td><td vertical-align="top"><p>113,669</p></td><td vertical-align="top"><p><span text-color="red">-0.5%</span></p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="💡" background-color="light-blue" border-color="blue">
+<p><b>专业视角</b></p>
+<p>用户平均搜索 5.24 次才点进 2.23 个直播间，<b>搜索到点击的转化比为 1 : 0.43</b>——每 2.3 次搜索刷新才产生 1 次观看。这意味着超过一半的搜索结果页展示未能引导用户点击，结果页的内容吸引力和排序策略仍有优化空间。</p>
+</callout>
+
+<hr/>
+
+<h1>四、搜索的全站定位</h1>
+
+<table>
+<colgroup><col/><col/><col/></colgroup>
+<thead><tr><th background-color="light-gray">维度</th><th background-color="light-gray">搜索占全站比</th><th background-color="light-gray">解读</th></tr></thead>
+<tbody>
+<tr><td vertical-align="top"><p>观看用户占比</p></td><td vertical-align="top"><p><b>2.99%</b></p></td><td vertical-align="top"><p>搜索是小流量场景</p></td></tr>
+<tr><td vertical-align="top"><p>打赏金额占比</p></td><td vertical-align="top"><p><b>7.03%</b></p></td><td vertical-align="top"><p>变现贡献远超流量占比</p></td></tr>
+<tr><td vertical-align="top"><p><b>变现效率倍数</b></p></td><td vertical-align="top"><p><b>2.35x</b></p></td><td vertical-align="top"><p>7.03% ÷ 2.99% = 每单位流量的变现产出是全站均值的 2.35 倍</p></td></tr>
+</tbody>
+</table>
+
+<callout emoji="🔑" background-color="light-blue" border-color="blue">
+<p><b>关键发现</b></p>
+<p>搜索是全站<b>变现效率最高的流量场景之一</b>。3% 的流量贡献了 7% 的打赏收入，说明通过搜索找到主播的用户具有更强的观看意愿和付费倾向——这是「主动寻找」行为带来的天然高转化优势。</p>
+<p>但 6月→7月，观看占比提升了（+0.16pp），打赏占比反而下降了（-0.20pp），说明全站其他场景的变现增速正在赶上搜索。搜索的变现效率倍数从 2.56x（6月：7.23% ÷ 2.83%）降至 2.35x。</p>
+</callout>
+
+<hr/>
+
+<h1>五、建议方向</h1>
+
+<h2>P0 — 扩大搜索流量入口</h2>
+
+<callout emoji="🔑" background-color="light-blue" border-color="blue">
+<p><b>1. 提升搜索入口渗透率</b></p>
+<p><b>现状：</b>搜索观看仅占全站 2.99%，但变现效率是全站 2.35 倍。</p>
+<p><b>机会：</b>搜索入口渗透率每提升 1pp（从 3% 到 4%），按当前 ARPU 估算，日均打赏增量约 6.5 亿金币。可考虑搜索推荐融合、热搜话题引导、直播间内「搜索相似主播」等方式扩大搜索场景覆盖。</p>
+</callout>
+
+<h2>P1 — 提升搜索消费深度</h2>
+
+<callout emoji="📈" background-color="light-green" border-color="green">
+<p><b>2. 优化搜索结果页转化</b></p>
+<p><b>现状：</b>人均刷新 5.24 次但仅观看 2.23 次，搜索到点击转化比 1 : 0.43。</p>
+<p><b>机会：</b>超过一半的搜索结果页展示未转化为观看。可优化搜索结果卡片（直播间预览/在线人数/正在PK等实时信息展示），提升单次搜索后的点击率和连续观看体验。</p>
+</callout>
+
+<callout emoji="📈" background-color="light-green" border-color="green">
+<p><b>3. 搜索用户付费分层运营</b></p>
+<p><b>现状：</b>打赏转化率 25.3% 提升明显，但人均打赏微降 0.5%，新增付费用户 ARPU 偏低。</p>
+<p><b>机会：</b>对搜索触达的付费用户做分层——新付费用户做首充激励和消费引导，老付费用户做升档礼物推荐和消费升级，拉升整体 ARPU。</p>
+</callout>
+
+<h2>P2 — 保持全站份额</h2>
+
+<callout emoji="⚠️" background-color="light-yellow" border-color="yellow">
+<p><b>4. 关注搜索全站份额变化趋势</b></p>
+<p><b>现状：</b>搜索打赏占全站比从 7.23% 降至 7.03%（-0.20pp），变现效率倍数从 2.56x 降至 2.35x。</p>
+<p><b>建议：</b>将搜索打赏占全站比纳入月度监控指标。若持续下降，需排查是搜索自身增长放缓，还是全站其他场景结构性提速（如推荐算法优化）。前者需产品侧干预，后者属正常竞争。</p>
+</callout>
+
+<hr/>
+
+<h1>六、小结</h1>
+
+<p>7月搜索模块整体处于<b>「量价齐升、效率改善」</b>的良性状态：</p>
+
+<ul type="bullet">
+<li><p><b>用户规模：</b>刷新用户 +5.6%，观看用户 +7.4%，打赏用户 +11.1%，漏斗逐层加速</p></li>
+<li><p><b>转化效率：</b>观看转化率 +0.63pp，打赏转化率 +0.82pp，全链路转化率从 8.52% 提升至 8.96%</p></li>
+<li><p><b>变现产出：</b>日均打赏金额 19.6 亿金币，环比 +1.4%</p></li>
+</ul>
+
+<p><b>主要关注点：</b></p>
+
+<ul type="bullet">
+<li><p>人均打赏金额微降 0.5%，新增付费用户 ARPU 低于存量</p></li>
+<li><p>搜索打赏占全站比从 7.23% 降至 7.03%，全站份额被稀释</p></li>
+</ul>
+
+<p><b>下一步重点：</b>扩大搜索入口渗透率（从 3% 往上推），同时对搜索渠道付费用户做精细化分层运营以提升 ARPU。</p>
+
+<callout emoji="📝" background-color="light-gray" border-color="gray">
+<p><b>注</b></p>
+<p>数据来源为搜索数据报表 7月/6月日均对比截图，数值由截图转录。人均观看时长已转换为分钟（1,145秒 ≈ 19.1分钟）。变现效率倍数 = 搜索打赏占全站比 ÷ 搜索观看占全站比。</p>
+</callout>

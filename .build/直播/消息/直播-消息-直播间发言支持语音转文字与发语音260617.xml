@@ -1,0 +1,338 @@
+<title>直播-消息-直播间发言支持语音转文字与发语音260617</title>
+<callout emoji="📌" background-color="light-blue" border-color="blue">
+<p><b>文档信息</b></p>
+<p>作者：— | 版本：v1.0 | 状态：<span text-color="blue">评审中</span> | 日期：2026-06-17</p>
+<p>平台：iOS / Android | 技术方案：Native | 优先级：P1 | 预估工期：待评估</p>
+<p>需求来源记录：<a href="https://uf1iawhques.sg.larksuite.com/record/MTmirjqwqeoA8fceW1alhPi5ggc">需求池记录</a></p>
+</callout>
+
+<h1>一、需求背景</h1>
+
+<h2>1.1 现状与问题</h2>
+<p>当前直播间公屏仅支持文字发言。对于不擅长打字的用户（如部分海外用户、输入法不方便的语种用户），发言门槛较高，影响直播间互动活跃度。同时，语音消息在 IM 场景中已经成熟，但直播间公屏尚未支持。</p>
+
+<h2>1.2 目标</h2>
+<callout emoji="🎯" background-color="light-green" border-color="green">
+<p><b>核心目标：</b>在直播间公屏新增语音发送能力，支持两种模式：直接发送语音消息（其他用户可点击播放）、语音转文字后以文字形式发送到公屏，降低发言门槛，提升直播间互动率。</p>
+</callout>
+
+<h2>1.3 成功指标</h2>
+<table>
+<thead><tr><th background-color="light-gray">指标</th><th background-color="light-gray">当前值</th><th background-color="light-gray">目标值</th><th background-color="light-gray">统计口径</th></tr></thead>
+<tbody>
+<tr><td>直播间人均发言条数</td><td>待补充</td><td>+15%</td><td>公屏消息总量 / DAU</td></tr>
+<tr><td>语音消息使用率</td><td>0</td><td>5%+</td><td>语音消息数 / 公屏总消息数</td></tr>
+<tr><td>语音转文字使用率</td><td>0</td><td>3%+</td><td>语音转文字消息数 / 公屏总消息数</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>二、需求说明</h1>
+
+<h2>2.1 功能点：发送语音消息</h2>
+
+<h3>产品描述</h3>
+<p>用户在直播间输入区域切换到语音模式后，长按录音按钮录制语音消息。录制完成后，语音消息以语音气泡形式展示在公屏，其他用户可点击播放收听。</p>
+
+<h3>交互规则</h3>
+<ul>
+<li><b>入口：</b>直播间输入框右侧新增「语音/键盘」切换按钮，点击后输入框区域切换为录音按钮</li>
+<li><b>录制方式：</b>长按录音按钮开始录制，松手发送；上滑取消发送</li>
+<li><b>录制时长限制：</b>最短 1 秒，最长 60 秒</li>
+<li><b>不足 1 秒：</b>松手后不发送，toast 提示 "Recording too short"</li>
+<li><b>达到 60 秒：</b>自动停止录制并发送</li>
+<li><b>上滑取消：</b>长按后手指上滑超过取消阈值，松手后不发送，toast 提示 "Cancelled"</li>
+<li><b>录制中展示：</b>显示录音动画 + 当前录制时长 + "Release to send, swipe up to cancel" 提示</li>
+<li><b>麦克风权限：</b>首次使用时请求麦克风权限；若用户拒绝，点击录音按钮时 toast 提示 "Please enable microphone access in Settings" 并提供跳转系统设置入口</li>
+</ul>
+
+<h3>AI开发规格</h3>
+<pre lang="yaml" caption="FUNC-001"><code># 功能标识：FUNC-001
+
+trigger: "用户点击语音切换按钮 AND 麦克风权限已授予"
+
+recording:
+  min_duration: 1s
+  max_duration: 60s
+  format: "AAC / Opus"
+  sample_rate: 16000
+  channels: 1
+
+behavior:
+  on_press: "开始录音，展示录音动画和计时"
+  on_release: "duration >= 1s → 停止录音，上传音频文件，发送语音消息到公屏"
+  on_release_short: "duration &lt; 1s → 取消，toast 'Recording too short'"
+  on_swipe_up: "取消录音，toast 'Cancelled'"
+  on_max_duration: "自动停止录音并发送"
+
+display:
+  position: "公屏消息流"
+  style: "语音气泡：用户头像 + 昵称 + 语音波形条 + 时长标注"
+  duration_format: "MM:SS 或 S''"
+
+data_dependencies:
+  - field: audio_url
+    source: "上传至 CDN 后返回的 URL"
+  - field: duration
+    source: "客户端录制时长"</code></pre>
+
+<h2>2.2 功能点：语音转文字发送</h2>
+
+<h3>产品描述</h3>
+<p>用户在语音录制模式下，可选择将录制的语音通过 ASR（语音识别）转为文字，以文字消息形式发送到公屏。适用于用户想通过语音输入但更希望以文字形式展示的场景。</p>
+
+<h3>交互规则</h3>
+<ul>
+<li><b>入口：</b>录音按钮区域提供「语音转文字」模式切换，或在录音完成后弹出选项</li>
+<li><b>方式（推荐）— 独立模式：</b>在语音模式下新增「转文字」子模式切换按钮，长按录音后直接将识别结果以文字形式预填到输入框，用户确认后发送</li>
+<li><b>识别结果展示：</b>识别完成后，文字预填到输入框，用户可编辑修改后发送，也可直接发送</li>
+<li><b>识别语言：</b>基于用户 App 语言设置自动选择识别语言</li>
+<li><b>识别失败：</b>toast 提示 "Voice recognition failed, please try again"，不发送消息</li>
+</ul>
+
+<h3>AI开发规格</h3>
+<pre lang="yaml" caption="FUNC-002"><code># 功能标识：FUNC-002
+
+trigger: "用户在语音转文字模式下长按录音并松手"
+
+flow:
+  1_record: "长按录音，展示录音动画 + 实时/录制完成后识别"
+  2_recognize: "音频上传 ASR 服务，返回识别文字"
+  3_preview: "识别文字预填到输入框，用户可编辑"
+  4_send: "用户确认发送 → 以普通文字消息发送到公屏"
+
+asr:
+  language: "auto（基于 App 语言设置）"
+  timeout: 10s
+  max_audio_duration: 60s
+
+behavior:
+  on_recognize_success: "文字预填输入框，光标置末尾"
+  on_recognize_fail: "toast 'Voice recognition failed, please try again'"
+  on_recognize_empty: "toast 'No speech detected'"
+  on_user_edit: "用户可修改识别结果后发送"
+  on_user_cancel: "清空输入框，不发送"</code></pre>
+
+<h2>2.3 功能点：语音消息播放</h2>
+
+<h3>产品描述</h3>
+<p>公屏上展示的语音消息，其他用户（包括主播和观众）可以点击播放收听。播放时展示播放动画，同一时间只能播放一条语音消息。</p>
+
+<h3>交互规则</h3>
+<ul>
+<li><b>点击播放：</b>点击语音气泡播放音频，气泡内波形条播放动画</li>
+<li><b>再次点击：</b>暂停播放，动画停止</li>
+<li><b>播放完毕：</b>动画停止，波形条恢复静态</li>
+<li><b>互斥播放：</b>点击播放新的语音消息时，当前正在播放的语音自动停止</li>
+<li><b>听筒/扬声器：</b>默认使用扬声器播放（直播间场景）；如果用户贴耳（距离传感器触发），切换为听筒播放</li>
+<li><b>与直播音频共存：</b>语音消息播放时，直播间音频正常播放，语音消息叠加播放（混音）</li>
+</ul>
+
+<h3>AI开发规格</h3>
+<pre lang="yaml" caption="FUNC-003"><code># 功能标识：FUNC-003
+
+trigger: "用户点击公屏语音消息气泡"
+
+playback:
+  output: "speaker（默认），proximity_sensor → earpiece"
+  mix_with_live_audio: true
+  concurrent: false  # 同一时间只播放一条
+
+behavior:
+  on_tap_playing: "暂停播放，动画停止"
+  on_tap_paused: "继续播放，动画恢复"
+  on_tap_new: "停止当前，播放新的"
+  on_playback_end: "动画停止，波形条恢复静态"
+  on_proximity_near: "切换听筒播放"
+  on_proximity_far: "切换扬声器播放"
+
+display:
+  playing_animation: "波形条左到右流动动画"
+  paused_state: "波形条静态，显示播放进度"</code></pre>
+
+<hr/>
+
+<h1>三、数据与接口</h1>
+
+<h2>3.1 核心数据结构</h2>
+<pre lang="typescript" caption="核心数据模型"><code>interface VoiceMessage {
+  message_id: string;
+  room_id: string;                  // 直播间 ID
+  sender_id: string;                // 发送者用户 ID
+  type: "voice";                    // 消息类型
+  audio_url: string;                // 音频文件 CDN 地址
+  duration: number;                 // 音频时长，单位秒，精度 0.1s
+  file_size: number;                // 文件大小，单位字节
+  format: "aac" | "opus";          // 音频编码格式
+  created_at: string;               // ISO 8601 时间戳
+}</code></pre>
+
+<h2>3.2 接口定义</h2>
+<pre lang="yaml" caption="API-001 上传语音消息"><code>api:
+  id: API-001
+  method: POST
+  path: /api/v2/live/room/{room_id}/voice-message/upload
+  auth: required
+  description: "上传语音文件并发送语音消息到直播间公屏"
+
+  request:
+    body:
+      file: { type: binary, required: true, description: "音频文件，AAC/Opus 格式" }
+      duration: { type: float, required: true, description: "音频时长，单位秒" }
+
+  response:
+    success: { status: 200, body: { code: 0, data: { message_id: "string", audio_url: "string" } } }
+    errors:
+      - { status: 400, code: 30001, message: "音频时长不合法", client_action: "toast 提示" }
+      - { status: 400, code: 30002, message: "音频文件过大", client_action: "toast 'File too large'" }
+      - { status: 403, code: 30003, message: "用户被禁言", client_action: "toast 'You are muted'" }
+      - { status: 403, code: 30004, message: "直播间不支持语音消息", client_action: "toast 并隐藏语音入口" }
+      - { status: 429, code: 30005, message: "发送频率过高", client_action: "toast 'Please wait'" }
+      - { status: 401, code: 10001, message: "未登录", client_action: "跳转登录页" }</code></pre>
+
+<pre lang="yaml" caption="API-002 语音转文字"><code>api:
+  id: API-002
+  method: POST
+  path: /api/v2/asr/recognize
+  auth: required
+  description: "语音转文字识别"
+
+  request:
+    body:
+      file: { type: binary, required: true, description: "音频文件" }
+      language: { type: string, required: false, default: "auto", description: "识别语言" }
+
+  response:
+    success: { status: 200, body: { code: 0, data: { text: "string", language: "string", confidence: 0.95 } } }
+    errors:
+      - { status: 400, code: 40001, message: "音频格式不支持", client_action: "toast 提示" }
+      - { status: 400, code: 40002, message: "音频时长超限", client_action: "toast 提示" }
+      - { status: 422, code: 40003, message: "无法识别语音内容", client_action: "toast 'No speech detected'" }
+      - { status: 500, code: 40004, message: "识别服务异常", client_action: "toast 'Voice recognition failed'" }
+      - { status: 401, code: 10001, message: "未登录", client_action: "跳转登录页" }</code></pre>
+
+<hr/>
+
+<h1>四、设计稿</h1>
+<ul>
+<li>设计稿链接：待补充</li>
+<li>原型图链接：待补充</li>
+</ul>
+
+<hr/>
+
+<h1>五、边界与异常</h1>
+
+<callout emoji="⚠️" background-color="light-red" border-color="red">
+<p><b>重要：</b>以下每个 case 必须有对应实现。AI 开发时逐条检查。</p>
+</callout>
+
+<table>
+<thead><tr><th background-color="light-gray">ID</th><th background-color="light-gray">场景</th><th background-color="light-gray">条件</th><th background-color="light-gray">期望行为</th><th background-color="light-gray">必要性</th></tr></thead>
+<tbody>
+<tr><td>EC-001</td><td>麦克风权限未授予</td><td>用户首次点击语音按钮，拒绝权限请求</td><td>toast "Please enable microphone access in Settings"，提供跳转系统设置入口</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-002</td><td>录制时长不足</td><td>按下后快速松手，时长 &lt; 1 秒</td><td>不发送，toast "Recording too short"</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-003</td><td>录制达到上限</td><td>录制达到 60 秒</td><td>自动停止录制并发送</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-004</td><td>上传失败</td><td>语音文件上传网络超时或失败</td><td>toast "Failed to send voice message, please try again"，支持点击重试</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-005</td><td>ASR 识别失败</td><td>语音转文字服务返回错误或超时（10s）</td><td>toast "Voice recognition failed, please try again"，不发送</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-006</td><td>ASR 识别为空</td><td>语音中无有效语音内容</td><td>toast "No speech detected"，不发送</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-007</td><td>用户被禁言</td><td>被禁言用户发送语音消息</td><td>toast "You are muted"</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-008</td><td>直播间不支持语音消息</td><td>主播或管理员关闭语音消息功能</td><td>隐藏语音切换按钮，仅展示文字输入</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-009</td><td>播放中退出直播间</td><td>正在播放语音消息时退出</td><td>停止播放，释放音频资源</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-010</td><td>网络弱环境播放</td><td>音频加载缓慢</td><td>展示加载动画，超时 10s 后 toast "Loading failed, please try again"</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-011</td><td>重复点击发送</td><td>用户快速连续录制发送</td><td>防抖，前一条上传完成前不允许新录制；toast "Please wait"</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-012</td><td>音频文件过大</td><td>文件超过 2MB</td><td>toast "File too large"，不发送</td><td><span text-color="red">必须</span></td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>六、埋点需求</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">事件名</th><th background-color="light-gray">触发时机</th><th background-color="light-gray">参数</th></tr></thead>
+<tbody>
+<tr><td>voice_mode_switch</td><td>用户点击语音/键盘切换按钮</td><td>room_id, mode(voice/keyboard)</td></tr>
+<tr><td>voice_record_start</td><td>用户长按开始录音</td><td>room_id</td></tr>
+<tr><td>voice_record_end</td><td>用户松手结束录音</td><td>room_id, duration, result(send/cancel/too_short)</td></tr>
+<tr><td>voice_message_send</td><td>语音消息发送成功</td><td>room_id, message_id, duration, file_size</td></tr>
+<tr><td>voice_to_text_start</td><td>语音转文字识别开始</td><td>room_id, duration</td></tr>
+<tr><td>voice_to_text_result</td><td>语音转文字识别完成</td><td>room_id, result(success/fail/empty), text_length, confidence</td></tr>
+<tr><td>voice_message_play</td><td>用户点击播放语音消息</td><td>room_id, message_id, duration</td></tr>
+<tr><td>voice_message_play_end</td><td>语音消息播放完成</td><td>room_id, message_id, play_duration, is_complete</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>七、技术备注</h1>
+
+<ul>
+<li><b>音频格式：</b>推荐 AAC（iOS 原生支持好）或 Opus（压缩率高、适合弱网），双端需统一编解码格式</li>
+<li><b>文件大小控制：</b>60s 音频在 16kHz 单声道 AAC 编码下约 500KB-1MB，建议上限 2MB</li>
+<li><b>CDN 缓存：</b>语音文件上传 CDN 后设置合理过期时间（建议 7 天），过期后公屏历史消息中语音不可播放</li>
+<li><b>平台差异：</b>iOS 使用 AVAudioRecorder/AVAudioPlayer；Android 使用 MediaRecorder/MediaPlayer 或 AudioRecord/AudioTrack</li>
+<li><b>距离传感器：</b>iOS/Android 均需监听距离传感器事件切换听筒/扬声器</li>
+<li><b>ASR 服务：</b>语音识别服务选型待定（Google Speech-to-Text / 自建服务 / 第三方），需支持多语言</li>
+</ul>
+
+<hr/>
+
+<h1>八、多语言</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">Key</th><th background-color="light-gray">默认值</th><th background-color="light-gray">用途</th></tr></thead>
+<tbody>
+<tr><td>live_voice_switch_voice</td><td>Voice</td><td>语音模式切换按钮</td></tr>
+<tr><td>live_voice_switch_keyboard</td><td>Keyboard</td><td>键盘模式切换按钮</td></tr>
+<tr><td>live_voice_hold_to_talk</td><td>Hold to talk</td><td>录音按钮文案</td></tr>
+<tr><td>live_voice_release_to_send</td><td>Release to send, swipe up to cancel</td><td>录制中提示</td></tr>
+<tr><td>live_voice_recording_too_short</td><td>Recording too short</td><td>录制时长不足提示</td></tr>
+<tr><td>live_voice_cancelled</td><td>Cancelled</td><td>上滑取消提示</td></tr>
+<tr><td>live_voice_send_failed</td><td>Failed to send voice message, please try again</td><td>发送失败提示</td></tr>
+<tr><td>live_voice_recognition_failed</td><td>Voice recognition failed, please try again</td><td>识别失败提示</td></tr>
+<tr><td>live_voice_no_speech</td><td>No speech detected</td><td>无语音内容提示</td></tr>
+<tr><td>live_voice_mic_permission</td><td>Please enable microphone access in Settings</td><td>权限提示</td></tr>
+<tr><td>live_voice_please_wait</td><td>Please wait before sending another voice message</td><td>频率限制提示</td></tr>
+<tr><td>live_voice_muted</td><td>You are muted</td><td>禁言提示</td></tr>
+<tr><td>live_voice_loading_failed</td><td>Loading failed, please try again</td><td>播放加载失败提示</td></tr>
+<tr><td>live_voice_to_text</td><td>Voice to Text</td><td>语音转文字模式按钮</td></tr>
+<tr><td>live_voice_file_too_large</td><td>File too large</td><td>文件过大提示</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>九、验收标准</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">编号</th><th background-color="light-gray">验收项</th><th background-color="light-gray">关联功能</th><th background-color="light-gray">通过标准</th></tr></thead>
+<tbody>
+<tr><td>AC-001</td><td>语音消息录制与发送</td><td>FUNC-001</td><td>长按录音 ≥ 1s 后松手，语音消息成功发送并展示在公屏</td></tr>
+<tr><td>AC-002</td><td>语音消息公屏展示</td><td>FUNC-001</td><td>语音气泡正确展示发送者头像、昵称、波形条、时长</td></tr>
+<tr><td>AC-003</td><td>录制时长限制</td><td>FUNC-001, EC-002, EC-003</td><td>不足 1s 提示 "Recording too short"；达到 60s 自动停止并发送</td></tr>
+<tr><td>AC-004</td><td>上滑取消</td><td>FUNC-001</td><td>长按后上滑超过阈值松手，不发送，提示 "Cancelled"</td></tr>
+<tr><td>AC-005</td><td>语音转文字</td><td>FUNC-002</td><td>录音后识别结果预填到输入框，用户可编辑后以文字消息发送</td></tr>
+<tr><td>AC-006</td><td>语音转文字失败处理</td><td>FUNC-002, EC-005, EC-006</td><td>识别失败或无内容时正确提示，不发送消息</td></tr>
+<tr><td>AC-007</td><td>语音播放</td><td>FUNC-003</td><td>点击语音气泡播放音频，波形动画正常展示</td></tr>
+<tr><td>AC-008</td><td>互斥播放</td><td>FUNC-003</td><td>播放新语音时，旧语音自动停止</td></tr>
+<tr><td>AC-009</td><td>与直播音频共存</td><td>FUNC-003</td><td>播放语音消息时直播间音频不中断</td></tr>
+<tr><td>AC-010</td><td>麦克风权限</td><td>EC-001</td><td>未授权时正确提示并提供跳转设置入口</td></tr>
+<tr><td>AC-011</td><td>禁言用户</td><td>EC-007</td><td>被禁言用户发送语音后提示 "You are muted"</td></tr>
+<tr><td>AC-012</td><td>直播间关闭语音消息</td><td>EC-008</td><td>主播/管理员关闭后，语音切换按钮隐藏</td></tr>
+<tr><td>AC-013</td><td>发送失败重试</td><td>EC-004</td><td>网络异常发送失败后，消息标记失败状态，点击可重试</td></tr>
+<tr><td>AC-014</td><td>防抖</td><td>EC-011</td><td>前一条未上传完成时不允许新录制</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>变更记录</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">版本</th><th background-color="light-gray">日期</th><th background-color="light-gray">作者</th><th background-color="light-gray">变更内容</th></tr></thead>
+<tbody>
+<tr><td>v1.0</td><td>2026-06-17</td><td>—</td><td>初始版本</td></tr>
+</tbody>
+</table>

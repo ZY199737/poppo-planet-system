@@ -1,0 +1,125 @@
+<title>IM-用户关系-全平台关注上限调整至10000人260616</title>
+<callout emoji="📌" background-color="light-blue" border-color="blue">
+<p><b>文档信息</b></p>
+<p>作者：— | 版本：v1.1 | 状态：<span text-color="blue">评审中</span> | 日期：2026-06-16</p>
+<p>平台：iOS / Android | 技术方案：服务端配置 | 优先级：P2 | 预估工期：1d</p>
+<p>需求来源记录：<a href="https://uf1iawhques.sg.larksuite.com/record/VEflrTzo4ecYjfcPn1klNFl7ghe">需求池记录</a></p>
+</callout>
+
+<h1>一、需求背景</h1>
+
+<h2>1.1 现状与问题</h2>
+<p>当前全平台用户的关注上限为 5000 人。尼泊尔 C 级代理（Wa 50984089）反馈：在日常业务运营中，5000 人的关注上限已不够用，影响其通过关注建立用户关系、触达目标用户的运营效率。</p>
+<p>此外，由于平台历史遗留问题，部分老用户的实际关注数已远超 5000（达数万级别），存在存量数据与当前上限不一致的情况，需要在本次调整中明确处理策略。</p>
+
+<h2>1.2 目标</h2>
+<callout emoji="🎯" background-color="light-green" border-color="green">
+<p><b>核心目标：</b>将全平台用户的关注上限从 5000 人提升至 10000 人，一步到位满足高活跃用户和代理的长期关注需求，同时明确存量超限用户的处理策略。</p>
+</callout>
+
+<h2>1.3 成功指标</h2>
+<table>
+<thead><tr><th background-color="light-gray">指标</th><th background-color="light-gray">当前值</th><th background-color="light-gray">目标值</th><th background-color="light-gray">统计口径</th></tr></thead>
+<tbody>
+<tr><td>关注上限触顶用户数</td><td>待补充</td><td>下降 80%+</td><td>服务端关注数 = 5000 的用户数统计</td></tr>
+<tr><td>关注上限相关客诉量</td><td>待补充</td><td>下降 90%+</td><td>客服工单/代理反馈</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>二、需求说明</h1>
+
+<h2>2.1 功能点：关注上限从 5000 调整至 10000</h2>
+
+<h3>产品描述</h3>
+<p>将全平台所有用户的关注人数上限从 5000 人调整为 10000 人。调整后：</p>
+<ul>
+<li>已关注人数未达 10000 的用户，可继续关注新用户</li>
+<li>已关注人数为 5000 的用户（原已触顶），调整后可再关注 5000 人</li>
+<li>此调整对所有用户生效，不区分代理等级、地区</li>
+</ul>
+
+<h3>交互规则</h3>
+<ul>
+<li><b>触发条件：</b>用户点击「关注」按钮时，服务端校验当前关注数是否达到上限</li>
+<li><b>未达上限：</b>正常执行关注操作</li>
+<li><b>达到上限（≥ 10000）：</b>关注失败，客户端展示 toast 提示："You have reached the maximum number of followings"（复用现有提示文案，仅上限值变更）</li>
+<li><b>关注数展示：</b>个人主页的关注数无上限限制，如实展示实际关注人数</li>
+</ul>
+
+<h2>2.2 功能点：存量超限用户处理</h2>
+
+<h3>产品描述</h3>
+<p>由于历史遗留问题，部分老用户的关注数已远超新上限（10000），存在关注数达数万的情况。对于这类存量超限用户，采取「不干预、冻结新增」策略。</p>
+
+<h3>交互规则</h3>
+<ul>
+<li><b>不强制取关：</b>不对存量超限用户执行批量取消关注操作，已有的关注关系全部保留</li>
+<li><b>冻结新增关注：</b>存量关注数 ≥ 10000 的用户，不允许新增关注，点击关注按钮时展示与正常触顶相同的 toast 提示</li>
+<li><b>允许取关：</b>存量超限用户可以随时取消关注</li>
+<li><b>回落后恢复：</b>存量超限用户通过取消关注将关注数降到 10000 以下后，可恢复正常关注新用户</li>
+<li><b>关注数展示：</b>如实展示实际关注人数（即使超过 10000）</li>
+</ul>
+
+<hr/>
+
+<h1>五、边界与异常</h1>
+
+<callout emoji="⚠️" background-color="light-red" border-color="red">
+<p><b>重要：</b>以下每个 case 必须有对应实现。AI 开发时逐条检查。</p>
+</callout>
+
+<table>
+<thead><tr><th background-color="light-gray">ID</th><th background-color="light-gray">场景</th><th background-color="light-gray">条件</th><th background-color="light-gray">期望行为</th><th background-color="light-gray">必要性</th></tr></thead>
+<tbody>
+<tr><td>EC-001</td><td>并发关注</td><td>用户快速连续点击关注不同用户，关注数从 9999 开始</td><td>服务端保证原子性校验，最终关注数不超过 10000；超出部分返回失败</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-002</td><td>关注数回落后再关注</td><td>用户已达 10000 上限，取消关注若干人后再关注新用户</td><td>只要当前关注数 &lt; 10000，允许关注</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-003</td><td>存量超限用户关注</td><td>存量用户关注数为 30000（远超新上限），点击关注新用户</td><td>关注失败，展示 toast "You have reached the maximum number of followings"，与正常触顶行为一致</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-004</td><td>存量超限用户取关后关注</td><td>存量用户关注数 30000，取关 1 人后变为 29999，再点击关注</td><td>仍然拦截（29999 ≥ 10000），不允许关注</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-005</td><td>存量超限用户大量取关后恢复</td><td>存量用户关注数 30000，取关至 9999</td><td>恢复正常关注能力，可新增关注直至 10000</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-006</td><td>网络异常</td><td>关注请求网络超时或失败</td><td>客户端展示 toast "Network error, please try again"，关注按钮恢复为未关注状态</td><td><span text-color="red">必须</span></td></tr>
+<tr><td>EC-007</td><td>重复点击</td><td>用户连续快速点击同一用户的关注按钮</td><td>客户端做防抖处理，短时间内仅发送一次请求；服务端保证幂等</td><td><span text-color="red">必须</span></td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>六、埋点需求</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">事件名</th><th background-color="light-gray">触发时机</th><th background-color="light-gray">参数</th></tr></thead>
+<tbody>
+<tr><td>follow_limit_reached</td><td>用户关注时触发上限拦截</td><td>user_id, current_count, limit, is_legacy_user(是否存量超限用户)</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>九、验收标准</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">编号</th><th background-color="light-gray">验收项</th><th background-color="light-gray">关联功能</th><th background-color="light-gray">通过标准</th></tr></thead>
+<tbody>
+<tr><td>AC-001</td><td>关注上限生效</td><td>FUNC-001</td><td>用户关注人数达到 10000 时，再关注提示已达上限；9999 及以下可正常关注</td></tr>
+<tr><td>AC-002</td><td>原触顶用户释放</td><td>FUNC-001</td><td>原已关注 5000 人的用户，上线后可继续关注新用户，直至 10000</td></tr>
+<tr><td>AC-003</td><td>取关后恢复</td><td>EC-002</td><td>达到 10000 上限后取消关注，关注数 &lt; 10000 时可重新关注</td></tr>
+<tr><td>AC-004</td><td>并发安全</td><td>EC-001</td><td>并发关注场景下，关注总数不超过 10000</td></tr>
+<tr><td>AC-005</td><td>提示文案正确</td><td>FUNC-001</td><td>触顶时 toast 提示文案正确展示，无乱码或空白</td></tr>
+<tr><td>AC-006</td><td>存量超限用户不可新增关注</td><td>FUNC-002</td><td>关注数为 30000 的存量用户，点击关注提示已达上限</td></tr>
+<tr><td>AC-007</td><td>存量超限用户关注关系保留</td><td>FUNC-002</td><td>存量用户已有的关注关系全部保留，关注列表正常展示</td></tr>
+<tr><td>AC-008</td><td>存量超限用户回落后恢复</td><td>EC-005</td><td>存量超限用户取关至 10000 以下后，可正常关注新用户</td></tr>
+</tbody>
+</table>
+
+<hr/>
+
+<h1>变更记录</h1>
+
+<table>
+<thead><tr><th background-color="light-gray">版本</th><th background-color="light-gray">日期</th><th background-color="light-gray">作者</th><th background-color="light-gray">变更内容</th></tr></thead>
+<tbody>
+<tr><td>v1.0</td><td>2026-06-16</td><td>—</td><td>初始版本（上限 5500）</td></tr>
+<tr><td>v1.1</td><td>2026-06-16</td><td>—</td><td>上限调整为 10000；新增存量超限用户处理策略</td></tr>
+</tbody>
+</table>

@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "nodes": [
+    {
+      "type": "frame", "id": "func3-row", "layout": "horizontal", "gap": 40, "padding": 32,
+      "width": "fit-content", "height": "fit-content",
+      "children": [
+        {
+          "type": "frame", "id": "card-1", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-1", "width": 240, "height": 520, "image": { "src": "NjHnbVVWLox2DXxPcAOlptaMgWf" } },
+            { "type": "text", "id": "t-1", "text": "1. 语音气泡静态", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-2", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-2", "width": 240, "height": 520, "image": { "src": "ANq6bpEzMog2DTxOFhIlVKrHg4c" } },
+            { "type": "text", "id": "t-2", "text": "2. 播放中", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-3", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-3", "width": 240, "height": 520, "image": { "src": "VIaBbQwOgofRDaxjb8nlA5mSgwG" } },
+            { "type": "text", "id": "t-3", "text": "3. 暂停切换", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        }
+      ]
+    }
+  ]
+}

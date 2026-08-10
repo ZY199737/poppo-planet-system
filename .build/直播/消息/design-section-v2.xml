@@ -1,0 +1,269 @@
+<h2>4.1 交互流程图</h2><whiteboard type="mermaid">flowchart TD
+    A[直播间-文字输入模式] -->|点击麦克风图标| B[语音模式-选择子模式]
+    B -->|选择语音消息| C[语音消息模式]
+    B -->|选择语音转文字| D[语音转文字模式]
+
+    C -->|长按录音按钮| E{录制中}
+    E -->|松手且时长大于1s| F[上传音频文件]
+    E -->|松手且时长不足1s| G[Toast: Recording too short]
+    E -->|上滑取消| H[Toast: Cancelled]
+    E -->|录制达60s| F
+    F -->|上传成功| I[语音气泡展示在公屏]
+    F -->|上传失败| J[Toast: Failed 支持重试]
+    G --> C
+    H --> C
+
+    D -->|长按录音按钮| K{录制加识别中}
+    K -->|松手| L[ASR识别]
+    L -->|识别成功| M[文字预填到输入框]
+    L -->|识别失败| N[Toast: Voice recognition failed]
+    L -->|无语音内容| O[Toast: No speech detected]
+    M -->|用户确认发送| P[文字消息发送到公屏]
+    M -->|用户取消| D
+    N --> D
+    O --> D
+
+    I -->|其他用户点击语音气泡| Q{播放状态}
+    Q -->|点击播放| R[播放中-波形动画]
+    Q -->|再次点击| S[暂停播放]
+    R -->|播放完毕| T[恢复静态]
+    R -->|点击其他语音| U[停止当前-播放新的]
+
+    subgraph 异常场景
+        V[首次使用-无麦克风权限] -->|请求权限| W{用户选择}
+        W -->|允许| C
+        W -->|拒绝| X[Toast: 请在设置中开启麦克风权限]
+        Y[用户被禁言] --> Z[Toast: You are muted]
+        AA[主播关闭语音消息] --> AB[隐藏语音切换按钮]
+    end</whiteboard><h2>4.2 关键页面原型</h2><whiteboard type="svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 900" font-family="-apple-system, SF Pro, Roboto, Helvetica Neue, sans-serif">
+  <defs>
+    <linearGradient id="liveBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d1b69"/>
+      <stop offset="100%" stop-color="#1a0a3e"/>
+    </linearGradient>
+    <linearGradient id="btnPurple" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7B2BFF"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="recBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0a3e"/>
+      <stop offset="100%" stop-color="#0d0520"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== PAGE 1: 文字输入模式（默认） ===== -->
+  <g transform="translate(20,20)">
+    <text x="100" y="-8" font-size="13" fill="#A0A0A0" text-anchor="middle" font-weight="600">文字输入模式（默认）</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#333" stroke-width="1.5"/>
+    <!-- Dynamic Island -->
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <!-- Status bar -->
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <text x="170" y="42" font-size="8" fill="#fff" text-anchor="end">●● WiFi 100%</text>
+    <!-- Host info -->
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <text x="42" y="73" font-size="7" fill="rgba(255,255,255,0.7)">1,234 观看</text>
+    <!-- Chat messages -->
+    <rect x="12" y="320" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="336" font-size="8" fill="#A855F7" font-weight="500">小明：<tspan fill="#fff" font-weight="400">主播加油！</tspan></text>
+    <rect x="12" y="348" width="120" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="364" font-size="8" fill="#A855F7" font-weight="500">花花：<tspan fill="#fff" font-weight="400">PK PK！</tspan></text>
+    <!-- Bottom bar -->
+    <rect x="12" y="388" width="112" height="28" rx="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="24" y="406" font-size="8" fill="rgba(255,255,255,0.5)">Say something...</text>
+    <!-- Mic button (highlighted) -->
+    <circle cx="140" cy="402" r="14" fill="rgba(255,255,255,0.15)" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="140" y="406" font-size="10" text-anchor="middle" fill="#fff">🎤</text>
+    <text x="140" y="423" font-size="6" fill="#FFD700" text-anchor="middle">NEW</text>
+    <!-- Gift & share -->
+    <circle cx="168" cy="402" r="12" fill="rgba(255,255,255,0.15)"/>
+    <text x="168" y="406" font-size="9" text-anchor="middle" fill="#fff">🎁</text>
+    <circle cx="188" cy="402" r="10" fill="rgba(255,255,255,0.15)"/>
+    <text x="188" y="405" font-size="8" text-anchor="middle" fill="#fff">↗</text>
+  </g>
+
+  <!-- ===== PAGE 2: 语音消息模式 ===== -->
+  <g transform="translate(250,20)">
+    <text x="100" y="-8" font-size="13" fill="#A0A0A0" text-anchor="middle" font-weight="600">语音消息模式</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#333" stroke-width="1.5"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <text x="170" y="42" font-size="8" fill="#fff" text-anchor="end">●● WiFi 100%</text>
+    <!-- Host info -->
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <text x="42" y="73" font-size="7" fill="rgba(255,255,255,0.7)">1,234 观看</text>
+    <!-- Chat messages -->
+    <rect x="12" y="310" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="326" font-size="8" fill="#A855F7" font-weight="500">小明：<tspan fill="#fff" font-weight="400">主播加油！</tspan></text>
+    <!-- Bottom: Voice mode tabs -->
+    <rect x="12" y="348" width="176" height="26" rx="13" fill="rgba(0,0,0,0.4)"/>
+    <rect x="14" y="350" width="85" height="22" rx="11" fill="#7B2BFF"/>
+    <text x="56" y="365" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">语音消息</text>
+    <text x="140" y="365" font-size="8" fill="rgba(255,255,255,0.6)" text-anchor="middle">语音转文字</text>
+    <!-- Record button -->
+    <rect x="30" y="384" width="120" height="36" rx="18" fill="url(#btnPurple)"/>
+    <text x="90" y="406" font-size="9" text-anchor="middle" fill="#fff" font-weight="600">Hold to talk</text>
+    <!-- Keyboard switch -->
+    <circle cx="168" cy="402" r="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="168" y="406" font-size="10" text-anchor="middle" fill="#fff">⌨</text>
+  </g>
+
+  <!-- ===== PAGE 3: 录制中 ===== -->
+  <g transform="translate(480,20)">
+    <text x="100" y="-8" font-size="13" fill="#A0A0A0" text-anchor="middle" font-weight="600">录制中</text>
+    <rect width="200" height="433" rx="24" fill="url(#recBg)" stroke="#333" stroke-width="1.5"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <!-- Overlay -->
+    <rect width="200" height="433" rx="24" fill="rgba(0,0,0,0.6)"/>
+    <!-- Mic animation circle -->
+    <circle cx="100" cy="180" r="40" fill="none" stroke="#7B2BFF" stroke-width="2" opacity="0.3"/>
+    <circle cx="100" cy="180" r="30" fill="none" stroke="#7B2BFF" stroke-width="2" opacity="0.5"/>
+    <circle cx="100" cy="180" r="20" fill="#7B2BFF"/>
+    <text x="100" y="185" font-size="14" text-anchor="middle" fill="#fff">🎤</text>
+    <!-- Timer -->
+    <text x="100" y="240" font-size="18" text-anchor="middle" fill="#fff" font-weight="700">0:12</text>
+    <!-- Hint -->
+    <text x="100" y="270" font-size="9" text-anchor="middle" fill="rgba(255,255,255,0.7)">Release to send</text>
+    <text x="100" y="285" font-size="9" text-anchor="middle" fill="rgba(255,255,255,0.5)">↑ Swipe up to cancel</text>
+    <!-- Wave bars -->
+    <g transform="translate(60,300)">
+      <rect x="0" y="6" width="3" height="8" rx="1.5" fill="#7B2BFF"/>
+      <rect x="6" y="3" width="3" height="14" rx="1.5" fill="#7B2BFF"/>
+      <rect x="12" y="0" width="3" height="20" rx="1.5" fill="#A855F7"/>
+      <rect x="18" y="4" width="3" height="12" rx="1.5" fill="#7B2BFF"/>
+      <rect x="24" y="2" width="3" height="16" rx="1.5" fill="#A855F7"/>
+      <rect x="30" y="5" width="3" height="10" rx="1.5" fill="#7B2BFF"/>
+      <rect x="36" y="1" width="3" height="18" rx="1.5" fill="#A855F7"/>
+      <rect x="42" y="4" width="3" height="12" rx="1.5" fill="#7B2BFF"/>
+      <rect x="48" y="6" width="3" height="8" rx="1.5" fill="#7B2BFF"/>
+      <rect x="54" y="3" width="3" height="14" rx="1.5" fill="#A855F7"/>
+      <rect x="60" y="0" width="3" height="20" rx="1.5" fill="#7B2BFF"/>
+      <rect x="66" y="5" width="3" height="10" rx="1.5" fill="#7B2BFF"/>
+      <rect x="72" y="2" width="3" height="16" rx="1.5" fill="#A855F7"/>
+    </g>
+  </g>
+
+  <!-- ===== PAGE 4: 语音气泡（公屏） ===== -->
+  <g transform="translate(710,20)">
+    <text x="100" y="-8" font-size="13" fill="#A0A0A0" text-anchor="middle" font-weight="600">语音气泡（公屏）</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#333" stroke-width="1.5"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:42</text>
+    <text x="170" y="42" font-size="8" fill="#fff" text-anchor="end">●● WiFi 98%</text>
+    <!-- Host info -->
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <text x="42" y="73" font-size="7" fill="rgba(255,255,255,0.7)">2,567 观看</text>
+    <!-- Text message -->
+    <rect x="12" y="280" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="296" font-size="8" fill="#A855F7" font-weight="500">小明：<tspan fill="#fff" font-weight="400">主播加油！</tspan></text>
+    <!-- Voice bubble -->
+    <rect x="12" y="310" width="160" height="38" rx="10" fill="rgba(0,0,0,0.4)" stroke="#7B2BFF" stroke-width="0.5"/>
+    <circle cx="30" cy="329" r="10" fill="#A855F7"/>
+    <text x="30" y="332" font-size="7" text-anchor="middle" fill="#fff">M</text>
+    <!-- Play button -->
+    <polygon points="48,323 48,335 56,329" fill="#fff"/>
+    <!-- Wave bars -->
+    <rect x="62" y="324" width="2" height="10" rx="1" fill="#7B2BFF"/>
+    <rect x="67" y="322" width="2" height="14" rx="1" fill="#A855F7"/>
+    <rect x="72" y="325" width="2" height="8" rx="1" fill="#7B2BFF"/>
+    <rect x="77" y="321" width="2" height="16" rx="1" fill="#A855F7"/>
+    <rect x="82" y="324" width="2" height="10" rx="1" fill="#7B2BFF"/>
+    <rect x="87" y="322" width="2" height="14" rx="1" fill="#A855F7"/>
+    <rect x="92" y="326" width="2" height="6" rx="1" fill="#7B2BFF"/>
+    <rect x="97" y="323" width="2" height="12" rx="1" fill="#A855F7"/>
+    <rect x="102" y="325" width="2" height="8" rx="1" fill="#7B2BFF"/>
+    <rect x="107" y="321" width="2" height="16" rx="1" fill="#A855F7"/>
+    <!-- Duration -->
+    <text x="148" y="333" font-size="8" fill="rgba(255,255,255,0.7)" text-anchor="end">0:12</text>
+    <!-- Another text message -->
+    <rect x="12" y="354" width="120" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="370" font-size="8" fill="#A855F7" font-weight="500">花花：<tspan fill="#fff" font-weight="400">语音好酷！</tspan></text>
+    <!-- Bottom bar -->
+    <rect x="12" y="392" width="112" height="28" rx="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="24" y="410" font-size="8" fill="rgba(255,255,255,0.5)">Say something...</text>
+    <circle cx="140" cy="406" r="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="140" y="410" font-size="10" text-anchor="middle" fill="#fff">🎤</text>
+  </g>
+
+  <!-- ===== PAGE 5: 语音转文字预览 ===== -->
+  <g transform="translate(940,20)">
+    <text x="100" y="-8" font-size="13" fill="#A0A0A0" text-anchor="middle" font-weight="600">语音转文字预览</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#333" stroke-width="1.5"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <text x="170" y="42" font-size="8" fill="#fff" text-anchor="end">●● WiFi 100%</text>
+    <!-- Host info -->
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <text x="42" y="73" font-size="7" fill="rgba(255,255,255,0.7)">1,234 观看</text>
+    <!-- Overlay -->
+    <rect y="260" width="200" height="173" rx="0" fill="rgba(0,0,0,0.4)"/>
+    <!-- Bottom sheet -->
+    <rect y="290" width="200" height="143" rx="16" fill="#fff"/>
+    <!-- Handle -->
+    <rect x="85" y="296" width="30" height="4" rx="2" fill="#E3E4E5"/>
+    <!-- STT result text area -->
+    <rect x="16" y="310" width="168" height="60" rx="10" fill="#F2F2F7"/>
+    <text x="24" y="330" font-size="9" fill="rgba(0,0,0,0.9)">大家好，主播唱得</text>
+    <text x="24" y="344" font-size="9" fill="rgba(0,0,0,0.9)">真好听，加油！</text>
+    <text x="24" y="360" font-size="7" fill="rgba(0,0,0,0.4)">点击可编辑修改</text>
+    <!-- Buttons -->
+    <rect x="16" y="384" width="80" height="34" rx="17" fill="none" stroke="#E3E4E5" stroke-width="1.5"/>
+    <text x="56" y="405" font-size="10" text-anchor="middle" fill="rgba(0,0,0,0.7)" font-weight="500">取消</text>
+    <rect x="104" y="384" width="80" height="34" rx="17" fill="url(#btnPurple)"/>
+    <text x="144" y="405" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">发送</text>
+  </g>
+
+  <!-- ===== PAGE 6: 麦克风权限 ===== -->
+  <g transform="translate(20,500)">
+    <text x="100" y="-8" font-size="13" fill="#A0A0A0" text-anchor="middle" font-weight="600">麦克风权限请求</text>
+    <rect width="200" height="280" rx="24" fill="url(#liveBg)" stroke="#333" stroke-width="1.5"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <!-- Overlay -->
+    <rect width="200" height="280" rx="24" fill="rgba(0,0,0,0.5)"/>
+    <!-- Permission dialog -->
+    <rect x="20" y="60" width="160" height="150" rx="16" fill="#fff"/>
+    <text x="100" y="90" font-size="12" text-anchor="middle" fill="rgba(0,0,0,0.9)" font-weight="600">麦克风权限</text>
+    <text x="100" y="112" font-size="8" text-anchor="middle" fill="rgba(0,0,0,0.6)">App 需要使用麦克风</text>
+    <text x="100" y="126" font-size="8" text-anchor="middle" fill="rgba(0,0,0,0.6)">来录制语音消息</text>
+    <!-- Buttons -->
+    <rect x="30" y="150" width="65" height="32" rx="16" fill="none" stroke="#E3E4E5" stroke-width="1"/>
+    <text x="62" y="170" font-size="9" text-anchor="middle" fill="rgba(0,0,0,0.7)">拒绝</text>
+    <rect x="105" y="150" width="65" height="32" rx="16" fill="url(#btnPurple)"/>
+    <text x="138" y="170" font-size="9" text-anchor="middle" fill="#fff" font-weight="600">允许</text>
+  </g>
+
+  <!-- ===== PAGE 7: 禁言状态 ===== -->
+  <g transform="translate(250,500)">
+    <text x="100" y="-8" font-size="13" fill="#A0A0A0" text-anchor="middle" font-weight="600">禁言状态</text>
+    <rect width="200" height="280" rx="24" fill="url(#liveBg)" stroke="#333" stroke-width="1.5"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <!-- Chat area -->
+    <rect x="12" y="180" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="196" font-size="8" fill="#A855F7" font-weight="500">花花：<tspan fill="#fff" font-weight="400">好好看！</tspan></text>
+    <!-- Disabled bottom bar -->
+    <rect x="12" y="230" width="176" height="28" rx="14" fill="rgba(255,255,255,0.08)"/>
+    <text x="24" y="248" font-size="8" fill="rgba(255,255,255,0.3)">You are muted</text>
+    <!-- Disabled mic button -->
+    <circle cx="168" cy="244" r="14" fill="rgba(255,255,255,0.08)"/>
+    <text x="168" y="248" font-size="10" text-anchor="middle" fill="rgba(255,255,255,0.3)">🎤</text>
+  </g>
+
+  <!-- ===== Legend / Arrows ===== -->
+  <!-- Arrow from Page 1 to Page 2 -->
+  <polyline points="228,236 242,236" fill="none" stroke="#FFD700" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#FFD700"/>
+    </marker>
+  </defs>
+
+</svg></whiteboard><h2>4.3 关键页面说明</h2><table><colgroup><col/><col/><col/></colgroup><thead><tr><th>页面/状态</th><th>布局描述</th><th>关联功能</th></tr></thead><tbody><tr><td>文字输入模式（默认）</td><td>直播间底部：文字输入框 + 麦克风切换按钮 + 礼物按钮 + 分享按钮</td><td>—</td></tr><tr><td>语音消息模式</td><td>底部切换为：语音消息/语音转文字 Tab + 长按录音按钮 + 键盘切换按钮</td><td>FUNC-001, FUNC-002</td></tr><tr><td>录制中</td><td>全屏遮罩 + 麦克风动画 + 录制计时 + 松手发送/上滑取消提示</td><td>FUNC-001</td></tr><tr><td>语音气泡（公屏）</td><td>发送者头像 + 播放按钮 + 波形动画条 + 时长标注</td><td>FUNC-001, FUNC-003</td></tr><tr><td>语音转文字预览</td><td>底部弹出面板：识别结果文本框（可编辑）+ 取消/发送按钮</td><td>FUNC-002</td></tr><tr><td>麦克风权限请求</td><td>系统权限弹窗：说明文案 + 拒绝/允许按钮</td><td>EC-001</td></tr><tr><td>禁言状态</td><td>输入框置灰显示 You are muted，语音按钮禁用</td><td>EC-007</td></tr></tbody></table>

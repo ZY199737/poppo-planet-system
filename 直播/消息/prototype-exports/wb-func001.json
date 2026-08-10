@@ -1,0 +1,67 @@
+{
+  "version": 2,
+  "nodes": [
+    {
+      "type": "frame", "id": "func1-row", "layout": "horizontal", "gap": 40, "padding": 32,
+      "width": "fit-content", "height": "fit-content",
+      "children": [
+        {
+          "type": "frame", "id": "card-1", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-1", "width": 240, "height": 520, "image": { "src": "PWqvbxM46okRklxtmfwlF70vgSb" } },
+            { "type": "text", "id": "t-1", "text": "1. 文字输入模式", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-2", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-2", "width": 240, "height": 520, "image": { "src": "B7iJbiFUuoXpjpxdIGklYnjOg9f" } },
+            { "type": "text", "id": "t-2", "text": "2. 语音消息模式", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-3", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-3", "width": 240, "height": 520, "image": { "src": "FJ2xbmdmJoz1sOx68w9lB8dKgQf" } },
+            { "type": "text", "id": "t-3", "text": "3. 录制中", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-4", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-4", "width": 240, "height": 520, "image": { "src": "YpbGbuIMnoNfTZxVdo6lkdSBgHc" } },
+            { "type": "text", "id": "t-4", "text": "4. 语音气泡", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-5", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-5", "width": 240, "height": 520, "image": { "src": "NdlsbPFH4oWBSpxRYVvlsXGCgag" } },
+            { "type": "text", "id": "t-5", "text": "5. 语音转文字预览", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-6", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-6", "width": 240, "height": 520, "image": { "src": "Ze60beI2YoxIXlx7miJlVDWYgFe" } },
+            { "type": "text", "id": "t-6", "text": "6. 麦克风权限请求", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        },
+        {
+          "type": "frame", "id": "card-7", "layout": "vertical", "gap": 8, "padding": [0, 0, 12, 0],
+          "width": 240, "height": "fit-content",
+          "children": [
+            { "type": "image", "id": "img-7", "width": 240, "height": 520, "image": { "src": "BHEabyOcTohpzkxbp5zlv1snghn" } },
+            { "type": "text", "id": "t-7", "text": "7. 禁言状态", "fontSize": 12, "textAlign": "center", "width": 240, "height": 20 }
+          ]
+        }
+      ]
+    }
+  ]
+}

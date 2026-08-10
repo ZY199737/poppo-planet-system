@@ -1,0 +1,24 @@
+<title>直播-粉丝团-等级与权益体系260709</title>
+<callout emoji="📋" background-color="grey"><p><b>作者：</b>— | <b>版本：</b>v1.0 | <b>状态：</b>评审中 | <b>日期：</b>2026-07-09</p><p><b>平台：</b>iOS / Android / H5 | <b>技术方案：</b>Native + H5 | <b>优先级：</b>P2</p></callout>
+<h1>一、需求背景</h1>
+<h2>1.1 现状与问题</h2>
+<p>粉丝团等级与权益体系是粉丝团模块的核心成长激励机制，用户通过积累亲密度从 Lv.1 升至 Lv.20，不同等级解锁对应权益（勋章样式升级、灯牌、飘屏、专属礼物、进场动效、连麦头像框、跑道等）。该功能涉及客户端展示、H5 成长历程页、服务端升级通知等多端协同，需要一份独立的、完整覆盖等级权益全部规则的需求文档，供开发和测试参考。</p>
+<p><b>需求来源：</b> <a href="https://uf1iawhques.sg.larksuite.com/wiki/KzKAwyFPiieYpYkilOwlobVygEc">粉丝团优化/修改 知识库文档集</a></p>
+<h2>1.2 目标</h2>
+<callout emoji="🎯" background-color="blue"><p><b>核心目标：</b> 完整定义粉丝团 Lv.1 至 Lv.20 的等级权益体系，明确每个等级解锁的权益内容、展示范围、触发条件及各类通知规则（飘屏、动效、跑道），为客户端、H5、服务端开发提供统一参考。</p></callout>
+<h2>1.3 关键指标</h2>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>指标</th><th>当前值</th><th>目标值</th><th>统计口径</th></tr></thead><tbody><tr><td>粉丝团等级分布</td><td>—</td><td>高等级用户占比提升</td><td>BI</td></tr><tr><td>成长历程页访问量</td><td>—</td><td>持续增长</td><td>BI</td></tr><tr><td>等级权益使用率</td><td>—</td><td>各等级权益覆盖率 &gt; 70%</td><td>BI</td></tr></tbody></table>
+<hr/>
+<h1>二、需求说明</h1>
+<h2>FUNC-001 功能点：等级与权益体系</h2>
+<h3>功能描述</h3>
+<p>粉丝团共分 Lv.1 至 Lv.20 共 20 个等级，用户通过积累亲密度升级。不同等级解锁不同权益，包括勋章样式升级、灯牌、升级飘屏、专属礼物、进场动效、连麦头像框、升级跑道、送礼跑道等。用户可通过粉丝团卡片内的「成长历程」入口查看当前等级权益和成长数据。</p>
+<h3>交互规则</h3>
+<ul><li><b>等级权益列表：</b> <b>[H5]</b> 成长历程为 H5 页面，展示用户数据和当前等级已解锁权益</li></ul>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>等级</th><th>权益</th><th>展示范围</th></tr></thead><tbody><tr><td>Lv.1</td><td>粉丝团勋章</td><td>全局</td></tr><tr><td>Lv.1</td><td>粉丝团灯牌</td><td>全局</td></tr><tr><td>Lv.1</td><td>粉丝团升级飘屏</td><td>本直播间</td></tr><tr><td>Lv.7</td><td>专属礼物（初心之光）</td><td>礼物面板</td></tr><tr><td>Lv.8</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.10</td><td>粉丝团升级飘屏</td><td>区域直播间</td></tr><tr><td>Lv.11</td><td>粉丝团进场动效（直播间人数 &lt; 1000）</td><td>本直播间</td></tr><tr><td>Lv.12</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.12</td><td>专属礼物（心愿宝石）</td><td>礼物面板</td></tr><tr><td>Lv.12</td><td>专属连麦头像框（连麦自动佩戴）</td><td>本直播间</td></tr><tr><td>Lv.13</td><td>粉丝团升级动效</td><td>本直播间</td></tr><tr><td>Lv.13</td><td>粉丝团升级跑道</td><td>全站</td></tr><tr><td>Lv.16</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.16</td><td>专属送礼跑道（送礼自动展示）</td><td>本直播间</td></tr><tr><td>Lv.20</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.20</td><td>专属礼物（永恒之心）</td><td>礼物面板</td></tr><tr><td>Lv.20</td><td>粉丝团进场特效升级</td><td>本直播间</td></tr></tbody></table>
+<ul><li><b>进场特效优先级：</b> <b>[客户端]</b> 多个进场特效同时存在时，按以下优先级展示：神秘人 &gt; 守护 &gt; Top3 &gt; 游戏Max &gt; VIP &gt; 粉丝团 &gt; 普通用户</li><li><b>进场动效触发条件：</b> <b>[客户端]</b> Lv.11 初级进场动效仅在直播间人数 &lt; 1000 时展示；Lv.20 高级进场特效在本直播间展示</li><li><b>成长历程数据展示：</b> <b>[H5]</b> 展示三项用户数据：加团天数、今日亲密度、总亲密度</li><li><b>满级展示优化：</b> <b>[客户端]</b> 用户达到 Lv.20 满级时，等级进度条显示满级状态，不再展示"升级还需亲密度"</li><li><b>升级动效触发：</b> <b>[客户端+服务端]</b> 用户粉丝团等级升到 13 级（含）以上时，每次升级在主播直播间触发升级动效（所有用户可见）。触发等级由系统参数 <b>fans_upgrade_special_effects</b>（默认 13）控制。动效展示：左侧主播昵称、右侧成员昵称、中间粉丝团名和升级等级</li><li><b>升级飘屏通知：</b> <b>[服务端]</b> Lv.8 起每次升级触发本直播间飘屏（二级透明飘屏，文案："粉丝团：恭喜{nickname}粉丝团到达level.{num}"）；飘屏等级由系统参数 <b>fans_bullet_level</b>（默认 8）控制</li><li><b>升级跑道通知：</b> <b>[服务端]</b> Lv.16 起每次升级触发区域直播间跑道（一级紫色跑道，文案："恭喜{hostname}的粉丝团成员{nickname}等级到达level.{num}"）；跑道等级由 <b>fans_road_effect_level</b>（默认 16）控制</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[H5]</b> 成长历程页面数据加载失败时展示空状态页</li><li><b>文本超长：</b> <b>[客户端]</b> 权益名称超出显示区域时截断显示</li><li><b>网络异常：</b> <b>[H5]</b> H5 页面加载失败时展示"加载失败，点击重试"</li><li><b>重复操作：</b> <b>[客户端]</b> 进场动效播放期间不重复触发</li></ul>
+<h3>页面流程图</h3>
+<whiteboard type="blank"></whiteboard>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>页面/状态</th><th>布局描述</th><th>关联功能</th></tr></thead><tbody><tr><td>成长历程页面</td><td>H5 页面：顶部用户数据面板（加团天数/今日亲密度/总亲密度）+ 中部等级权益列表 + 底部退出按钮</td><td>FUNC-001</td></tr><tr><td>粉丝团列表页</td><td>双 Tab 切换（已点亮/已冻结）：每条记录展示主播头像+昵称+等级+亲密度+送礼按钮，冻结 Tab 有点亮按钮</td><td>FUNC-001</td></tr></tbody></table>

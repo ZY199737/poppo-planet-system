@@ -1,0 +1,42 @@
+{
+  "pen_file": "短视频-列表-图文短视频混排260715-prototype.pen",
+  "doc_token": "GS3qd89HEoXeOrxIB7hlSPOygLh",
+  "groups": [
+    {
+      "func": "FUNC-001",
+      "whiteboard_token": "IZYmwXBcBhyBiybFt4HlIRjMgsy",
+      "screens": [
+        { "nodeId": "ZN5JP", "label": "1. 动态页-精选tab默认态" }
+      ]
+    },
+    {
+      "func": "FUNC-002",
+      "whiteboard_token": "PxnjwshT8h4zYcbrxvhlcVkvgYc",
+      "screens": [
+        { "nodeId": "qTTb4", "label": "1. 图文动态卡-多图轮播" },
+        { "nodeId": "sjc8a", "label": "2. 图文动态卡-单图+文案展开" }
+      ]
+    },
+    {
+      "func": "FUNC-003",
+      "whiteboard_token": "RmTGwozCdhlV0jbyqeflTd5rgEr",
+      "screens": [
+        { "nodeId": "BEJIv", "label": "1. 纯文本动态卡" }
+      ]
+    },
+    {
+      "func": "FUNC-004",
+      "whiteboard_token": "DFXnwLa7Qh8DhhbN6jplKKaNgqf",
+      "screens": [
+        { "nodeId": "i7pCZJ", "label": "1. 图文详情页-主态" }
+      ]
+    },
+    {
+      "func": "FUNC-006",
+      "whiteboard_token": "LQtdwe2wAhDjKWbmwLElMlggguz",
+      "screens": [
+        { "nodeId": "u5agz", "label": "1. 热门页-顶部banner" }
+      ]
+    }
+  ]
+}

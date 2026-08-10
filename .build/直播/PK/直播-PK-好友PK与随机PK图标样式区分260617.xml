@@ -1,0 +1,74 @@
+<title>直播-PK-好友PK与随机PK图标样式区分260617</title>
+<callout emoji="📋" background-color="grey"><p><b>作者：</b>徐雅静 | <b>版本：</b>v1.0 | <b>状态：</b>评审中 | <b>日期：</b>2026-06-17</p><p><b>平台：</b>iOS / Android | <b>技术方案：</b>Native | <b>优先级：</b>P4 | <b>预估工期：</b>2d</p><p><b>需求来源记录：</b><a href="https://uf1iawhques.sg.larksuite.com/record/E7Skrg8xrexk1ecEKaPlNueHg6c">需求池链接</a></p></callout>
+<hr/>
+<h1>一、需求背景</h1>
+<h2>1.1 现状与问题</h2>
+<p>目前好友PK和随机PK在客户端所有展示位置使用完全相同的icon图标，用户和主播无法从icon外观上区分当前PK属于哪种类型。运营侧反馈该问题导致用户对PK模式的感知不清晰，不利于好友PK功能的推广。</p>
+<h2>1.2 目标</h2>
+<callout emoji="🎯" background-color="blue"><p><b>核心目标：</b>通过图标样式差异化，让用户在所有PK相关入口和状态展示中一眼识别好友PK与随机PK。</p></callout>
+<h2>1.3 成功指标</h2>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>指标</th><th>当前值</th><th>目标值</th><th>统计口径</th></tr></thead><tbody><tr><td>好友PK入口点击率</td><td>—</td><td>+5%</td><td>埋点 click_friend_pk_entry</td></tr><tr><td>用户对PK类型的识别准确率</td><td>—</td><td>≥90%</td><td>用户调研</td></tr></tbody></table>
+<hr/>
+<h1>二、需求说明</h1>
+<h2>2.1 功能点：PK类型图标样式区分（FUNC-001）</h2>
+<h3>产品描述</h3>
+<p>将好友PK和随机PK的图标从当前统一样式改为差异化设计。好友PK图标使用双人对战造型（两个相连的头像轮廓+闪电），整体色调偏暖（橙色系），传达"好友互动"的亲密感；随机PK图标使用骰子/随机元素造型（交叉的闪电+问号），整体色调偏冷（蓝紫色系），传达"随机匹配"的未知感。</p>
+<h3>交互规则</h3>
+<p><b>图标应用位置清单：</b></p>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>位置编号</th><th>位置描述</th><th>当前状态</th><th>改造说明</th></tr></thead><tbody><tr><td>POS-01</td><td>主播端直播间底部工具栏 — PK入口按钮</td><td>统一PK icon</td><td>PK入口按钮点击后，弹出PK类型选择面板时，面板内「好友PK」和「随机PK」两个选项使用各自差异化icon</td></tr><tr><td>POS-02</td><td>PK匹配等待页面 — 顶部标识</td><td>统一PK icon</td><td>根据当前匹配类型，显示对应icon + 文案"好友PK匹配中"或"随机PK匹配中"</td></tr><tr><td>POS-03</td><td>PK进行中 — 直播间顶部PK状态条</td><td>统一PK icon</td><td>PK状态条左上角显示当前PK类型的小图标角标（16×16）</td></tr><tr><td>POS-04</td><td>观众端直播间 — PK状态标识</td><td>统一PK icon</td><td>观众进入正在PK的直播间时，PK状态条左上角显示类型角标</td></tr><tr><td>POS-05</td><td>PK结果页 — 顶部类型标识</td><td>无类型标识</td><td>新增：结果页标题区域显示类型icon + "好友PK"或"随机PK"文案</td></tr><tr><td>POS-06</td><td>PK记录列表 — 每条记录的类型标识</td><td>无类型标识</td><td>新增：每条PK记录左侧增加类型icon角标（12×12）</td></tr></tbody></table>
+<p><b>图标规格：</b></p>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>规格</th><th>好友PK icon</th><th>随机PK icon</th></tr></thead><tbody><tr><td>主色</td><td>#FF8A24（暖橙）</td><td>#7B2BFF（品牌紫）</td></tr><tr><td>辅助色</td><td>#FFD18C（浅橙）</td><td>#B794FF（浅紫）</td></tr><tr><td>造型</td><td>双人头像轮廓 + 中间闪电</td><td>交叉闪电 + 问号元素</td></tr><tr><td>标准尺寸</td><td>32×32 @2x</td><td>32×32 @2x</td></tr><tr><td>小尺寸（角标）</td><td>16×16 @2x / 12×12 @2x</td><td>16×16 @2x / 12×12 @2x</td></tr></tbody></table>
+<p><b>适配规则：</b></p>
+<ul><li>深色模式：icon主色不变，辅助色降低20%亮度</li><li>icon资源需提供@2x和@3x两套</li></ul>
+<h3>AI开发规格</h3>
+<pre lang="yaml" caption="FUNC-001 PK类型图标"><code># 功能标识：FUNC-001
+
+trigger: "所有展示PK类型icon的UI位置"
+
+display:
+  icon_asset:
+    friend_pk:
+      standard: "ic_pk_friend_32"
+      badge_16: "ic_pk_friend_badge_16"
+      badge_12: "ic_pk_friend_badge_12"
+    random_pk:
+      standard: "ic_pk_random_32"
+      badge_16: "ic_pk_random_badge_16"
+      badge_12: "ic_pk_random_badge_12"
+
+behavior:
+  on_pk_type_resolved: "根据PK类型字段(pk_type)选择对应icon资源"
+  icon_selection_logic: "pk_type == 'friend' → friend_pk资源; pk_type == 'random' → random_pk资源"
+  fallback: "pk_type为空或未知类型 → 使用当前默认PK icon（向后兼容）"
+
+data_dependencies:
+  - field: pk_type
+    source: "PK会话数据，现有字段，无需新增"
+    values: "'friend' | 'random'"</code></pre>
+<hr/>
+<h1>三、边界与异常</h1>
+<table><colgroup><col/><col/><col/><col/><col/></colgroup><thead><tr><th>ID</th><th>场景</th><th>条件</th><th>期望行为</th><th>必要性</th></tr></thead><tbody><tr><td>EC-001</td><td>PK类型字段缺失</td><td>pk_type为null或空字符串</td><td>使用当前默认PK icon，不崩溃不报错</td><td><b>必须</b></td></tr><tr><td>EC-002</td><td>新增PK类型</td><td>未来新增pk_type枚举值（如"team"）</td><td>使用默认PK icon，不因未知类型崩溃</td><td><b>必须</b></td></tr><tr><td>EC-003</td><td>icon资源加载失败</td><td>本地资源丢失或损坏</td><td>降级为纯文字标签"好友PK"/"随机PK"</td><td><b>必须</b></td></tr><tr><td>EC-004</td><td>深色模式适配</td><td>用户切换深色/浅色模式</td><td>icon颜色自动适配，无需用户操作</td><td><b>必须</b></td></tr><tr><td>EC-005</td><td>低版本客户端</td><td>用户未更新到包含新icon的版本</td><td>显示旧版统一PK icon，无影响</td><td><b>必须</b></td></tr></tbody></table>
+<hr/>
+<h1>四、设计稿</h1>
+<h2>4.1 交互流程图</h2>
+<whiteboard type="mermaid">flowchart TD
+    A[主播点击PK入口] --> B[PK类型选择面板]
+    B --> |选择好友PK| C[显示好友PK icon + 好友PK匹配等待页]
+    B --> |选择随机PK| D[显示随机PK icon + 随机PK匹配等待页]
+    C --> E[好友PK进行中 - 状态条显示好友PK角标]
+    D --> F[随机PK进行中 - 状态条显示随机PK角标]
+    E --> G[PK结果页 - 显示好友PK类型标识]
+    F --> H[PK结果页 - 显示随机PK类型标识]
+    G --> I[PK记录列表 - 好友PK记录带类型角标]
+    H --> I</whiteboard>
+<h2>4.2 关键页面说明</h2>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>页面/状态</th><th>布局描述</th><th>关联功能</th></tr></thead><tbody><tr><td>PK类型选择面板</td><td>底部弹出面板：两个卡片式选项，左侧好友PK（暖橙icon+文案），右侧随机PK（紫色icon+文案）</td><td>FUNC-001 POS-01</td></tr><tr><td>好友PK匹配等待</td><td>顶部居中显示好友PK icon + "好友PK匹配中..." 文案 + 匹配动画</td><td>FUNC-001 POS-02</td></tr><tr><td>随机PK匹配等待</td><td>顶部居中显示随机PK icon + "随机PK匹配中..." 文案 + 匹配动画</td><td>FUNC-001 POS-02</td></tr><tr><td>PK进行中状态条</td><td>PK状态条左上角增加16×16类型角标icon</td><td>FUNC-001 POS-03/04</td></tr><tr><td>PK结果页</td><td>标题区域显示类型icon(32×32) + "好友PK"或"随机PK"文案</td><td>FUNC-001 POS-05</td></tr><tr><td>PK记录列表</td><td>每条记录左侧增加12×12类型icon角标</td><td>FUNC-001 POS-06</td></tr></tbody></table>
+<hr/>
+<h1>五、埋点需求</h1>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>事件名</th><th>触发时机</th><th>参数</th></tr></thead><tbody><tr><td>pk_type_icon_expose</td><td>PK类型icon曝光时</td><td>pk_type: "friend" | "random", position: POS-01~POS-06</td></tr><tr><td>pk_type_select_click</td><td>PK类型选择面板点击时</td><td>pk_type: "friend" | "random"</td></tr></tbody></table>
+<hr/>
+<h1>六、验收标准</h1>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>编号</th><th>验收项</th><th>关联功能</th><th>通过标准</th></tr></thead><tbody><tr><td>AC-001</td><td>PK类型选择面板icon区分</td><td>FUNC-001 POS-01</td><td>面板内好友PK显示暖橙双人icon，随机PK显示紫色闪电问号icon</td></tr><tr><td>AC-002</td><td>匹配等待页icon区分</td><td>FUNC-001 POS-02</td><td>好友PK匹配页显示好友PK icon，随机PK匹配页显示随机PK icon</td></tr><tr><td>AC-003</td><td>PK状态条角标</td><td>FUNC-001 POS-03/04</td><td>PK进行中主播端和观众端状态条左上角均显示正确类型角标</td></tr><tr><td>AC-004</td><td>PK结果页类型标识</td><td>FUNC-001 POS-05</td><td>结果页标题区域显示正确的PK类型icon和文案</td></tr><tr><td>AC-005</td><td>PK记录列表角标</td><td>FUNC-001 POS-06</td><td>记录列表每条记录显示正确的类型角标</td></tr><tr><td>AC-006</td><td>类型缺失降级</td><td>EC-001/002</td><td>pk_type为空或未知值时显示默认PK icon，无崩溃</td></tr><tr><td>AC-007</td><td>深色模式</td><td>EC-004</td><td>深色模式下icon辅助色正确降低亮度</td></tr><tr><td>AC-008</td><td>双端一致性</td><td>—</td><td>iOS和Android显示效果一致</td></tr></tbody></table>
+<hr/>
+<h2>变更记录</h2>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>版本</th><th>日期</th><th>作者</th><th>变更内容</th></tr></thead><tbody><tr><td>v1.0</td><td>2026-06-17</td><td>徐雅静</td><td>初始版本</td></tr></tbody></table>

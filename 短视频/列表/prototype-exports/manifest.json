@@ -1,0 +1,16 @@
+{
+  "pen_file": "短视频-列表-列表支持图文内容混排展示260715-prototype.pen",
+  "doc_token": "Sq5KdwoUSooVLdxIdyUlxQjGgeb",
+  "groups": [
+    {
+      "func": "FUNC-001",
+      "whiteboard_token": "OxjvwDlsHhxY8vbNUtplGogvgVh",
+      "screens": [
+        { "nodeId": "OUJaF", "label": "1. 列表-混排展示" },
+        { "nodeId": "KMZAq", "label": "2. 图文卡片细节" },
+        { "nodeId": "xwMWU", "label": "3. 列表-空状态" },
+        { "nodeId": "oILDV", "label": "4. 图文详情页" }
+      ]
+    }
+  ]
+}

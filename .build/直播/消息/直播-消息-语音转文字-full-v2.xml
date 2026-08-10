@@ -1,0 +1,420 @@
+<title>直播-消息-直播间发言支持语音转文字与发语音260617</title>
+<callout emoji="📌"><p><b>文档信息</b></p><p>作者：— | 版本：v1.0 | 状态：评审中 | 日期：2026-06-17</p><p>平台：iOS / Android | 技术方案：Native | 优先级：P1 | 预估工期：待评估</p><p>需求来源记录：<a href="https://uf1iawhques.sg.larksuite.com/record/MTmirjqwqeoA8fceW1alhPi5ggc">需求池记录</a></p></callout>
+<h1>一、需求背景</h1>
+<h2>1.1 现状与问题</h2>
+<p>当前直播间公屏仅支持文字发言。对于不擅长打字的用户（如部分海外用户、输入法不方便的语种用户），发言门槛较高，影响直播间互动活跃度。同时，语音消息在 IM 场景中已经成熟，但直播间公屏尚未支持。</p>
+<h2>1.2 目标</h2>
+<callout emoji="🎯"><p><b>核心目标：</b>在直播间公屏新增语音发送能力，支持两种模式：直接发送语音消息（其他用户可点击播放）、语音转文字后以文字形式发送到公屏，降低发言门槛，提升直播间互动率。</p></callout>
+<h2>1.3 成功指标</h2>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>指标</th><th>当前值</th><th>目标值</th><th>统计口径</th></tr></thead><tbody><tr><td>直播间人均发言条数</td><td>待补充</td><td>+15%</td><td>公屏消息总量 / DAU</td></tr><tr><td>语音消息使用率</td><td>0</td><td>5%+</td><td>语音消息数 / 公屏总消息数</td></tr><tr><td>语音转文字使用率</td><td>0</td><td>3%+</td><td>语音转文字消息数 / 公屏总消息数</td></tr></tbody></table>
+<hr/>
+<h1>二、需求说明</h1>
+<h2>2.1 功能点：发送语音消息</h2>
+<h3>产品描述</h3>
+<p>用户在直播间输入区域切换到语音模式后，长按录音按钮录制语音消息。录制完成后，语音消息以语音气泡形式展示在公屏，其他用户可点击播放收听。</p>
+<h3>交互规则</h3>
+<ul>
+<li><b>入口：</b>直播间输入框右侧新增「语音/键盘」切换按钮，点击后输入框区域切换为录音按钮</li>
+<li><b>录制方式：</b>长按录音按钮开始录制，松手发送；上滑取消发送</li>
+<li><b>录制时长限制：</b>最短 1 秒，最长 60 秒</li>
+<li><b>不足 1 秒：</b>松手后不发送，toast 提示 "Recording too short"</li>
+<li><b>达到 60 秒：</b>自动停止录制并发送</li>
+<li><b>上滑取消：</b>长按后手指上滑超过取消阈值，松手后不发送，toast 提示 "Cancelled"</li>
+<li><b>录制中展示：</b>显示录音动画 + 当前录制时长 + "Release to send, swipe up to cancel" 提示</li>
+<li><b>麦克风权限：</b>首次使用时请求麦克风权限；若用户拒绝，点击录音按钮时 toast 提示 "Please enable microphone access in Settings" 并提供跳转系统设置入口</li>
+</ul>
+<h3>AI开发规格</h3>
+<pre caption="FUNC-001" lang="yaml"><code># 功能标识：FUNC-001
+
+trigger: "用户点击语音切换按钮 AND 麦克风权限已授予"
+
+recording:
+  min_duration: 1s
+  max_duration: 60s
+  format: "AAC / Opus"
+  sample_rate: 16000
+  channels: 1
+
+behavior:
+  on_press: "开始录音，展示录音动画和计时"
+  on_release: "duration >= 1s → 停止录音，上传音频文件，发送语音消息到公屏"
+  on_release_short: "duration &lt; 1s → 取消，toast 'Recording too short'"
+  on_swipe_up: "取消录音，toast 'Cancelled'"
+  on_max_duration: "自动停止录音并发送"
+
+display:
+  position: "公屏消息流"
+  style: "语音气泡：用户头像 + 昵称 + 语音波形条 + 时长标注"
+  duration_format: "MM:SS 或 S''"
+
+data_dependencies:
+  - field: audio_url
+    source: "上传至 CDN 后返回的 URL"
+  - field: duration
+    source: "客户端录制时长"</code></pre>
+<h2>2.2 功能点：语音转文字发送</h2>
+<h3>产品描述</h3>
+<p>用户在语音录制模式下，可选择将录制的语音通过 ASR（语音识别）转为文字，以文字消息形式发送到公屏。适用于用户想通过语音输入但更希望以文字形式展示的场景。</p>
+<h3>交互规则</h3>
+<ul>
+<li><b>入口：</b>录音按钮区域提供「语音转文字」模式切换，或在录音完成后弹出选项</li>
+<li><b>方式（推荐）— 独立模式：</b>在语音模式下新增「转文字」子模式切换按钮，长按录音后直接将识别结果以文字形式预填到输入框，用户确认后发送</li>
+<li><b>识别结果展示：</b>识别完成后，文字预填到输入框，用户可编辑修改后发送，也可直接发送</li>
+<li><b>识别语言：</b>基于用户 App 语言设置自动选择识别语言</li>
+<li><b>识别失败：</b>toast 提示 "Voice recognition failed, please try again"，不发送消息</li>
+</ul>
+<h3>AI开发规格</h3>
+<pre caption="FUNC-002" lang="yaml"><code># 功能标识：FUNC-002
+
+trigger: "用户在语音转文字模式下长按录音并松手"
+
+flow:
+  1_record: "长按录音，展示录音动画 + 实时/录制完成后识别"
+  2_recognize: "音频上传 ASR 服务，返回识别文字"
+  3_preview: "识别文字预填到输入框，用户可编辑"
+  4_send: "用户确认发送 → 以普通文字消息发送到公屏"
+
+asr:
+  language: "auto（基于 App 语言设置）"
+  timeout: 10s
+  max_audio_duration: 60s
+
+behavior:
+  on_recognize_success: "文字预填输入框，光标置末尾"
+  on_recognize_fail: "toast 'Voice recognition failed, please try again'"
+  on_recognize_empty: "toast 'No speech detected'"
+  on_user_edit: "用户可修改识别结果后发送"
+  on_user_cancel: "清空输入框，不发送"</code></pre>
+<h2>2.3 功能点：语音消息播放</h2>
+<h3>产品描述</h3>
+<p>公屏上展示的语音消息，其他用户（包括主播和观众）可以点击播放收听。播放时展示播放动画，同一时间只能播放一条语音消息。</p>
+<h3>交互规则</h3>
+<ul>
+<li><b>点击播放：</b>点击语音气泡播放音频，气泡内波形条播放动画</li>
+<li><b>再次点击：</b>暂停播放，动画停止</li>
+<li><b>播放完毕：</b>动画停止，波形条恢复静态</li>
+<li><b>互斥播放：</b>点击播放新的语音消息时，当前正在播放的语音自动停止</li>
+<li><b>听筒/扬声器：</b>默认使用扬声器播放（直播间场景）；如果用户贴耳（距离传感器触发），切换为听筒播放</li>
+<li><b>与直播音频共存：</b>语音消息播放时，直播间音频正常播放，语音消息叠加播放（混音）</li>
+</ul>
+<h3>AI开发规格</h3>
+<pre caption="FUNC-003" lang="yaml"><code># 功能标识：FUNC-003
+
+trigger: "用户点击公屏语音消息气泡"
+
+playback:
+  output: "speaker（默认），proximity_sensor → earpiece"
+  mix_with_live_audio: true
+  concurrent: false
+
+behavior:
+  on_tap_playing: "暂停播放，动画停止"
+  on_tap_paused: "继续播放，动画恢复"
+  on_tap_new: "停止当前，播放新的"
+  on_playback_end: "动画停止，波形条恢复静态"
+  on_proximity_near: "切换听筒播放"
+  on_proximity_far: "切换扬声器播放"
+
+display:
+  playing_animation: "波形条左到右流动动画"
+  paused_state: "波形条静态，显示播放进度"</code></pre>
+<hr/>
+<h1>三、数据与接口</h1>
+<h2>3.1 核心数据结构</h2>
+<pre caption="核心数据模型" lang="typescript"><code>interface VoiceMessage {
+  message_id: string;
+  room_id: string;                  // 直播间 ID
+  sender_id: string;                // 发送者用户 ID
+  type: "voice";                    // 消息类型
+  audio_url: string;                // 音频文件 CDN 地址
+  duration: number;                 // 音频时长，单位秒，精度 0.1s
+  file_size: number;                // 文件大小，单位字节
+  format: "aac" | "opus";          // 音频编码格式
+  created_at: string;               // ISO 8601 时间戳
+}</code></pre>
+<h2>3.2 接口定义</h2>
+<pre caption="API-001 上传语音消息" lang="yaml"><code>api:
+  id: API-001
+  method: POST
+  path: /api/v2/live/room/{room_id}/voice-message/upload
+  auth: required
+  description: "上传语音文件并发送语音消息到直播间公屏"
+
+  request:
+    body:
+      file: { type: binary, required: true, description: "音频文件，AAC/Opus 格式" }
+      duration: { type: float, required: true, description: "音频时长，单位秒" }
+
+  response:
+    success: { status: 200, body: { code: 0, data: { message_id: "string", audio_url: "string" } } }
+    errors:
+      - { status: 400, code: 30001, message: "音频时长不合法", client_action: "toast 提示" }
+      - { status: 400, code: 30002, message: "音频文件过大", client_action: "toast 'File too large'" }
+      - { status: 403, code: 30003, message: "用户被禁言", client_action: "toast 'You are muted'" }
+      - { status: 403, code: 30004, message: "直播间不支持语音消息", client_action: "toast 并隐藏语音入口" }
+      - { status: 429, code: 30005, message: "发送频率过高", client_action: "toast 'Please wait'" }
+      - { status: 401, code: 10001, message: "未登录", client_action: "跳转登录页" }</code></pre>
+<pre caption="API-002 语音转文字" lang="yaml"><code>api:
+  id: API-002
+  method: POST
+  path: /api/v2/asr/recognize
+  auth: required
+  description: "语音转文字识别"
+
+  request:
+    body:
+      file: { type: binary, required: true, description: "音频文件" }
+      language: { type: string, required: false, default: "auto", description: "识别语言" }
+
+  response:
+    success: { status: 200, body: { code: 0, data: { text: "string", language: "string", confidence: 0.95 } } }
+    errors:
+      - { status: 400, code: 40001, message: "音频格式不支持", client_action: "toast 提示" }
+      - { status: 400, code: 40002, message: "音频时长超限", client_action: "toast 提示" }
+      - { status: 422, code: 40003, message: "无法识别语音内容", client_action: "toast 'No speech detected'" }
+      - { status: 500, code: 40004, message: "识别服务异常", client_action: "toast 'Voice recognition failed'" }
+      - { status: 401, code: 10001, message: "未登录", client_action: "跳转登录页" }</code></pre>
+<hr/>
+<h1>四、设计稿</h1>
+<h2>4.1 交互流程图</h2>
+<whiteboard type="mermaid">flowchart TD
+    A[直播间-文字输入模式] -->|点击麦克风图标| B[语音模式-选择子模式]
+    B -->|选择语音消息| C[语音消息模式]
+    B -->|选择语音转文字| D[语音转文字模式]
+
+    C -->|长按录音按钮| E{录制中}
+    E -->|松手且时长大于1s| F[上传音频文件]
+    E -->|松手且时长不足1s| G[Toast: Recording too short]
+    E -->|上滑取消| H[Toast: Cancelled]
+    E -->|录制达60s| F
+    F -->|上传成功| I[语音气泡展示在公屏]
+    F -->|上传失败| J[Toast: Failed 支持重试]
+    G --> C
+    H --> C
+
+    D -->|长按录音按钮| K{录制加识别中}
+    K -->|松手| L[ASR识别]
+    L -->|识别成功| M[文字预填到输入框]
+    L -->|识别失败| N[Toast: Voice recognition failed]
+    L -->|无语音内容| O[Toast: No speech detected]
+    M -->|用户确认发送| P[文字消息发送到公屏]
+    M -->|用户取消| D
+    N --> D
+    O --> D
+
+    I -->|其他用户点击语音气泡| Q{播放状态}
+    Q -->|点击播放| R[播放中-波形动画]
+    Q -->|再次点击| S[暂停播放]
+    R -->|播放完毕| T[恢复静态]
+    R -->|点击其他语音| U[停止当前-播放新的]
+
+    subgraph 异常场景
+        V[首次使用-无麦克风权限] -->|请求权限| W{用户选择}
+        W -->|允许| C
+        W -->|拒绝| X[Toast: 请在设置中开启麦克风权限]
+        Y[用户被禁言] --> Z[Toast: You are muted]
+        AA[主播关闭语音消息] --> AB[隐藏语音切换按钮]
+    end</whiteboard>
+<h2>4.2 关键页面原型</h2>
+<whiteboard type="svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 900" font-family="-apple-system, SF Pro, Roboto, Helvetica Neue, sans-serif">
+  <defs>
+    <linearGradient id="liveBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d1b69"/>
+      <stop offset="100%" stop-color="#1a0a3e"/>
+    </linearGradient>
+    <linearGradient id="btnPurple" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7B2BFF"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="recBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0a3e"/>
+      <stop offset="100%" stop-color="#0d0520"/>
+    </linearGradient>
+  </defs>
+
+  <!-- PAGE 1: 文字输入模式 -->
+  <g transform="translate(20,30)">
+    <text x="100" y="-10" font-size="14" fill="#666" text-anchor="middle" font-weight="600">文字输入模式（默认）</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#444" stroke-width="1"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <text x="42" y="73" font-size="7" fill="rgba(255,255,255,0.7)">1,234 观看</text>
+    <rect x="12" y="320" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="336" font-size="8" fill="#A855F7" font-weight="500">小明：<tspan fill="#fff">主播加油！</tspan></text>
+    <rect x="12" y="348" width="120" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="364" font-size="8" fill="#A855F7" font-weight="500">花花：<tspan fill="#fff">PK PK！</tspan></text>
+    <rect x="12" y="388" width="112" height="28" rx="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="24" y="406" font-size="8" fill="rgba(255,255,255,0.5)">Say something...</text>
+    <circle cx="140" cy="402" r="14" fill="rgba(255,255,255,0.15)" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="140" y="406" font-size="10" text-anchor="middle" fill="#fff">🎤</text>
+    <text x="140" y="423" font-size="6" fill="#FFD700" text-anchor="middle">NEW</text>
+    <circle cx="168" cy="402" r="12" fill="rgba(255,255,255,0.15)"/>
+    <text x="168" y="406" font-size="9" text-anchor="middle" fill="#fff">🎁</text>
+  </g>
+
+  <!-- PAGE 2: 语音消息模式 -->
+  <g transform="translate(250,30)">
+    <text x="100" y="-10" font-size="14" fill="#666" text-anchor="middle" font-weight="600">语音消息模式</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#444" stroke-width="1"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <rect x="12" y="310" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="326" font-size="8" fill="#A855F7" font-weight="500">小明：<tspan fill="#fff">主播加油！</tspan></text>
+    <rect x="12" y="348" width="176" height="26" rx="13" fill="rgba(0,0,0,0.4)"/>
+    <rect x="14" y="350" width="85" height="22" rx="11" fill="#7B2BFF"/>
+    <text x="56" y="365" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">语音消息</text>
+    <text x="140" y="365" font-size="8" fill="rgba(255,255,255,0.6)" text-anchor="middle">语音转文字</text>
+    <rect x="30" y="384" width="120" height="36" rx="18" fill="url(#btnPurple)"/>
+    <text x="90" y="406" font-size="9" text-anchor="middle" fill="#fff" font-weight="600">Hold to talk</text>
+    <circle cx="168" cy="402" r="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="168" y="406" font-size="10" text-anchor="middle" fill="#fff">⌨</text>
+  </g>
+
+  <!-- PAGE 3: 录制中 -->
+  <g transform="translate(480,30)">
+    <text x="100" y="-10" font-size="14" fill="#666" text-anchor="middle" font-weight="600">录制中</text>
+    <rect width="200" height="433" rx="24" fill="url(#recBg)" stroke="#444" stroke-width="1"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <rect width="200" height="433" rx="24" fill="rgba(0,0,0,0.6)"/>
+    <circle cx="100" cy="180" r="40" fill="none" stroke="#7B2BFF" stroke-width="2" opacity="0.3"/>
+    <circle cx="100" cy="180" r="30" fill="none" stroke="#7B2BFF" stroke-width="2" opacity="0.5"/>
+    <circle cx="100" cy="180" r="20" fill="#7B2BFF"/>
+    <text x="100" y="185" font-size="14" text-anchor="middle" fill="#fff">🎤</text>
+    <text x="100" y="240" font-size="18" text-anchor="middle" fill="#fff" font-weight="700">0:12</text>
+    <text x="100" y="270" font-size="9" text-anchor="middle" fill="rgba(255,255,255,0.7)">Release to send</text>
+    <text x="100" y="285" font-size="9" text-anchor="middle" fill="rgba(255,255,255,0.5)">↑ Swipe up to cancel</text>
+    <g transform="translate(60,300)">
+      <rect x="0" y="6" width="3" height="8" rx="1.5" fill="#7B2BFF"/>
+      <rect x="6" y="3" width="3" height="14" rx="1.5" fill="#7B2BFF"/>
+      <rect x="12" y="0" width="3" height="20" rx="1.5" fill="#A855F7"/>
+      <rect x="18" y="4" width="3" height="12" rx="1.5" fill="#7B2BFF"/>
+      <rect x="24" y="2" width="3" height="16" rx="1.5" fill="#A855F7"/>
+      <rect x="30" y="5" width="3" height="10" rx="1.5" fill="#7B2BFF"/>
+      <rect x="36" y="1" width="3" height="18" rx="1.5" fill="#A855F7"/>
+      <rect x="42" y="4" width="3" height="12" rx="1.5" fill="#7B2BFF"/>
+      <rect x="48" y="6" width="3" height="8" rx="1.5" fill="#7B2BFF"/>
+      <rect x="54" y="3" width="3" height="14" rx="1.5" fill="#A855F7"/>
+      <rect x="60" y="0" width="3" height="20" rx="1.5" fill="#7B2BFF"/>
+      <rect x="66" y="5" width="3" height="10" rx="1.5" fill="#7B2BFF"/>
+      <rect x="72" y="2" width="3" height="16" rx="1.5" fill="#A855F7"/>
+    </g>
+  </g>
+
+  <!-- PAGE 4: 语音气泡 -->
+  <g transform="translate(710,30)">
+    <text x="100" y="-10" font-size="14" fill="#666" text-anchor="middle" font-weight="600">语音气泡（公屏）</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#444" stroke-width="1"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:42</text>
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <rect x="12" y="280" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="296" font-size="8" fill="#A855F7" font-weight="500">小明：<tspan fill="#fff">主播加油！</tspan></text>
+    <rect x="12" y="310" width="160" height="38" rx="10" fill="rgba(0,0,0,0.4)" stroke="#7B2BFF" stroke-width="0.5"/>
+    <circle cx="30" cy="329" r="10" fill="#A855F7"/>
+    <text x="30" y="332" font-size="7" text-anchor="middle" fill="#fff">M</text>
+    <polygon points="48,323 48,335 56,329" fill="#fff"/>
+    <rect x="62" y="324" width="2" height="10" rx="1" fill="#7B2BFF"/>
+    <rect x="67" y="322" width="2" height="14" rx="1" fill="#A855F7"/>
+    <rect x="72" y="325" width="2" height="8" rx="1" fill="#7B2BFF"/>
+    <rect x="77" y="321" width="2" height="16" rx="1" fill="#A855F7"/>
+    <rect x="82" y="324" width="2" height="10" rx="1" fill="#7B2BFF"/>
+    <rect x="87" y="322" width="2" height="14" rx="1" fill="#A855F7"/>
+    <rect x="92" y="326" width="2" height="6" rx="1" fill="#7B2BFF"/>
+    <rect x="97" y="323" width="2" height="12" rx="1" fill="#A855F7"/>
+    <rect x="102" y="325" width="2" height="8" rx="1" fill="#7B2BFF"/>
+    <rect x="107" y="321" width="2" height="16" rx="1" fill="#A855F7"/>
+    <text x="148" y="333" font-size="8" fill="rgba(255,255,255,0.7)" text-anchor="end">0:12</text>
+    <rect x="12" y="354" width="120" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="370" font-size="8" fill="#A855F7" font-weight="500">花花：<tspan fill="#fff">语音好酷！</tspan></text>
+    <rect x="12" y="392" width="112" height="28" rx="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="24" y="410" font-size="8" fill="rgba(255,255,255,0.5)">Say something...</text>
+  </g>
+
+  <!-- PAGE 5: 语音转文字预览 -->
+  <g transform="translate(940,30)">
+    <text x="100" y="-10" font-size="14" fill="#666" text-anchor="middle" font-weight="600">语音转文字预览</text>
+    <rect width="200" height="433" rx="24" fill="url(#liveBg)" stroke="#444" stroke-width="1"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <rect x="12" y="52" width="120" height="28" rx="14" fill="rgba(0,0,0,0.35)"/>
+    <circle cx="26" cy="66" r="11" fill="#A855F7"/>
+    <text x="42" y="63" font-size="8" fill="#fff" font-weight="500">Star主播</text>
+    <rect y="260" width="200" height="173" rx="0" fill="rgba(0,0,0,0.4)"/>
+    <rect y="290" width="200" height="143" rx="16" fill="#fff"/>
+    <rect x="85" y="296" width="30" height="4" rx="2" fill="#E3E4E5"/>
+    <rect x="16" y="310" width="168" height="60" rx="10" fill="#F2F2F7"/>
+    <text x="24" y="330" font-size="9" fill="rgba(0,0,0,0.9)">大家好，主播唱得</text>
+    <text x="24" y="344" font-size="9" fill="rgba(0,0,0,0.9)">真好听，加油！</text>
+    <text x="24" y="360" font-size="7" fill="rgba(0,0,0,0.4)">点击可编辑修改</text>
+    <rect x="16" y="384" width="80" height="34" rx="17" fill="none" stroke="#E3E4E5" stroke-width="1.5"/>
+    <text x="56" y="405" font-size="10" text-anchor="middle" fill="rgba(0,0,0,0.7)" font-weight="500">取消</text>
+    <rect x="104" y="384" width="80" height="34" rx="17" fill="url(#btnPurple)"/>
+    <text x="144" y="405" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">发送</text>
+  </g>
+
+  <!-- PAGE 6: 麦克风权限 -->
+  <g transform="translate(20,520)">
+    <text x="100" y="-10" font-size="14" fill="#666" text-anchor="middle" font-weight="600">麦克风权限请求</text>
+    <rect width="200" height="280" rx="24" fill="url(#liveBg)" stroke="#444" stroke-width="1"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <rect width="200" height="280" rx="24" fill="rgba(0,0,0,0.5)"/>
+    <rect x="20" y="60" width="160" height="150" rx="16" fill="#fff"/>
+    <text x="100" y="90" font-size="12" text-anchor="middle" fill="rgba(0,0,0,0.9)" font-weight="600">麦克风权限</text>
+    <text x="100" y="112" font-size="8" text-anchor="middle" fill="rgba(0,0,0,0.6)">App 需要使用麦克风</text>
+    <text x="100" y="126" font-size="8" text-anchor="middle" fill="rgba(0,0,0,0.6)">来录制语音消息</text>
+    <rect x="30" y="150" width="65" height="32" rx="16" fill="none" stroke="#E3E4E5" stroke-width="1"/>
+    <text x="62" y="170" font-size="9" text-anchor="middle" fill="rgba(0,0,0,0.7)">拒绝</text>
+    <rect x="105" y="150" width="65" height="32" rx="16" fill="url(#btnPurple)"/>
+    <text x="138" y="170" font-size="9" text-anchor="middle" fill="#fff" font-weight="600">允许</text>
+  </g>
+
+  <!-- PAGE 7: 禁言状态 -->
+  <g transform="translate(250,520)">
+    <text x="100" y="-10" font-size="14" fill="#666" text-anchor="middle" font-weight="600">禁言状态</text>
+    <rect width="200" height="280" rx="24" fill="url(#liveBg)" stroke="#444" stroke-width="1"/>
+    <rect x="55" y="0" width="90" height="22" rx="11" fill="#000"/>
+    <text x="16" y="42" font-size="9" fill="#fff" font-weight="600">9:41</text>
+    <rect x="12" y="180" width="140" height="24" rx="8" fill="rgba(0,0,0,0.3)"/>
+    <text x="20" y="196" font-size="8" fill="#A855F7" font-weight="500">花花：<tspan fill="#fff">好好看！</tspan></text>
+    <rect x="12" y="230" width="176" height="28" rx="14" fill="rgba(255,255,255,0.08)"/>
+    <text x="24" y="248" font-size="8" fill="rgba(255,255,255,0.3)">You are muted</text>
+    <circle cx="168" cy="244" r="14" fill="rgba(255,255,255,0.08)"/>
+    <text x="168" y="248" font-size="10" text-anchor="middle" fill="rgba(255,255,255,0.3)">🎤</text>
+  </g>
+</svg></whiteboard>
+<h2>4.3 关键页面说明</h2>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>页面/状态</th><th>布局描述</th><th>关联功能</th></tr></thead><tbody><tr><td>文字输入模式（默认）</td><td>直播间底部：文字输入框 + 麦克风切换按钮 + 礼物按钮 + 分享按钮</td><td>—</td></tr><tr><td>语音消息模式</td><td>底部切换为：语音消息/语音转文字 Tab + 长按录音按钮 + 键盘切换按钮</td><td>FUNC-001, FUNC-002</td></tr><tr><td>录制中</td><td>全屏遮罩 + 麦克风动画 + 录制计时 + 松手发送/上滑取消提示</td><td>FUNC-001</td></tr><tr><td>语音气泡（公屏）</td><td>发送者头像 + 播放按钮 + 波形动画条 + 时长标注</td><td>FUNC-001, FUNC-003</td></tr><tr><td>语音转文字预览</td><td>底部弹出面板：识别结果文本框（可编辑）+ 取消/发送按钮</td><td>FUNC-002</td></tr><tr><td>麦克风权限请求</td><td>系统权限弹窗：说明文案 + 拒绝/允许按钮</td><td>EC-001</td></tr><tr><td>禁言状态</td><td>输入框置灰显示 You are muted，语音按钮禁用</td><td>EC-007</td></tr></tbody></table>
+<hr/>
+<h1>五、边界与异常</h1>
+<callout emoji="💡"><p><b>重要：</b>以下每个 case 必须有对应实现。AI 开发时逐条检查。</p></callout>
+<table><colgroup><col/><col/><col/><col/><col/></colgroup><thead><tr><th>ID</th><th>场景</th><th>条件</th><th>期望行为</th><th>必要性</th></tr></thead><tbody><tr><td>EC-001</td><td>麦克风权限未授予</td><td>用户首次点击语音按钮，拒绝权限请求</td><td>toast "Please enable microphone access in Settings"，提供跳转系统设置入口</td><td>必须</td></tr><tr><td>EC-002</td><td>录制时长不足</td><td>按下后快速松手，时长 &lt; 1 秒</td><td>不发送，toast "Recording too short"</td><td>必须</td></tr><tr><td>EC-003</td><td>录制达到上限</td><td>录制达到 60 秒</td><td>自动停止录制并发送</td><td>必须</td></tr><tr><td>EC-004</td><td>上传失败</td><td>语音文件上传网络超时或失败</td><td>toast "Failed to send voice message, please try again"，支持点击重试</td><td>必须</td></tr><tr><td>EC-005</td><td>ASR 识别失败</td><td>语音转文字服务返回错误或超时（10s）</td><td>toast "Voice recognition failed, please try again"，不发送</td><td>必须</td></tr><tr><td>EC-006</td><td>ASR 识别为空</td><td>语音中无有效语音内容</td><td>toast "No speech detected"，不发送</td><td>必须</td></tr><tr><td>EC-007</td><td>用户被禁言</td><td>被禁言用户发送语音消息</td><td>toast "You are muted"</td><td>必须</td></tr><tr><td>EC-008</td><td>直播间不支持语音消息</td><td>主播或管理员关闭语音消息功能</td><td>隐藏语音切换按钮，仅展示文字输入</td><td>必须</td></tr><tr><td>EC-009</td><td>播放中退出直播间</td><td>正在播放语音消息时退出</td><td>停止播放，释放音频资源</td><td>必须</td></tr><tr><td>EC-010</td><td>网络弱环境播放</td><td>音频加载缓慢</td><td>展示加载动画，超时 10s 后 toast "Loading failed, please try again"</td><td>必须</td></tr><tr><td>EC-011</td><td>重复点击发送</td><td>用户快速连续录制发送</td><td>防抖，前一条上传完成前不允许新录制；toast "Please wait"</td><td>必须</td></tr><tr><td>EC-012</td><td>音频文件过大</td><td>文件超过 2MB</td><td>toast "File too large"，不发送</td><td>必须</td></tr></tbody></table>
+<hr/>
+<h1>六、埋点需求</h1>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>事件名</th><th>触发时机</th><th>参数</th></tr></thead><tbody><tr><td>voice_mode_switch</td><td>用户点击语音/键盘切换按钮</td><td>room_id, mode(voice/keyboard)</td></tr><tr><td>voice_record_start</td><td>用户长按开始录音</td><td>room_id</td></tr><tr><td>voice_record_end</td><td>用户松手结束录音</td><td>room_id, duration, result(send/cancel/too_short)</td></tr><tr><td>voice_message_send</td><td>语音消息发送成功</td><td>room_id, message_id, duration, file_size</td></tr><tr><td>voice_to_text_start</td><td>语音转文字识别开始</td><td>room_id, duration</td></tr><tr><td>voice_to_text_result</td><td>语音转文字识别完成</td><td>room_id, result(success/fail/empty), text_length, confidence</td></tr><tr><td>voice_message_play</td><td>用户点击播放语音消息</td><td>room_id, message_id, duration</td></tr><tr><td>voice_message_play_end</td><td>语音消息播放完成</td><td>room_id, message_id, play_duration, is_complete</td></tr></tbody></table>
+<hr/>
+<h1>七、技术备注</h1>
+<ul>
+<li><b>音频格式：</b>推荐 AAC（iOS 原生支持好）或 Opus（压缩率高、适合弱网），双端需统一编解码格式</li>
+<li><b>文件大小控制：</b>60s 音频在 16kHz 单声道 AAC 编码下约 500KB-1MB，建议上限 2MB</li>
+<li><b>CDN 缓存：</b>语音文件上传 CDN 后设置合理过期时间（建议 7 天），过期后公屏历史消息中语音不可播放</li>
+<li><b>平台差异：</b>iOS 使用 AVAudioRecorder/AVAudioPlayer；Android 使用 MediaRecorder/MediaPlayer 或 AudioRecord/AudioTrack</li>
+<li><b>距离传感器：</b>iOS/Android 均需监听距离传感器事件切换听筒/扬声器</li>
+<li><b>ASR 服务：</b>语音识别服务选型待定（Google Speech-to-Text / 自建服务 / 第三方），需支持多语言</li>
+</ul>
+<hr/>
+<h1>八、多语言</h1>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>Key</th><th>默认值</th><th>用途</th></tr></thead><tbody><tr><td>live_voice_switch_voice</td><td>Voice</td><td>语音模式切换按钮</td></tr><tr><td>live_voice_switch_keyboard</td><td>Keyboard</td><td>键盘模式切换按钮</td></tr><tr><td>live_voice_hold_to_talk</td><td>Hold to talk</td><td>录音按钮文案</td></tr><tr><td>live_voice_release_to_send</td><td>Release to send, swipe up to cancel</td><td>录制中提示</td></tr><tr><td>live_voice_recording_too_short</td><td>Recording too short</td><td>录制时长不足提示</td></tr><tr><td>live_voice_cancelled</td><td>Cancelled</td><td>上滑取消提示</td></tr><tr><td>live_voice_send_failed</td><td>Failed to send voice message, please try again</td><td>发送失败提示</td></tr><tr><td>live_voice_recognition_failed</td><td>Voice recognition failed, please try again</td><td>识别失败提示</td></tr><tr><td>live_voice_no_speech</td><td>No speech detected</td><td>无语音内容提示</td></tr><tr><td>live_voice_mic_permission</td><td>Please enable microphone access in Settings</td><td>权限提示</td></tr><tr><td>live_voice_please_wait</td><td>Please wait before sending another voice message</td><td>频率限制提示</td></tr><tr><td>live_voice_muted</td><td>You are muted</td><td>禁言提示</td></tr><tr><td>live_voice_loading_failed</td><td>Loading failed, please try again</td><td>播放加载失败提示</td></tr><tr><td>live_voice_to_text</td><td>Voice to Text</td><td>语音转文字模式按钮</td></tr><tr><td>live_voice_file_too_large</td><td>File too large</td><td>文件过大提示</td></tr></tbody></table>
+<hr/>
+<h1>九、验收标准</h1>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>编号</th><th>验收项</th><th>关联功能</th><th>通过标准</th></tr></thead><tbody><tr><td>AC-001</td><td>语音消息录制与发送</td><td>FUNC-001</td><td>长按录音 ≥ 1s 后松手，语音消息成功发送并展示在公屏</td></tr><tr><td>AC-002</td><td>语音消息公屏展示</td><td>FUNC-001</td><td>语音气泡正确展示发送者头像、昵称、波形条、时长</td></tr><tr><td>AC-003</td><td>录制时长限制</td><td>FUNC-001, EC-002, EC-003</td><td>不足 1s 提示 "Recording too short"；达到 60s 自动停止并发送</td></tr><tr><td>AC-004</td><td>上滑取消</td><td>FUNC-001</td><td>长按后上滑超过阈值松手，不发送，提示 "Cancelled"</td></tr><tr><td>AC-005</td><td>语音转文字</td><td>FUNC-002</td><td>录音后识别结果预填到输入框，用户可编辑后以文字消息发送</td></tr><tr><td>AC-006</td><td>语音转文字失败处理</td><td>FUNC-002, EC-005, EC-006</td><td>识别失败或无内容时正确提示，不发送消息</td></tr><tr><td>AC-007</td><td>语音播放</td><td>FUNC-003</td><td>点击语音气泡播放音频，波形动画正常展示</td></tr><tr><td>AC-008</td><td>互斥播放</td><td>FUNC-003</td><td>播放新语音时，旧语音自动停止</td></tr><tr><td>AC-009</td><td>与直播音频共存</td><td>FUNC-003</td><td>播放语音消息时直播间音频不中断</td></tr><tr><td>AC-010</td><td>麦克风权限</td><td>EC-001</td><td>未授权时正确提示并提供跳转设置入口</td></tr><tr><td>AC-011</td><td>禁言用户</td><td>EC-007</td><td>被禁言用户发送语音后提示 "You are muted"</td></tr><tr><td>AC-012</td><td>直播间关闭语音消息</td><td>EC-008</td><td>主播/管理员关闭后，语音切换按钮隐藏</td></tr><tr><td>AC-013</td><td>发送失败重试</td><td>EC-004</td><td>网络异常发送失败后，消息标记失败状态，点击可重试</td></tr><tr><td>AC-014</td><td>防抖</td><td>EC-011</td><td>前一条未上传完成时不允许新录制</td></tr></tbody></table>
+<hr/>
+<h1>变更记录</h1>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>版本</th><th>日期</th><th>作者</th><th>变更内容</th></tr></thead><tbody><tr><td>v1.0</td><td>2026-06-17</td><td>—</td><td>初始版本</td></tr><tr><td>v1.1</td><td>2026-06-17</td><td>—</td><td>新增设计稿章节：Mermaid 交互流程图 + SVG 关键页面原型画板 + 关键页面说明表格</td></tr></tbody></table>

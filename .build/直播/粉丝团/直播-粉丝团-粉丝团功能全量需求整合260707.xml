@@ -1,0 +1,143 @@
+<title>直播-粉丝团-粉丝团功能全量需求整合260707</title>
+<callout emoji="📋" background-color="grey"><p><b>作者：</b>— | <b>版本：</b>v1.0 | <b>状态：</b>评审中 | <b>日期：</b>2026-07-07</p><p><b>平台：</b>iOS / Android | <b>技术方案：</b>Native + H5 | <b>优先级：</b>P2</p></callout>
+<h1>一、需求背景</h1>
+<h2>1.1 现状与问题</h2>
+<p>粉丝团是直播业务中连接主播与核心粉丝的关键功能模块，经过多次迭代已形成包含开通加入、亲密度任务、等级权益、冻结点亮、公告通知、数据统计等完整功能体系。目前各功能散落在多份历史需求文档中，缺乏一份统一的全量规格文档，不利于新成员理解全貌、技术侧维护以及后续迭代参考。</p>
+<p>本文档将粉丝团模块的全部功能点整合为一份完整 PRD，作为粉丝团模块的基准参考文档。</p>
+<p><b>需求来源：</b> <a href="https://uf1iawhques.sg.larksuite.com/wiki/KzKAwyFPiieYpYkilOwlobVygEc">粉丝团优化/修改 知识库文档集</a></p>
+<h2>1.2 目标</h2>
+<callout emoji="🎯" background-color="blue"><p><b>核心目标：</b> 将粉丝团模块全部功能以统一格式整合为一份完整 PRD，覆盖开通、亲密度、等级权益、冻结点亮、退出、公告、通知、列表、分成、直播间交互、数据后台、礼物后台共 13 个功能点。</p></callout>
+<h2>1.3 关键指标</h2>
+<table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>指标</th><th>当前值</th><th>目标值</th><th>统计口径</th></tr></thead><tbody><tr><td>粉丝团开通转化率</td><td>—</td><td>持续提升</td><td>BI</td></tr><tr><td>粉丝团活跃率（点亮/冻结比）</td><td>—</td><td>提升点亮占比</td><td>BI</td></tr><tr><td>粉丝团用户送礼 ARPU</td><td>—</td><td>稳步增长</td><td>BI</td></tr></tbody></table>
+<hr/>
+<h1>二、需求说明</h1>
+<h2>FUNC-001 功能点：粉丝团开通与加入</h2>
+<h3>功能描述</h3>
+<p>用户在直播间内通过粉丝团入口花费 100 金币开通某主播的粉丝团，成为该主播的粉丝团成员。开通后自动佩戴粉丝团勋章，获得 Lv.1 等级，进入「点亮」状态，享有对应等级权益。</p>
+<h3>交互规则</h3>
+<ul><li><b>开通费用：</b> <b>[服务端]</b> 开通粉丝团固定费用 100 金币，由服务端扣费</li><li><b>开通入口：</b> <b>[客户端]</b> 直播间内粉丝团卡片上的「加入粉丝团」按钮；粉丝团贴纸引导入口</li><li><b>开通流程：</b> <b>[客户端+服务端]</b> 用户点击「加入」→ 客户端展示确认弹窗（含费用说明）→ 用户确认 → 服务端扣费并创建粉丝团关系 → 客户端刷新粉丝团卡片为「点亮」状态</li><li><b>勋章自动佩戴：</b> <b>[服务端]</b> 开通后服务端自动设置为佩戴状态，无需用户手动操作；去除「固定佩戴」功能</li><li><b>默认粉丝团昵称：</b> <b>[服务端]</b> 主播未设置粉丝团昵称时，默认名称为"Fans"，不影响用户开通和佩戴</li><li><b>自动关注主播：</b> <b>[服务端]</b> 未关注主播的用户通过任意入口加入粉丝团时，自动给用户关注该主播</li><li><b>开通有效期：</b> <b>[服务端]</b> 开通后有效期为 3 天（如 1 号开通，1/2/3/4 号生效，5 号 0 点冻结）；每日送礼则延长 3 天有效期（当日送多次不叠加）</li><li><b>亲密度增加：</b> <b>[服务端]</b> 开通粉丝团增加 1 亲密度，当日开通/点亮任务亲密度上限 5</li><li><b>分成处理：</b> <b>[服务端]</b> 开通费用主播获得 50% 分成，代理不参与分成</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>金币不足：</b> <b>[客户端]</b> 用户金币不足时，点击开通按钮唤起充值页面</li><li><b>重复开通：</b> <b>[客户端+服务端]</b> 已加入粉丝团的用户不展示开通按钮，服务端做防重校验</li><li><b>网络异常：</b> <b>[客户端]</b> 扣费请求失败时 Toast 提示"网络异常，请重试"，不进行扣费</li><li><b>主播封禁/注销：</b> <b>[服务端]</b> 主播账号异常时，拒绝开通请求</li></ul>
+<hr/>
+<h2>FUNC-002 功能点：亲密度任务体系</h2>
+<h3>功能描述</h3>
+<p>粉丝团成员通过完成每日任务积累亲密度，亲密度决定粉丝团等级的升降。任务包括送灯牌礼物、送幸运礼物、给主播送礼、开通/点亮粉丝团、开通守护、观看直播、分享直播间共 7 类任务。任务列表由服务端配置，客户端动态展示。</p>
+<h3>交互规则</h3>
+<ul><li><b>任务列表展示：</b> <b>[客户端]</b> 粉丝团卡片下方展示亲密度任务面板，任务主标题/副标题由服务端下发</li><li><b>任务类型与上限：</b> <b>[服务端]</b> 各任务每日亲密度上限如下：</li></ul>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>任务类型</th><th>亲密度规则</th><th>每日上限</th></tr></thead><tbody><tr><td>送粉丝灯牌</td><td>按送出数量计</td><td>Max 10</td></tr><tr><td>送幸运礼物</td><td>每 2000 金币 = 1 亲密度（不计入送礼任务进度）</td><td>Max 5</td></tr><tr><td>给主播送礼（不含幸运礼物）</td><td>1000 金币 = 1 亲密度，不足 1000 按比例折算（如 500 金币 = 0.5 亲密度）</td><td>按用户等级浮动（见下表）</td></tr><tr><td>开通/点亮粉丝团</td><td>开通 +1，点亮 +2</td><td>Max 5</td></tr><tr><td>开通守护</td><td>白银 +15，黄金 +30，王者 +1500</td><td>Max 1800</td></tr><tr><td>观看直播</td><td>每 2 分钟 +1 亲密度（需累计观看 20 分钟）</td><td>Max 10</td></tr><tr><td>分享直播间</td><td>每次 +1 亲密度</td><td>Max 1</td></tr></tbody></table>
+<ul><li><b>送礼任务每日亲密度上限（按用户等级）：</b> <b>[服务端]</b> 1000 金币 = 1 亲密度的送礼任务上限，由用户当前粉丝团等级决定：</li></ul>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>等级</th><th>总亲密度阈值</th><th>送礼任务日上限</th></tr></thead><tbody><tr><td>Lv.1</td><td>0</td><td>70</td></tr><tr><td>Lv.2</td><td>30</td><td>70</td></tr><tr><td>Lv.3</td><td>60</td><td>70</td></tr><tr><td>Lv.4</td><td>120</td><td>70</td></tr><tr><td>Lv.5</td><td>180</td><td>70</td></tr><tr><td>Lv.6</td><td>250</td><td>90</td></tr><tr><td>Lv.7</td><td>350</td><td>120</td></tr><tr><td>Lv.8</td><td>600</td><td>150</td></tr><tr><td>Lv.9</td><td>900</td><td>150</td></tr><tr><td>Lv.10</td><td>1,300</td><td>250</td></tr><tr><td>Lv.11</td><td>2,800</td><td>400</td></tr><tr><td>Lv.12</td><td>4,800</td><td>450</td></tr><tr><td>Lv.13</td><td>7,300</td><td>500</td></tr><tr><td>Lv.14</td><td>10,500</td><td>600</td></tr><tr><td>Lv.15</td><td>14,500</td><td>1,000</td></tr><tr><td>Lv.16</td><td>38,000</td><td>2,500</td></tr><tr><td>Lv.17</td><td>64,000</td><td>2,500</td></tr><tr><td>Lv.18</td><td>90,000</td><td>2,500</td></tr><tr><td>Lv.19</td><td>115,000</td><td>2,500</td></tr><tr><td>Lv.20</td><td>162,500</td><td>3,000</td></tr></tbody></table>
+<ul><li><b>守护加成：</b> <b>[服务端]</b> 守护身份对送礼任务亲密度上限有加成：白银 +10%、黄金 +20%、王者 +50%。例：Lv.1 用户（上限 70）开通白银守护，送礼任务上限变为 77</li></ul>
+<ul><li><b>任务完成状态展示：</b> <b>[客户端]</b> 已完成的任务右侧展示获得的亲密度数字；已完成任务标题置灰，排序移至任务列表底部</li><li><b>送礼按钮唤起面板：</b> <b>[客户端]</b> 点击送礼任务的「送礼」按钮 → 关闭粉丝团卡片 → 唤起礼物面板；点击「送幸运礼物」任务 → 唤起礼物面板并定位至幸运礼物 Tab；若用户不在主播直播间点击送礼，Toast 提示"请前往直播间送礼"</li><li><b>观看/分享按钮：</b> <b>[客户端]</b> 观看/分享按钮由服务端控制展示；仅当用户在该主播直播间时才展示，点击后收起粉丝团卡片；分享按钮点击后弹出分享面板</li><li><b>冻结状态限制：</b> <b>[客户端]</b> 冻结状态下任务面板整体置灰，不展示任务内容，显示提示文案："因3天未参与给主播送礼，粉丝团勋章已冻结"</li><li><b>日亲密度展示：</b> <b>[客户端]</b> 用户粉丝团页面展示当日已获得的亲密度值</li><li><b>任务配置能力：</b> <b>[服务端]</b> 任务列表支持服务端动态配置，客户端根据下发数据渲染</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[客户端]</b> 服务端未下发任务配置时，任务面板展示空状态提示"暂无任务"</li><li><b>文本超长：</b> <b>[客户端]</b> 任务标题/副标题超出一行时末尾截断显示"..."</li><li><b>网络异常：</b> <b>[客户端]</b> 任务列表加载失败时展示重试按钮</li><li><b>重复操作：</b> <b>[客户端]</b> 任务完成状态实时刷新，按钮点击后做防抖处理</li></ul>
+<hr/>
+<h2>FUNC-003 功能点：等级与权益体系</h2>
+<h3>功能描述</h3>
+<p>粉丝团共分 Lv.1 至 Lv.20 共 20 个等级，用户通过积累亲密度升级。不同等级解锁不同权益，包括勋章样式升级、灯牌、升级飘屏、专属礼物、进场动效、连麦头像框、升级跑道、送礼跑道等。用户可通过粉丝团卡片内的「成长历程」入口查看当前等级权益和成长数据。</p>
+<h3>交互规则</h3>
+<ul><li><b>等级权益列表：</b> <b>[H5]</b> 成长历程为 H5 页面，展示用户数据和当前等级已解锁权益</li></ul>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>等级</th><th>权益</th><th>展示范围</th></tr></thead><tbody><tr><td>Lv.1</td><td>粉丝团勋章</td><td>全局</td></tr><tr><td>Lv.1</td><td>粉丝团灯牌</td><td>全局</td></tr><tr><td>Lv.1</td><td>粉丝团升级飘屏</td><td>本直播间</td></tr><tr><td>Lv.7</td><td>专属礼物（初心之光）</td><td>礼物面板</td></tr><tr><td>Lv.8</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.10</td><td>粉丝团升级飘屏</td><td>区域直播间</td></tr><tr><td>Lv.11</td><td>粉丝团进场动效（直播间人数 &lt; 1000）</td><td>本直播间</td></tr><tr><td>Lv.12</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.12</td><td>专属礼物（心愿宝石）</td><td>礼物面板</td></tr><tr><td>Lv.12</td><td>专属连麦头像框（连麦自动佩戴）</td><td>本直播间</td></tr><tr><td>Lv.13</td><td>粉丝团升级动效</td><td>本直播间</td></tr><tr><td>Lv.13</td><td>粉丝团升级跑道</td><td>全站</td></tr><tr><td>Lv.16</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.16</td><td>专属送礼跑道（送礼自动展示）</td><td>本直播间</td></tr><tr><td>Lv.20</td><td>新等级粉丝勋章样式升级</td><td>全局</td></tr><tr><td>Lv.20</td><td>专属礼物（永恒之心）</td><td>礼物面板</td></tr><tr><td>Lv.20</td><td>粉丝团进场特效升级</td><td>本直播间</td></tr></tbody></table>
+<ul><li><b>进场特效优先级：</b> <b>[客户端]</b> 多个进场特效同时存在时，按以下优先级展示：神秘人 &gt; 守护 &gt; Top3 &gt; 游戏Max &gt; VIP &gt; 粉丝团 &gt; 普通用户</li><li><b>进场动效触发条件：</b> <b>[客户端]</b> Lv.11 初级进场动效仅在直播间人数 &lt; 1000 时展示；Lv.20 高级进场特效在本直播间展示</li><li><b>成长历程数据展示：</b> <b>[H5]</b> 展示三项用户数据：加团天数、今日亲密度、总亲密度</li><li><b>满级展示优化：</b> <b>[客户端]</b> 用户达到 Lv.20 满级时，等级进度条显示满级状态，不再展示"升级还需亲密度"</li><li><b>升级动效触发：</b> <b>[客户端+服务端]</b> 用户粉丝团等级升到 13 级（含）以上时，每次升级在主播直播间触发升级动效（所有用户可见）。触发等级由系统参数 <b>fans_upgrade_special_effects</b>（默认 13）控制。动效展示：左侧主播昵称、右侧成员昵称、中间粉丝团名和升级等级</li><li><b>升级飘屏通知：</b> <b>[服务端]</b> Lv.8 起每次升级触发本直播间飘屏（二级透明飘屏，文案："粉丝团：恭喜{nickname}粉丝团到达level.{num}"）；飘屏等级由系统参数 <b>fans_bullet_level</b>（默认 8）控制</li><li><b>升级跑道通知：</b> <b>[服务端]</b> Lv.16 起每次升级触发区域直播间跑道（一级紫色跑道，文案："恭喜{hostname}的粉丝团成员{nickname}等级到达level.{num}"）；跑道等级由 <b>fans_road_effect_level</b>（默认 16）控制</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[H5]</b> 成长历程页面数据加载失败时展示空状态页</li><li><b>文本超长：</b> <b>[客户端]</b> 权益名称超出显示区域时截断显示</li><li><b>网络异常：</b> <b>[H5]</b> H5 页面加载失败时展示"加载失败，点击重试"</li><li><b>重复操作：</b> <b>[客户端]</b> 进场动效播放期间不重复触发</li></ul>
+<hr/>
+<h2>FUNC-004 功能点：冻结与点亮机制</h2>
+<h3>功能描述</h3>
+<p>粉丝团取消续费制，改为点亮制。用户加入粉丝团后只有「点亮」和「冻结」两种状态。连续 3 天未给主播送礼的成员，第 4 天 0 点自动进入冻结状态，勋章置灰、等级特权停用、亲密度停止增长。冻结用户可花费 100 金币重新点亮粉丝团，恢复所有权益。</p>
+<h3>交互规则</h3>
+<ul><li><b>冻结触发条件：</b> <b>[服务端]</b> 连续 3 天未给主播送礼，第 4 天 0 点自动冻结</li><li><b>点亮有效期延长：</b> <b>[服务端]</b> 每日送礼则有效期延长 3 天（当日送多次不叠加）</li><li><b>冻结状态——直播间/Party房：</b> <b>[客户端]</b> 粉丝团 icon 置灰，保留等级数字展示</li><li><b>冻结状态——公聊区发言：</b> <b>[客户端]</b> 用户自己视角粉丝团勋章置灰；主播/其他用户视角看不见该用户粉丝勋章</li><li><b>冻结状态——群聊：</b> <b>[客户端]</b> 同直播间逻辑，自己视角置灰，他人视角不可见</li><li><b>冻结状态——在线观众列表/用户卡片/守护列表：</b> <b>[客户端]</b> 粉丝团冻结显示置灰图标，不区分主播/用户视角</li><li><b>冻结状态——粉丝团卡片：</b> <b>[客户端]</b> 等级进度条置灰；亲密度任务面板置灰不展示任务内容；展示提示文案和「点亮」按钮</li><li><b>点亮操作：</b> <b>[客户端+服务端]</b> 用户点击「点亮」→ 二级弹窗确认"花费100金币重新点亮粉丝团"→ 确认扣费 → 恢复点亮状态，卡片恢复正常样式</li><li><b>点亮亲密度：</b> <b>[服务端]</b> 点亮操作增加 2 亲密度</li><li><b>亲密度衰减：</b> <b>[服务端]</b> 已去除亲密度衰减机制，冻结状态下亲密度不增加也不减少</li><li><b>老用户数据迁移：</b> <b>[服务端]</b> 线上已开通/续费老用户统一转为点亮状态（有效期3日）；线上已过期用户统一转为冻结状态</li><li><b>老版本兼容：</b> <b>[客户端]</b> 老版本无冻结 Tab 入口，点亮/冻结粉丝团在原页面统一展示；老版本冻结状态不展示粉丝团勋章</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>金币不足：</b> <b>[客户端]</b> 点亮时金币不够则唤起充值页面</li><li><b>已处于点亮状态：</b> <b>[客户端]</b> 点击历史点亮通知消息时，Toast 提示"该粉丝团已处于点亮状态，无需重复操作"</li><li><b>网络异常：</b> <b>[客户端]</b> 点亮扣费请求失败时 Toast 提示"网络异常，请重试"，不扣费</li><li><b>重复操作：</b> <b>[客户端]</b> 点亮按钮点击后置为 loading 状态，防止重复扣费</li></ul>
+<h3>业务流程图</h3>
+<whiteboard type="mermaid">stateDiagram-v2
+    [*] --> 点亮: 开通粉丝团(100金币)
+    点亮 --> 点亮: 每日送礼(延长3天有效期)
+    点亮 --> 冻结: 连续3天未送礼(第4天0点)
+    冻结 --> 点亮: 点亮(100金币)
+    冻结 --> [*]: 退出粉丝团
+    点亮 --> [*]: 退出粉丝团</whiteboard>
+<hr/>
+<h2>FUNC-005 功能点：退出粉丝团</h2>
+<h3>功能描述</h3>
+<p>用户在粉丝团成长历程页面可主动退出粉丝团。退出后该粉丝团的亲密度和等级数据全部清除，若用户重新加入则从头开始。退出前展示二次确认弹窗，告知用户数据清除不可恢复。</p>
+<h3>交互规则</h3>
+<ul><li><b>退出入口：</b> <b>[客户端]</b> 位于成长历程页面底部「退出粉丝团」按钮</li><li><b>二次确认弹窗：</b> <b>[客户端]</b> 点击退出后弹出确认弹窗，展示用户在该粉丝团的数据：<ul><li>加入粉丝团天数</li><li>当前粉丝团亲密度</li><li>当前粉丝团等级</li></ul></li><li><b>确认文案：</b> <b>[客户端]</b> 弹窗提示"所有亲密度和权益将被清空"、"重新加入也无法恢复"</li><li><b>退出执行：</b> <b>[客户端+服务端]</b> 用户点击「确认」→ 服务端清除亲密度和等级数据 → 客户端 Toast 提示"成功退出粉丝团"</li><li><b>点亮/冻结状态均可退出：</b> <b>[服务端]</b> 不限制退出时的粉丝团状态</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>网络异常：</b> <b>[客户端]</b> 退出请求失败时 Toast 提示"操作失败，请重试"</li><li><b>重复操作：</b> <b>[客户端]</b> 确认按钮点击后置为 loading，防止重复提交</li><li><b>数据为空：</b> <b>[客户端]</b> 退出成功后刷新粉丝团列表，移除该条粉丝团记录</li><li><b>已退出状态：</b> <b>[服务端]</b> 对已退出的粉丝团重复请求退出做幂等处理</li></ul>
+<hr/>
+<h2>FUNC-006 功能点：粉丝团卡片</h2>
+<h3>功能描述</h3>
+<p>粉丝团卡片是用户与粉丝团交互的核心承载页面，包含用户视角和主播视角两种形态。卡片顶部为固定栏（勋章、等级、亲密度进度条），下方整体支持滑动，包含亲密度任务面板、成长历程入口、公告入口、观看直播按钮、分享直播间按钮、送礼按钮等。</p>
+<h3>交互规则</h3>
+<ul><li><b>卡片高度与滚动：</b> <b>[客户端]</b> 粉丝团卡片除顶部固定栏外，下方整体支持滑动（便于用户查看全部任务列表）</li><li><b>成长历程入口：</b> <b>[客户端]</b> 卡片内展示"成长历程&gt;"入口文案，由服务端 <b>fan_club_growth_entrance</b> 字段控制是否显示，点击跳转 H5 成长历程页面</li><li><b>公告入口：</b> <b>[客户端]</b> 与成长历程入口同级展示，由服务端控制是否显示，点击跳转公告列表页；未加入粉丝团的用户卡片不展示公告入口</li><li><b>主播视角卡片数据：</b> <b>[客户端]</b> 主播视角粉丝团卡片展示成员数据面板（替代原权益展示），包含：今日亲密度（今日有效团员贡献的亲密度总和）、贡献人数（今日贡献亲密度的有效团员数）、今日入团（今日加入人数，去重，含过期续费和续费人数）</li><li><b>粉丝群门槛：</b> <b>[客户端+服务端]</b> 主播粉丝数 ≥ 100 人时可建粉丝群（原为直播等级 ≥ 8 级）。未达标时群聊按钮置灰，文案提示"主播粉丝数 ≥ 100人可拥有群聊"；建群后粉丝下降不影响群聊使用</li><li><b>观看直播按钮：</b> <b>[客户端]</b> 粉丝团卡片展示「观看」按钮，点击跳转至该主播直播间</li><li><b>分享直播间按钮：</b> <b>[客户端]</b> 粉丝团卡片展示「分享」按钮，点击唤起分享面板</li><li><b>送礼按钮：</b> <b>[客户端]</b> 粉丝团列表中每条记录展示「送礼」按钮，点击在直播间内唤起礼物面板</li><li><b>等级进度条：</b> <b>[客户端]</b> 展示当前等级和升级所需亲密度，文案："升级还需亲密度"；满级时进度条满格</li><li><b>冻结状态卡片：</b> <b>[客户端]</b> 详见 FUNC-004 冻结状态——粉丝团卡片</li><li><b>去除有效期字段：</b> <b>[客户端]</b> 卡片不再展示粉丝团有效期/过期时间</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[客户端]</b> 粉丝团卡片数据加载失败时展示空状态</li><li><b>文本超长：</b> <b>[客户端]</b> 主播昵称超长时截断显示"..."</li><li><b>网络异常：</b> <b>[客户端]</b> 卡片数据请求失败时展示重试入口</li><li><b>重复操作：</b> <b>[客户端]</b> 各按钮做防抖处理</li></ul>
+<hr/>
+<h2>FUNC-007 功能点：团公告系统</h2>
+<h3>功能描述</h3>
+<p>粉丝团公告分为系统自动推送的公告和主播手动编辑发布的公告两类。系统公告在特定触发条件下自动生成（升级公告、点亮勋章公告），主播公告支持自由编辑发布。公告列表支持置顶、编辑、删除操作。</p>
+<h3>交互规则</h3>
+<ul><li><b>系统自动公告：</b> <b>[服务端]</b> 按以下条件自动生成公告：</li></ul>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>公告类型</th><th>触发条件</th><th>文案规则</th></tr></thead><tbody><tr><td>普通升级汇总公告</td><td>用户粉丝团升级</td><td>多位成员：标题展示成员数量；单人：展示昵称</td></tr><tr><td>8级升级汇总公告</td><td>用户达到 Lv.8</td><td>同上</td></tr><tr><td>12级升级汇总公告</td><td>用户达到 Lv.12</td><td>同上</td></tr><tr><td>16级升级汇总公告</td><td>用户达到 Lv.16</td><td>同上</td></tr><tr><td>20级升级公告</td><td>用户达到 Lv.20</td><td>标题展示成员昵称，一条消息推一个公告</td></tr><tr><td>点亮勋章汇总公告</td><td>用户重新点亮粉丝团</td><td>多位成员：标题展示成员数量；单人：展示昵称</td></tr></tbody></table>
+<ul><li><b>主播编辑公告：</b> <b>[客户端]</b> 主播可在公告页面编辑并发布自定义公告，输入框占位文案"在此输入团公告"</li><li><b>公告操作：</b> <b>[客户端]</b> 系统公告支持「置顶」操作；主播公告支持「置顶」「编辑」「删除」操作</li><li><b>取消置顶：</b> <b>[客户端]</b> 已置顶的公告可点击「取消置顶」恢复原始排序</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[客户端]</b> 无公告时展示空状态提示</li><li><b>文本超长：</b> <b>[客户端]</b> 公告内容展示区域固定，超长文本支持滚动查看</li><li><b>网络异常：</b> <b>[客户端]</b> 发布/编辑/删除请求失败时 Toast 提示"操作失败，请重试"</li><li><b>重复操作：</b> <b>[客户端]</b> 发布/删除按钮做防抖处理，避免重复提交</li></ul>
+<hr/>
+<h2>FUNC-008 功能点：通知与提醒系统</h2>
+<h3>功能描述</h3>
+<p>粉丝团通知系统分为主播侧和用户侧两个方向。主播侧接收用户加入/点亮/冻结通知；用户侧接收即将冻结预警和已冻结提醒，并在通知内提供快捷操作路径（跳转私聊/直接点亮）。此外，高等级粉丝团成员（达到飘屏/跑道等级）的升级信息自动推送至 Lark 运营群。</p>
+<h3>交互规则</h3>
+<ul><li><b>主播侧通知：</b></li></ul>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>通知类型</th><th>展示内容</th><th>点击操作</th></tr></thead><tbody><tr><td>有用户加入粉丝团</td><td>用户头像 + {nickname} [uid] 加入粉丝团</td><td>跳转用户个人主页</td></tr><tr><td>有用户重新点亮粉丝团</td><td>用户头像 + {nickname} [uid] 点亮粉丝团</td><td>跳转用户个人主页</td></tr><tr><td>粉丝团成员已冻结</td><td>用户头像 + {nickname} 粉丝团成员 [uid] 已冻结</td><td>跳转私聊对话框</td></tr></tbody></table>
+<ul><li><b>用户侧通知：</b></li></ul>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>通知类型</th><th>展示内容</th><th>点击操作</th></tr></thead><tbody><tr><td>即将冻结（前一天触发）</td><td>主播头像 + {nickname} 您加入的粉丝团即将冻结</td><td>未过期→跳转主播私聊；已过期→弹窗付费点亮</td></tr><tr><td>已冻结</td><td>主播头像 + {nickname} 您加入的粉丝团已冻结</td><td>弹出点亮弹窗，付费后 Toast 提示"成功重新点亮"</td></tr></tbody></table>
+<ul><li><b>Lark 群通知：</b> <b>[服务端]</b> 用户粉丝团等级达到飘屏等级（<b>fans_bullet_level</b>）或跑道等级（<b>fans_road_effect_level</b>）时触发群通知</li><li><b>Lark 群通知门槛：</b> <b>[服务端]</b> 通过系统参数 <b>lark_fan_level_notice</b>（默认 10）控制，等级 ≥ 该参数才在群内播报</li><li><b>Lark 群通知内容：</b> <b>[服务端]</b> 包含：粉丝团等级、直播间通知类型（飘屏/跑道）、用户信息（昵称/国家/性别/UID）、主播信息（昵称/国家/性别/UID）；国家信息展示中文（非简码）</li><li><b>系统消息变更：</b> <b>[服务端]</b> 原"有用户续费粉丝团"改为"有用户点亮粉丝团"；删除"即将到期"通知；原"已到期"改为"已冻结"</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[客户端]</b> 通知列表为空时展示空状态</li><li><b>文本超长：</b> <b>[客户端]</b> 昵称超长时截断显示"..."</li><li><b>网络异常：</b> <b>[客户端]</b> 通知列表加载失败时展示重试入口</li><li><b>重复操作：</b> <b>[客户端]</b> 点亮操作完成后，再次点击同一历史通知时 Toast 提示"该粉丝团已处于点亮状态，无需重复操作"</li></ul>
+<hr/>
+<h2>FUNC-009 功能点：粉丝团列表与规则页</h2>
+<h3>功能描述</h3>
+<p>粉丝团列表页展示用户加入的所有粉丝团，分为「已点亮」和「已冻结」两个 Tab。冻结粉丝团不再收纳到二级子页面，直接在主列表的「已冻结」Tab 下展示。列表去除续费/有效期相关信息，去除手动佩戴勋章按钮。规则页展示 Lv.1-Lv.20 各等级的亲密度范围和对应权益。</p>
+<h3>交互规则</h3>
+<ul><li><b>列表 Tab 分区：</b> <b>[客户端]</b> 列表分为「已点亮」和「已冻结」两个 Tab</li><li><b>已点亮列表排序：</b> <b>[客户端]</b> 按默认排序展示点亮状态的粉丝团</li><li><b>已冻结列表排序：</b> <b>[客户端]</b> 按用户在该粉丝团的亲密度值倒序排列，亲密度值越大排在越前</li><li><b>冻结卡片信息：</b> <b>[客户端]</b> 展示：主播头像、主播昵称、粉丝团等级/昵称、用户对应亲密度值</li><li><b>冻结列表点亮操作：</b> <b>[客户端]</b> 点击点亮 → 弹窗提示"花费100金币重新点亮粉丝团"→ 确认后扣费点亮</li><li><b>去除项：</b> <b>[客户端]</b> 去除有效期时间/续费展示；去除「续费」「点亮」按钮（统一由 Tab 内操作）；去除「一键清除过期粉丝团」功能；去除手动「佩戴勋章」按钮</li><li><b>勋章自动佩戴：</b> <b>[服务端]</b> 粉丝团勋章统一为自动佩戴，去除固定佩戴功能</li><li><b>「过期」改为「冻结」：</b> <b>[客户端]</b> 所有界面中原"过期"状态文案统一修改为"冻结"</li><li><b>规则页：</b> <b>[H5]</b> 展示 Lv.1-Lv.20 各等级所需亲密度范围和对应权益图标</li><li><b>规则页权益补充：</b> <b>[H5]</b> Lv.8 粉丝团勋章升级（原遗漏补充）；Lv.13 粉丝团升级动效（新上线权益）</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[客户端]</b> 对应 Tab 下无数据时展示空状态"暂无粉丝团"</li><li><b>文本超长：</b> <b>[客户端]</b> 主播昵称超长时截断显示"..."</li><li><b>网络异常：</b> <b>[客户端]</b> 列表数据加载失败时展示重试按钮</li><li><b>重复操作：</b> <b>[客户端]</b> 点亮按钮做防抖处理</li></ul>
+<hr/>
+<h2>FUNC-010 功能点：直播间交互</h2>
+<h3>功能描述</h3>
+<p>直播间内与粉丝团相关的交互功能包括：亲密度变化动效（用户送礼/开通/点亮后播放亲密度增加动效）、粉丝团贴纸（主播引导用户加入粉丝团）、公聊区勋章展示、亲密度榜单入口。</p>
+<h3>交互规则</h3>
+<ul><li><b>亲密度变化动效：</b> <b>[客户端]</b> 用户通过送礼/开通/点亮粉丝团产生亲密度变化时，主播 ID 栏播放亲密度增加动效，展示"+x 亲密度"</li><li><b>动效触发范围：</b> <b>[客户端]</b> 仅在用户自己视角展示亲密度变化动效</li><li><b>粉丝团贴纸：</b> <b>[客户端]</b> 直播间贴纸类型新增「粉丝团贴纸」，默认文案"加入粉丝团"（英文：Join My Fan Club）</li><li><b>贴纸使用：</b> <b>[客户端]</b> 主播在贴纸面板中选择粉丝团贴纸后，贴纸展示在直播间画面中，观众点击可跳转粉丝团开通/卡片页面</li><li><b>公聊区勋章展示：</b> <b>[客户端]</b> 点亮状态成员发言时展示粉丝团勋章（含等级）；冻结状态成员——自己视角勋章置灰，主播/他人视角不展示</li><li><b>亲密度榜单入口：</b> <b>[客户端]</b> 粉丝团卡片内提供亲密度贡献榜单入口</li><li><b>贡献榜——用户视角：</b> <b>[客户端]</b> 只展示点亮状态的成员贡献值</li><li><b>贡献榜——主播视角：</b> <b>[客户端]</b> 展示所有成员贡献值排序，昵称下方展示勋章并区分点亮/冻结 icon（冻结勋章置灰）</li><li><b>直播间工具栏：</b> <b>[客户端]</b> 下掉直播间工具栏中的直播勋章入口（因佩戴逻辑改为自动）</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[客户端]</b> 贡献榜无数据时展示空状态</li><li><b>文本超长：</b> <b>[客户端]</b> 贴纸文案、用户昵称超长时截断显示</li><li><b>网络异常：</b> <b>[客户端]</b> 榜单数据加载失败时展示重试</li><li><b>重复操作：</b> <b>[客户端]</b> 动效播放期间不重复触发；贴纸选择做防抖</li></ul>
+<hr/>
+<h2>FUNC-011 功能点：分成机制</h2>
+<h3>功能描述</h3>
+<p>用户开通或点亮（原续费）粉丝团时，费用的 50% 分成给主播，代理不参与粉丝团分成。主播可在积分明细中查看粉丝团相关收益。</p>
+<h3>交互规则</h3>
+<ul><li><b>分成比例：</b> <b>[服务端]</b> 用户开通/点亮粉丝团费用，主播收到 50% 分成，代理不参与分成</li><li><b>积分明细分类：</b> <b>[服务端]</b> 主播积分明细列表新增"加入/续费粉丝团"分类，key 为 <b>fans_club_user</b></li><li><b>明细查询路径：</b> <b>[H5]</b> 代理管理 &gt;&gt; 主播管理 &gt;&gt; 主播详情 &gt;&gt; 积分总收益 &gt;&gt; 其他收益</li><li><b>后台统计转化：</b> <b>[服务端]</b> 原"续费"统计字段直接转化为"点亮"统计</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[H5]</b> 主播无粉丝团分成记录时，明细列表展示空状态</li><li><b>文本超长：</b> <b>[H5]</b> 收益数字超出显示区域时自适应缩小字号</li><li><b>网络异常：</b> <b>[H5]</b> 明细数据加载失败时展示重试</li><li><b>重复操作：</b> <b>[服务端]</b> 分成计算做幂等处理，防止重复分成</li></ul>
+<hr/>
+<h2>FUNC-012 功能点：数据后台</h2>
+<h3>功能描述</h3>
+<p>数据统计后台为运营提供粉丝团相关的数据查看和分析能力，包括主播亲密度榜单、用户亲密度榜单、粉丝团开通状态折线图、有效人数统计、亲密度数据导出、用户详情页粉丝团等级展示等功能。</p>
+<h3>交互规则</h3>
+<ul><li><b>主播亲密度榜单：</b> <b>[H5]</b> 位置：业务统计 &gt;&gt; 粉丝团统计 &gt;&gt; 亲密度榜单；统计平台主播每日收到的亲密度之和，从高到低排序；支持日期筛选、国家筛选</li><li><b>榜单二级详情：</b> <b>[H5]</b> 点击亲密度数值，跳转二级详情页，展示该主播贡献亲密度的前 20 名用户信息（昵称/国籍/等级）及贡献亲密度数值</li><li><b>用户亲密度榜单：</b> <b>[H5]</b> 统计用户每日贡献的亲密度之和，从高到低排序；支持日期筛选、国家筛选</li><li><b>用户榜单二级详情：</b> <b>[H5]</b> 点击亲密度数值，跳转二级详情页，展示该用户贡献亲密度的前 20 名主播信息及贡献数值</li><li><b>粉丝团开通状态折线图：</b> <b>[H5]</b> 展示粉丝团开通状态的趋势变化</li><li><b>粉丝团有效人数统计：</b> <b>[H5]</b> 统计当前有效（点亮状态）的粉丝团成员数量</li><li><b>亲密度数据查询/导出：</b> <b>[H5]</b> 粉丝团亲密度数据支持按日期查询和导出</li><li><b>用户详情页等级展示：</b> <b>[H5]</b> 后台用户详情页"我的粉丝团成员"和"我加入的粉丝团"列表中展示粉丝团等级列</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[H5]</b> 榜单/统计无数据时展示空状态提示</li><li><b>文本超长：</b> <b>[H5]</b> 昵称/国家名超长时截断显示</li><li><b>网络异常：</b> <b>[H5]</b> 数据加载失败时展示重试按钮</li><li><b>导出异常：</b> <b>[H5]</b> 导出数据量过大时提示"数据量较大，请缩小查询范围"</li></ul>
+<hr/>
+<h2>FUNC-013 功能点：礼物后台与灯牌礼物配置</h2>
+<h3>功能描述</h3>
+<p>礼物后台支持为礼物配置跳转链接，从原来仅支持 H5 页面跳转扩展到支持跳转客户端原生页面。灯牌礼物（礼物 ID：1299）配置说明文案并跳转至粉丝团卡片弹窗，配置 Hot 图标，以及调整礼物面板中粉丝团礼物 Tab 的排序位置。</p>
+<h3>交互规则</h3>
+<ul><li><b>跳转链接扩展：</b> <b>[H5]</b> 礼物后台跳转链接配置新增选项"跳转客户端页面"，支持跳转至粉丝团弹窗等客户端原生页面</li><li><b>灯牌礼物说明文案：</b> <b>[服务端]</b> 灯牌礼物配置说明文案，key 为 <b>fan_club_light_description</b>，并勾选跳转至「粉丝团弹窗」</li><li><b>灯牌礼物 Hot 图标：</b> <b>[服务端]</b> 为灯牌礼物配置 Hot 标签图标</li><li><b>灯牌礼物首页展示：</b> <b>[客户端]</b> 灯牌礼物（ID：1299）在礼物面板首页 Tab 也放置一份，标签为 fans，并添加到粉丝团 Tab</li><li><b>礼物面板 Tab 排序：</b> <b>[客户端]</b> 粉丝团礼物 Tab 排序调整至「特权」Tab 前面</li><li><b>入团引导条：</b> <b>[客户端]</b> 未加入粉丝团的用户点击粉丝团礼物时，礼物面板顶部展示引导条（主播头像 + 引导文案"加入粉丝团，解锁礼物"+ 加入按钮）；点击「加入」弹出粉丝团卡片；点击「赠送」Toast 提示"加入粉丝团，解锁礼物"并弹出粉丝团卡片</li><li><b>已加入用户：</b> <b>[客户端]</b> 已加入粉丝团用户（含冻结）不展示引导条</li><li><b>冻结用户合并付费：</b> <b>[客户端]</b> 冻结用户送粉丝团礼物时弹窗提示"重新点亮并送出礼物"，展示点亮费用 + 礼物费用，确认按钮展示合计费用。确认后同时扣除点亮费用和礼物费用，Toast 提示"成功点亮粉丝团，并送出礼物"</li><li><b>Party 房限制：</b> <b>[客户端]</b> Party 全麦/多麦位送礼场景下，粉丝团礼物仅能赠送房主。若送礼对象包含非房主，Toast 提示"粉丝团礼物仅能赠送房主"</li><li><b>心愿礼物过滤：</b> <b>[服务端]</b> 直播间心愿礼物玩法过滤去除粉丝团礼物</li></ul>
+<h3>异常处理</h3>
+<ul><li><b>数据为空：</b> <b>[客户端]</b> 礼物面板粉丝团 Tab 无礼物时展示空状态</li><li><b>跳转异常：</b> <b>[客户端]</b> 跳转目标页面不存在时降级为不跳转，仅展示说明文案</li><li><b>网络异常：</b> <b>[客户端]</b> 礼物面板数据加载失败时展示重试</li><li><b>重复操作：</b> <b>[客户端]</b> 礼物发送做防抖处理</li></ul>
+<hr/>
+<h1>三、设计稿</h1>
+<p>设计稿完成后在此补充链接。</p>
+<hr/>
+<h1>四、多语言 Key</h1>
+<table><colgroup><col/><col/><col/></colgroup><thead><tr><th>是否APP端</th><th>Key</th><th>中文</th></tr></thead><tbody><tr><td>是</td><td>fan_club_growth_entrance</td><td>成长历程&gt;</td></tr><tr><td>是</td><td>fan_club_frozen_text1</td><td>因3天未给主播送礼</td></tr><tr><td>是</td><td>fan_club_frozen_text2</td><td>粉丝团勋章已冻结</td></tr><tr><td>是</td><td>fan_club_light_up</td><td>点亮</td></tr><tr><td>是</td><td>fan_club_frozen_club</td><td>冻结粉丝团</td></tr><tr><td>是</td><td>fan_club_frozen_club_entrance</td><td>冻结粉丝团&gt;&gt;</td></tr><tr><td>是</td><td>fan_club_frozen</td><td>冻结</td></tr><tr><td>是</td><td>fans_club_please_go_to_live_room</td><td>请前往直播间</td></tr><tr><td>是</td><td>intimacy</td><td>亲密度</td></tr><tr><td>是</td><td>fans_club_watch</td><td>观看</td></tr><tr><td>是</td><td>fans_club_share</td><td>分享</td></tr><tr><td>是</td><td>cancel_top</td><td>取消置顶</td></tr><tr><td>是</td><td>fan_club_days_in_club</td><td>加团天数</td></tr><tr><td>是</td><td>fans_club_member_today_intimacy</td><td>今日亲密度</td></tr><tr><td>是</td><td>fan_club_total_closeness</td><td>总亲密度</td></tr><tr><td>是</td><td>fan_club_level_privileges</td><td>等级权益</td></tr><tr><td>是</td><td>fan_club_light_of_heart</td><td>初心之光</td></tr><tr><td>是</td><td>fan_club_gift_purchase_eligibility</td><td>礼物购买资格</td></tr><tr><td>是</td><td>fan_club_badge_upgrade</td><td>粉丝团勋章升级</td></tr><tr><td>是</td><td>fan_club_style_upgrade</td><td>样式升级</td></tr><tr><td>是</td><td>fan_club_fan_club_upgrade_float_tag</td><td>粉丝团升级飘屏</td></tr><tr><td>是</td><td>fan_club_visible_this_live</td><td>本直播间可见</td></tr><tr><td>是</td><td>fan_club_entry_effects</td><td>粉丝团进场特效</td></tr><tr><td>是</td><td>fan_club_show_below_10000_viewers</td><td>本直播间人数&lt;10000才展示</td></tr><tr><td>是</td><td>fan_club_gem_of_wishes</td><td>心愿宝石</td></tr><tr><td>是</td><td>fan_club_cohost_avatar_frame</td><td>专属连麦头像框</td></tr><tr><td>是</td><td>fan_club_auto_equip_cohost</td><td>连麦自动佩戴,本直播间生效</td></tr><tr><td>是</td><td>fan_club_upgrade_runway</td><td>粉丝团升级跑道</td></tr><tr><td>是</td><td>fan_club_visible_regional_live</td><td>区域直播间可见</td></tr><tr><td>是</td><td>fan_club_exclusive_gift_runway</td><td>专属送礼跑道</td></tr><tr><td>是</td><td>fan_club_gift_runway_text</td><td>送礼自动展示，本直播间生效</td></tr><tr><td>是</td><td>fan_club_eternal_heart</td><td>永恒之心</td></tr><tr><td>是</td><td>fan_club_entry_effects_upgrade</td><td>粉丝团进场特效升级</td></tr><tr><td>是</td><td>fan_club_displayed_this_live</td><td>本直播间展示</td></tr><tr><td>是</td><td>fan_club_privileges_unlocked</td><td>已获得{num}项特权</td></tr><tr><td>是</td><td>fan_club_exclusive_medal</td><td>专属勋章</td></tr><tr><td>是</td><td>fan_club_receive_exclusive_medal</td><td>获得专属勋章</td></tr><tr><td>是</td><td>fan_club_fan_light_sign</td><td>粉丝灯牌</td></tr><tr><td>是</td><td>fan_club_rules_popup</td><td>粉丝团规则</td></tr><tr><td>是</td><td>fan_club_quit_fan_club</td><td>退出粉丝团</td></tr><tr><td>是</td><td>fan_club_clear_intimacy_privileges</td><td>所有亲密度和权益将被清空</td></tr><tr><td>是</td><td>fan_club_cannot_restore_after_quit</td><td>重新加入也无法恢复</td></tr><tr><td>是</td><td>fan_club_days_joined</td><td>已入团{num}天</td></tr><tr><td>是</td><td>fan_club_closeness_score</td><td>{num}亲密度</td></tr><tr><td>是</td><td>fan_club_level</td><td>粉丝团等级</td></tr><tr><td>是</td><td>fan_club_edit_announcement</td><td>编辑团公告</td></tr><tr><td>是</td><td>fan_club_edit_announcement_text</td><td>在此输入团公告</td></tr><tr><td>是</td><td>fan_club_announcement</td><td>团公告</td></tr><tr><td>是</td><td>conversation_top</td><td>置顶</td></tr><tr><td>是</td><td>edit</td><td>编辑</td></tr><tr><td>是</td><td>delete</td><td>删除</td></tr><tr><td>是</td><td>fan_groups_exit_success</td><td>成功退出粉丝团</td></tr><tr><td>是</td><td>fan_groups_experience_value</td><td>升级还需亲密度</td></tr><tr><td>否</td><td>fans_club_announcement_upgrade_name</td><td>恭喜{nickname}升级，感恩一路相伴</td></tr><tr><td>否</td><td>fans_club_announcement_upgrade_text</td><td>恭喜{num}位成员升级，感恩一路相伴</td></tr><tr><td>否</td><td>fans_club_announcement_lv8_name</td><td>欢迎{nickname}升级到Lv.8级，继续加油一起成长</td></tr><tr><td>否</td><td>fans_club_announcement_lv8_text</td><td>欢迎{num}位成员升级Lv.8级，继续加油一起成长</td></tr><tr><td>否</td><td>fans_club_announcement_lv12_name</td><td>恭喜{nickname}升级到Lv.12级，感恩一路相伴</td></tr><tr><td>否</td><td>fans_club_announcement_lv12_text</td><td>恭喜{num}位成员升级Lv.12级，感恩一路相伴</td></tr><tr><td>否</td><td>fans_club_announcement_lv16_name</td><td>恭喜{nickname}升级到Lv.16级，一路通行，感谢有你</td></tr><tr><td>否</td><td>fans_club_announcement_lv16_text</td><td>恭喜{num}位成员升级Lv.16级，一路通行，感谢有你</td></tr><tr><td>否</td><td>fans_club_announcement_lv20_name</td><td>热烈祝贺{nickname}升级到Lv.20级，感谢不离不弃，温暖相随！</td></tr><tr><td>否</td><td>fans_club_announcement_relight_name</td><td>{nickname}重新点亮了粉丝团勋章，欢迎回归～</td></tr><tr><td>否</td><td>fans_club_announcement_relight_text</td><td>{num}位成员重新点亮了粉丝团勋章，欢迎回归～</td></tr><tr><td>是</td><td>fan_club_growth_history</td><td>粉丝团成长历程</td></tr><tr><td>是</td><td>fan_club_medal_frozen_restore_privileges</td><td>勋章已冻结,点亮可恢复权益</td></tr><tr><td>是</td><td>fans_club_has_lit_up</td><td>该粉丝团已处于点亮状态，无需重复操作</td></tr><tr><td>是</td><td>fans_club_lit</td><td>已点亮</td></tr><tr><td>是</td><td>fans_club_frozen</td><td>已冻结</td></tr><tr><td>是</td><td>fan_club_privilege</td><td>提升粉丝等级，即可解锁专属粉丝团特权：粉丝团勋章、升级庆祝、进场特效，以及更多豪华粉丝团礼物的送礼资格。</td></tr><tr><td>是</td><td>fan_club_task_title</td><td>Fan Power 任务</td></tr><tr><td>是</td><td>fans_club_upgrade_effect</td><td>粉丝团升级动效</td></tr><tr><td>是</td><td>level</td><td>等级</td></tr><tr><td>是</td><td>fan_club_light_description</td><td>（灯牌礼物说明文案）</td></tr><tr><td>是</td><td>join_my_fan_club_short_version</td><td>加入粉丝团</td></tr><tr><td>否</td><td>fans_club_user</td><td>加入/续费粉丝团</td></tr><tr><td>否</td><td>renew_fan_group</td><td>点亮粉丝团</td></tr><tr><td>否</td><td>expire_fan_group_remind</td><td>粉丝团成员已冻结</td></tr><tr><td>是</td><td>fan_club_join</td><td>加入</td></tr><tr><td>是</td><td>fan_club_join_unlock_guide</td><td>加入粉丝团，解锁礼物</td></tr><tr><td>是</td><td>fan_club_relight_send_gift</td><td>重新点亮并送出礼物</td></tr><tr><td>是</td><td>fan_club_relight_send_success</td><td>成功点亮粉丝团，并送出礼物</td></tr><tr><td>是</td><td>renewal_fan_group_gifts</td><td>请先加入或点亮粉丝团</td></tr><tr><td>是</td><td>fan_club_only_to_host</td><td>粉丝团礼物仅能赠送房主</td></tr><tr><td>是</td><td>fans_club_live_room_gift</td><td>请前往直播间送礼</td></tr><tr><td>是</td><td>fan_group_man_grade</td><td>恭喜达到满级！</td></tr><tr><td>是</td><td>fans_club_rule_new_upgrade_title</td><td>粉丝团全新升级</td></tr><tr><td>是</td><td>fans_club_intimacy_gain</td><td>今日获得亲密度</td></tr><tr><td>是</td><td>fans_club_member_data</td><td>成员数据</td></tr><tr><td>是</td><td>fans_club_member_contributor</td><td>贡献人数</td></tr><tr><td>是</td><td>fans_club_member_today_jion</td><td>今日入团</td></tr><tr><td>是</td><td>fans_club_member_contribution_rank</td><td>贡献榜</td></tr><tr><td>是</td><td>fans_club_fan</td><td>Fans</td></tr><tr><td>是</td><td>live_room_rank_entrance</td><td>Ranking</td></tr><tr><td>是</td><td>task_open</td><td>展开</td></tr><tr><td>是</td><td>task_close</td><td>收起</td></tr><tr><td>是</td><td>fan_groups_frozen_guide</td><td>勋章已冻结，点亮恢复权益</td></tr><tr><td>否</td><td>sys_fan_club_float_screen_grade</td><td>粉丝团：恭喜{nickname}粉丝等级到达level.{num}</td></tr><tr><td>否</td><td>sys_fan_club_run_grade</td><td>恭喜！{hostname}的粉丝团成员：{nickname}到达了等级{num}！</td></tr><tr><td>是</td><td>fans_club_task_watch_live</td><td>观看直播20分钟</td></tr><tr><td>是</td><td>fans_club_task_watch_live_text</td><td>2分钟+1亲密度</td></tr><tr><td>是</td><td>fans_club_task_share_room</td><td>分享直播间</td></tr><tr><td>是</td><td>fans_club_task_share_room_text</td><td>1次+1亲密度</td></tr></tbody></table>

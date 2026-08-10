@@ -1,0 +1,32 @@
+{
+  "pen_file": "直播-消息-直播间发言新增发语音与语音转文字260715-prototype.pen",
+  "doc_token": "SmEAdbSGhoqokLxqmnTlUIGggee",
+  "groups": [
+    {
+      "func": "FUNC-001/002",
+      "whiteboard_token": "YFyewEzI3hXCj4bzh93lTGeSgAb",
+      "screens": [
+        { "nodeId": "obgKi", "label": "1. 聊天输入框默认状态" },
+        { "nodeId": "AJF2b", "label": "2. 发语音面板" },
+        { "nodeId": "kdFGS", "label": "3. 语音录制中" },
+        { "nodeId": "C7fe4", "label": "4. 录制上滑取消" }
+      ]
+    },
+    {
+      "func": "FUNC-003/004",
+      "whiteboard_token": "AX9KwjjgThUEn5bZID8lZXkegm0",
+      "screens": [
+        { "nodeId": "mJIey", "label": "5. 语音消息展示" },
+        { "nodeId": "MWPTO", "label": "6. 翻译操作卡" }
+      ]
+    },
+    {
+      "func": "FUNC-005",
+      "whiteboard_token": "Ptp8w3fezhzbWBb6BdBlq1ytgyd",
+      "screens": [
+        { "nodeId": "l61qH", "label": "7. 语音转文字面板" },
+        { "nodeId": "G5hDuj", "label": "8. 识别结果填入输入框" }
+      ]
+    }
+  ]
+}
