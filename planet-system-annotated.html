@@ -246,6 +246,14 @@ body.demo-mode .marker { visibility: hidden !important; }
 .share-task-actions { display:flex; gap:10px; margin-top:16px; }
 .share-submit-btn { flex:1; padding:12px; border-radius:22px; background:linear-gradient(135deg,#ff9800,#ff6d00); border:none; color:#fff; font-size:14px; font-weight:600; cursor:pointer; }
 .share-rule-btn { padding:12px 18px; border-radius:22px; background:rgba(255,152,0,0.1); border:1px solid rgba(255,152,0,0.3); color:#ffb74d; font-size:13px; cursor:pointer; }
+.purple-header::before { background:linear-gradient(180deg,rgba(124,77,255,0.25),transparent) !important; }
+.purple-badge { background:linear-gradient(135deg,#7c4dff,#651fff) !important; }
+.purple-reward { background:rgba(124,77,255,0.08) !important; border-color:rgba(124,77,255,0.2) !important; }
+.purple-val { color:#b388ff !important; }
+.purple-avatar { background:linear-gradient(135deg,#7c4dff,#b388ff) !important; }
+.purple-user { color:#b388ff !important; }
+.purple-btn { background:linear-gradient(135deg,#7c4dff,#651fff) !important; }
+.purple-rule-btn { background:rgba(124,77,255,0.1) !important; border-color:rgba(124,77,255,0.3) !important; color:#b388ff !important; }
 .toast { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.8); background:rgba(30,30,50,0.95); border:1px solid rgba(124,77,255,0.3); border-radius:16px; padding:24px 32px; text-align:center; opacity:0; pointer-events:none; transition:all 0.3s; z-index:1000; }
 .toast.show { opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:all; }
 .toast h3 { font-size:16px; margin-bottom:8px; }
@@ -318,6 +326,7 @@ body.demo-mode .doc-details { display: none; }
     <div class="sn-item" data-page="page-level-cocreation"><span class="sn-icon">📈</span>共创星等级</div>
     <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
     <div class="sn-item" data-page="page-share-task"><span class="sn-icon">📢</span>站外扩散任务</div>
+    <div class="sn-item" data-page="page-translation-task"><span class="sn-icon">🔍</span>翻译查错任务</div>
   </div>
 </nav>
 <div class="mode-toggle">
@@ -412,7 +421,7 @@ body.demo-mode .doc-details { display: none; }
             <div class="bulletin-task-name">站外扩散</div>
             <div class="bulletin-reward">+30 能量 · 1000 金币</div>
           </div>
-          <div class="bulletin-item" onclick="goToDetail('co-creation')">
+          <div class="bulletin-item" onclick="goToPage('page-translation-task')">
             <div class="bulletin-planet-tag purple">共创星</div>
             <div class="bulletin-task-name">翻译查错</div>
             <div class="bulletin-reward">+30 能量 · 1000 金币</div>
@@ -445,7 +454,7 @@ body.demo-mode .doc-details { display: none; }
       <div class="marker" id="m-dc-2" style="top:298px;left:252px;">②</div>
       <div class="task-section">
         <div class="section-title">可参与任务</div>
-        <div class="task-item"><div class="task-left"><div class="task-icon">🔍</div><div><div class="task-name">翻译查错</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn">去参与</button></div>
+        <div class="task-item"><div class="task-left"><div class="task-icon">🔍</div><div><div class="task-name">翻译查错</div><div class="task-reward">被采纳 +30 能量 · 1000 金币/条</div></div></div><button class="task-btn" onclick="goToPage('page-translation-task')">去参与</button></div>
       </div>
       <div class="marker" id="m-dc-3" style="top:402px;left:252px;">③</div>
       <div class="marker" id="m-dc-5" style="top:480px;left:355px;">⑤</div>
@@ -560,6 +569,61 @@ body.demo-mode .doc-details { display: none; }
       <div class="marker" id="m-lc-1" style="top:210px;left:262px;">①</div>
       <div class="energy-section"><div class="section-title">能量获取规则</div><div class="energy-card"><div class="energy-row"><span>建议被采纳</span><span class="energy-val">+30</span></div><div class="energy-row"><span>连续7天有采纳</span><span class="energy-val">+50 额外</span></div><div class="energy-row"><span>单月采纳≥10条</span><span class="energy-val">+100 额外</span></div></div></div>
       <div class="marker" id="m-lc-2" style="top:430px;left:40px;">②</div>
+    </div>
+
+    <!-- PAGE 7: Translation Task Detail -->
+    <div class="page slide-right" id="page-translation-task">
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="dynamic-island">
+          <div class="dynamic-island-inner">
+            <div class="dynamic-island-camera"></div>
+            <div class="dynamic-island-sensor"></div>
+          </div>
+        </div>
+        <span>⚡ 100%</span>
+      </div>
+      <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-cocreation')"></div><div class="title">任务详情</div></div>
+      <div class="share-task-wrapper">
+        <div class="share-task-header purple-header">
+          <div class="share-task-badge purple-badge">Long-term</div>
+          <div class="share-task-icon">🔍</div>
+          <h3 class="share-task-title">Translation QA</h3>
+          <p class="share-task-subtitle">翻译查错任务</p>
+          <div class="share-task-date">长期有效</div>
+        </div>
+        <div class="share-task-reward purple-reward">
+          <div class="reward-row"><span class="reward-label">采纳奖励</span><span class="reward-value purple-val">+30 能量 · 1000 金币/条</span></div>
+          <div class="reward-row"><span class="reward-label">连续7天采纳</span><span class="reward-value purple-val">+50 额外能量</span></div>
+        </div>
+        <div class="share-task-desc">
+          <div class="desc-title">任务说明</div>
+          <p>检查 Poppo 应用内的多语言翻译内容，发现翻译错误、语法不通顺、文化不适配等问题并提交修正建议。每条被采纳的建议将获得能量和金币奖励。</p>
+        </div>
+        <div class="share-task-feed">
+          <div class="feed-title">近期采纳示例</div>
+          <div class="feed-item">
+            <div class="feed-avatar purple-avatar"></div>
+            <div class="feed-content">
+              <div class="feed-user purple-user">LinguaFan_ID</div>
+              <div class="feed-text">「直播间」印尼语翻译修正：Siaran → Siaran Langsung</div>
+              <div class="feed-meta">印尼语 · 已采纳 · +30 能量</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-avatar purple-avatar"></div>
+            <div class="feed-content">
+              <div class="feed-user purple-user">ArabicHelper</div>
+              <div class="feed-text">礼物面板阿拉伯语文字方向修正（RTL 布局）</div>
+              <div class="feed-meta">阿拉伯语 · 已采纳 · +30 能量</div>
+            </div>
+          </div>
+        </div>
+        <div class="share-task-actions">
+          <button class="share-submit-btn purple-btn">提交建议</button>
+          <button class="share-rule-btn purple-rule-btn">任务规则</button>
+        </div>
+      </div>
     </div>
 
     <!-- PAGE 6: Share Task Detail -->
