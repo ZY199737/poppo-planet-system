@@ -220,6 +220,32 @@ body.demo-mode .marker { visibility: hidden !important; }
 .energy-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px; }
 .energy-row:last-child { border-bottom:none; }
 .energy-row .energy-val { color:#b388ff; font-weight:600; }
+.share-task-wrapper { padding:0 20px 24px; overflow-y:auto; max-height:calc(100% - 88px); }
+.share-task-header { text-align:center; padding:20px 0 16px; position:relative; }
+.share-task-header::before { content:''; position:absolute; top:0; left:-20px; right:-20px; height:140px; background:linear-gradient(180deg,rgba(255,152,0,0.25),transparent); pointer-events:none; }
+.share-task-badge { display:inline-block; background:linear-gradient(135deg,#ff6d00,#ff9800); color:#fff; font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px; margin-bottom:8px; letter-spacing:0.5px; }
+.share-task-icon { font-size:36px; margin:8px 0; }
+.share-task-title { font-size:18px; font-weight:700; margin:4px 0; color:#fff; }
+.share-task-subtitle { font-size:12px; color:rgba(255,255,255,0.6); margin:2px 0; }
+.share-task-date { font-size:11px; color:rgba(255,255,255,0.4); margin-top:6px; }
+.share-task-reward { background:rgba(255,152,0,0.08); border:1px solid rgba(255,152,0,0.2); border-radius:12px; padding:12px 16px; margin:12px 0; }
+.reward-row { display:flex; justify-content:space-between; padding:6px 0; font-size:12px; }
+.reward-label { color:rgba(255,255,255,0.6); }
+.reward-value { color:#ffb74d; font-weight:600; }
+.share-task-desc { margin:14px 0; }
+.share-task-desc .desc-title { font-size:13px; font-weight:600; margin-bottom:6px; color:rgba(255,255,255,0.9); }
+.share-task-desc p { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.6; }
+.share-task-feed { margin:14px 0; }
+.share-task-feed .feed-title { font-size:13px; font-weight:600; margin-bottom:10px; color:rgba(255,255,255,0.9); }
+.feed-item { display:flex; gap:10px; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:8px; }
+.feed-avatar { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#ff9800,#ffb74d); flex-shrink:0; }
+.feed-content { flex:1; min-width:0; }
+.feed-user { font-size:12px; font-weight:600; color:#ffb74d; }
+.feed-text { font-size:11px; color:rgba(255,255,255,0.8); margin:3px 0; line-height:1.4; }
+.feed-meta { font-size:10px; color:rgba(255,255,255,0.4); }
+.share-task-actions { display:flex; gap:10px; margin-top:16px; }
+.share-submit-btn { flex:1; padding:12px; border-radius:22px; background:linear-gradient(135deg,#ff9800,#ff6d00); border:none; color:#fff; font-size:14px; font-weight:600; cursor:pointer; }
+.share-rule-btn { padding:12px 18px; border-radius:22px; background:rgba(255,152,0,0.1); border:1px solid rgba(255,152,0,0.3); color:#ffb74d; font-size:13px; cursor:pointer; }
 .toast { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.8); background:rgba(30,30,50,0.95); border:1px solid rgba(124,77,255,0.3); border-radius:16px; padding:24px 32px; text-align:center; opacity:0; pointer-events:none; transition:all 0.3s; z-index:1000; }
 .toast.show { opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:all; }
 .toast h3 { font-size:16px; margin-bottom:8px; }
@@ -291,6 +317,7 @@ body.demo-mode .doc-details { display: none; }
     <div class="sn-item" data-page="page-detail-promotion"><span class="sn-icon">🟠</span>传播星详情</div>
     <div class="sn-item" data-page="page-level-cocreation"><span class="sn-icon">📈</span>共创星等级</div>
     <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
+    <div class="sn-item" data-page="page-share-task"><span class="sn-icon">📢</span>站外扩散任务</div>
   </div>
 </nav>
 <div class="mode-toggle">
@@ -380,7 +407,7 @@ body.demo-mode .doc-details { display: none; }
           <span class="bulletin-title">星球通告</span>
         </div>
         <div class="bulletin-items">
-          <div class="bulletin-item" onclick="goToDetail('promotion')">
+          <div class="bulletin-item" onclick="goToPage('page-share-task')">
             <div class="bulletin-planet-tag orange">传播星</div>
             <div class="bulletin-task-name">站外扩散</div>
             <div class="bulletin-reward">+30 能量 · 1000 金币</div>
@@ -467,7 +494,7 @@ body.demo-mode .doc-details { display: none; }
       <div class="marker" id="m-dp-2" style="top:298px;left:252px;">②</div>
       <div class="task-section">
         <div class="section-title orange">可参与任务</div>
-        <div class="task-item"><div class="task-left"><div class="task-icon orange">📢</div><div><div class="task-name">站外扩散</div><div class="task-reward">合格 +30 能量 · 优质 +50 能量</div></div></div><button class="task-btn orange">去参与</button></div>
+        <div class="task-item"><div class="task-left"><div class="task-icon orange">📢</div><div><div class="task-name">站外扩散</div><div class="task-reward">合格 +30 能量 · 优质 +50 能量</div></div></div><button class="task-btn orange" onclick="goToPage('page-share-task')">去参与</button></div>
       </div>
       <div class="marker" id="m-dp-3" style="top:402px;left:252px;">③</div>
       <div class="marker" id="m-dp-5" style="top:480px;left:355px;">⑤</div>
@@ -535,7 +562,60 @@ body.demo-mode .doc-details { display: none; }
       <div class="marker" id="m-lc-2" style="top:430px;left:40px;">②</div>
     </div>
 
-    <!-- PAGE 6: Profile -->
+    <!-- PAGE 6: Share Task Detail -->
+    <div class="page slide-right" id="page-share-task">
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="dynamic-island">
+          <div class="dynamic-island-inner">
+            <div class="dynamic-island-camera"></div>
+            <div class="dynamic-island-sensor"></div>
+          </div>
+        </div>
+        <span>⚡ 100%</span>
+      </div>
+      <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-promotion')"></div><div class="title">任务详情</div></div>
+      <div class="share-task-wrapper">
+        <div class="share-task-header">
+          <div class="share-task-badge">Limited</div>
+          <div class="share-task-icon">📢</div>
+          <h3 class="share-task-title">Share Poppo Glory</h3>
+          <p class="share-task-subtitle">站外扩散任务</p>
+          <div class="share-task-date">2026.08.01 – 2026.08.31</div>
+        </div>
+        <div class="share-task-reward">
+          <div class="reward-row"><span class="reward-label">合格奖励</span><span class="reward-value">+30 能量 · 1000 金币</span></div>
+          <div class="reward-row"><span class="reward-label">优质奖励</span><span class="reward-value">+50 能量 · 2000 金币</span></div>
+        </div>
+        <div class="share-task-desc">
+          <div class="desc-title">任务说明</div>
+          <p>在站外社交平台（TikTok / Instagram / X / Facebook）发布与 Poppo 相关的原创内容，展示直播精彩片段、邀请好友体验、分享使用心得等。</p>
+        </div>
+        <div class="share-task-feed">
+          <div class="feed-title">优质示例</div>
+          <div class="feed-item">
+            <div class="feed-avatar"></div>
+            <div class="feed-content">
+              <div class="feed-user">Jessica_Live</div>
+              <div class="feed-text">Come join me on Poppo! Best live streaming app 🎉</div>
+              <div class="feed-meta">TikTok · 2.3k views · 被评为优质</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-avatar"></div>
+            <div class="feed-content">
+              <div class="feed-user">StarBoy_99</div>
+              <div class="feed-text">How I earned 5000 coins in one week on Poppo 💰</div>
+              <div class="feed-meta">Instagram · 1.8k views · 被评为合格</div>
+            </div>
+          </div>
+        </div>
+        <div class="share-task-actions">
+          <button class="share-submit-btn">提交作品</button>
+          <button class="share-rule-btn" onclick="showShareRule()">活动规则</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Rank Info Bottom Sheet -->
     <div class="rank-sheet-overlay" id="rank-sheet-overlay" onclick="hideRankInfo()"></div>
