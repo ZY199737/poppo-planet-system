@@ -88,9 +88,20 @@ body.demo-mode .marker { visibility: hidden !important; }
 .user-topbar .utag.orange { background: rgba(255,152,0,0.15); color: #ffb74d; }
 .user-topbar .coins { margin-left: auto; font-size: 12px; color: #ffd700; font-weight: 600; }
 
+/* My contribution card */
+.my-contribution { margin: 10px 24px 0; background: linear-gradient(135deg, rgba(30,30,50,0.7), rgba(20,20,40,0.8)); border: 1px solid rgba(124,77,255,0.25); border-radius: 16px; padding: 11px 14px 10px; backdrop-filter: blur(10px); cursor: pointer; transition: transform 0.2s; }
+.my-contribution:active { transform: scale(0.98); }
+.mc-header { display: flex; align-items: center; margin-bottom: 6px; }
+.mc-title { font-size: 13px; font-weight: 600; color: #fff; }
+.mc-more { margin-left: auto; font-size: 11px; color: #a5b4fc; }
+.mc-stats { display: flex; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px; }
+.mc-stat { flex: 1; text-align: center; }
+.mc-num { font-size: 15px; font-weight: 700; color: #b388ff; }
+.mc-label { font-size: 9px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
 /* Stars area */
-.stars-container { position: relative; height: 680px; display: flex; align-items: center; justify-content: center; }
-.stars-orbit { position: relative; width: 350px; height: 640px; }
+.stars-container { position: relative; height: 590px; display: flex; align-items: center; justify-content: center; }
+.stars-orbit { position: relative; width: 350px; height: 590px; }
 .stars-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
 .star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 2s ease-in-out infinite; }
 @keyframes twinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
@@ -115,10 +126,10 @@ body.demo-mode .marker { visibility: hidden !important; }
 .planet .planet-leader .lm-av { width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,#ffd700,#ff8f00); font-size:7px; display:flex; align-items:center; justify-content:center; }
 .planet .lock-icon { position:absolute; top:50%; left:50%; transform:translate(-50%,-60%); width:24px; height:24px; background:rgba(0,0,0,0.6); border-radius:50%; display:flex; align-items:center; justify-content:center; }
 .planet .lock-icon::before { content:'🔒'; font-size:12px; }
-.planet-co-creation { top: 20px; left: 42%; }
-.planet-guardian { top: 220px; left: 8%; }
-.planet-promotion { top: 260px; right: 8%; }
-.planet-scout { top: 440px; left: 35%; }
+.planet-co-creation { top: 18px; left: 42%; }
+.planet-guardian { top: 203px; left: 8%; }
+.planet-promotion { top: 240px; right: 8%; }
+.planet-scout { top: 380px; left: 35%; }
 .co-creation-orb { --glow: rgba(124,77,255,0.5); --glow-soft: rgba(124,77,255,0.15); background: radial-gradient(circle at 30% 30%, #b388ff, #7c4dff 40%, #4a148c 80%, #1a0040); }
 .guardian-orb { --glow: rgba(0,200,83,0.4); --glow-soft: rgba(0,200,83,0.12); background: radial-gradient(circle at 30% 30%, #69f0ae, #00c853 40%, #1b5e20 80%, #0a2e0f); }
 .promotion-orb { --glow: rgba(255,152,0,0.4); --glow-soft: rgba(255,152,0,0.12); background: radial-gradient(circle at 30% 30%, #ffcc80, #ff9800 40%, #e65100 80%, #4e1a00); }
@@ -254,6 +265,31 @@ body.demo-mode .marker { visibility: hidden !important; }
 .purple-user { color:#b388ff !important; }
 .purple-btn { background:linear-gradient(135deg,#7c4dff,#651fff) !important; }
 .purple-rule-btn { background:rgba(124,77,255,0.1) !important; border-color:rgba(124,77,255,0.3) !important; color:#b388ff !important; }
+
+/* My contribution page */
+.contribution-page { background:#f5f5f5; min-height:100%; }
+.contribution-page .nav-bar { background:#fff; border-bottom:1px solid #eee; }
+.contribution-page .nav-bar .back-btn { background:transparent; }
+.contribution-page .nav-bar .back-btn::after { border-color:#333; }
+.contribution-page .nav-bar .title { color:#1a1a1a; font-size:17px; }
+.contribution-page .status-bar { background:#fff; color:#1a1a1a; }
+.contribution-page .status-bar span { color:#1a1a1a; }
+.contribution-list { padding:12px 16px; }
+.contrib-card { background:#fff; border-radius:12px; padding:14px 16px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.contrib-card-header { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+.contrib-task-name { font-size:14px; font-weight:600; color:#1a1a1a; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.contrib-reward { font-size:10px; font-weight:700; color:#fff; background:#ff4444; border-radius:10px; padding:2px 7px; white-space:nowrap; }
+.contrib-status { font-size:11px; font-weight:600; white-space:nowrap; padding:2px 0; }
+.contrib-status.review { color:#999; }
+.contrib-status.quality { color:#ff9800; }
+.contrib-status.passed { color:#4caf50; }
+.contrib-status.rejected { color:#f44336; }
+.contrib-date { font-size:11px; color:#999; margin-bottom:10px; }
+.contrib-body { display:flex; gap:10px; align-items:flex-start; }
+.contrib-thumb { width:90px; height:64px; border-radius:8px; background:#1a1a2e; flex-shrink:0; overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; }
+.contrib-thumb::after { content:'▶'; position:absolute; color:#fff; font-size:16px; opacity:0.8; }
+.contrib-thumb-bar { position:absolute; bottom:4px; left:4px; font-size:8px; color:#fff; background:rgba(124,77,255,0.8); padding:1px 5px; border-radius:4px; }
+.contrib-desc { font-size:12px; color:#555; line-height:1.5; flex:1; }
 .toast { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.8); background:rgba(30,30,50,0.95); border:1px solid rgba(124,77,255,0.3); border-radius:16px; padding:24px 32px; text-align:center; opacity:0; pointer-events:none; transition:all 0.3s; z-index:1000; }
 .toast.show { opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:all; }
 .toast h3 { font-size:16px; margin-bottom:8px; }
@@ -327,6 +363,7 @@ body.demo-mode .doc-details { display: none; }
     <div class="sn-item" data-page="page-level-promotion"><span class="sn-icon">📈</span>传播星等级</div>
     <div class="sn-item" data-page="page-share-task"><span class="sn-icon">📢</span>站外扩散任务</div>
     <div class="sn-item" data-page="page-translation-task"><span class="sn-icon">🔍</span>翻译查错任务</div>
+    <div class="sn-item" data-page="page-contribution"><span class="sn-icon">⭐</span>我的贡献</div>
   </div>
 </nav>
 <div class="mode-toggle">
@@ -358,17 +395,29 @@ body.demo-mode .doc-details { display: none; }
         <div><div class="uname">Luna_Star</div><div class="utags"><span class="utag purple">共创星·体验官</span><span class="utag orange">传播星·传播新手</span></div></div>
       </div>
       <div class="marker" id="m-home-1" style="top:66px;left:8px;">①</div>
+      <div class="marker" id="m-home-2" style="top:120px;left:250px;">②</div>
+      <div class="my-contribution" onclick="goToContribution()">
+        <div class="mc-header">
+          <span class="mc-title">我的贡献</span>
+          <span class="mc-more">查看详情 ›</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-num">0</div><div class="mc-label">有效帖子数</div></div>
+          <div class="mc-stat"><div class="mc-num">0</div><div class="mc-label">获得金币</div></div>
+          <div class="mc-stat"><div class="mc-num">0</div><div class="mc-label">获得积分</div></div>
+        </div>
+      </div>
 
       <div class="stars-container">
         <div class="stars-bg" id="stars-bg"></div>
         <div class="stars-orbit">
-          <svg class="constellation-lines" viewBox="0 0 350 640">
-            <line x1="180" y1="90" x2="80" y2="260"/>
-            <line x1="80" y1="260" x2="170" y2="490"/>
-            <line x1="170" y1="490" x2="285" y2="300"/>
-            <line x1="285" y1="300" x2="180" y2="90"/>
+          <svg class="constellation-lines" viewBox="0 0 350 590">
+            <line x1="180" y1="80" x2="80" y2="240"/>
+            <line x1="80" y1="240" x2="170" y2="440"/>
+            <line x1="170" y1="440" x2="285" y2="270"/>
+            <line x1="285" y1="270" x2="180" y2="80"/>
           </svg>
-          <div class="marker" id="m-home-2" style="top:340px;left:173px;">②</div>
+          <div class="marker" id="m-home-3" style="top:330px;left:173px;">③</div>
 
           <div class="planet planet-co-creation" onclick="goToDetail('co-creation')">
             <div class="planet-leader"><div class="lm-av">👑</div><span>StarBuilder_01</span></div>
@@ -378,7 +427,7 @@ body.demo-mode .doc-details { display: none; }
             <span class="planet-name">共创星</span>
             <span class="planet-name-en">Co-Creation</span>
           </div>
-          <div class="marker" id="m-home-3" style="top:22px;left:140px;">③</div>
+          <div class="marker" id="m-home-4" style="top:18px;left:140px;">④</div>
 
           <div class="planet planet-guardian locked" onclick="showLockedToast('守护星 Guardian','即将开放，敬请期待')">
             <div class="planet-orb guardian-orb">
@@ -406,7 +455,7 @@ body.demo-mode .doc-details { display: none; }
             <span class="planet-name">星探星</span>
             <span class="planet-name-en">Scout</span>
           </div>
-          <div class="marker" id="m-home-4" style="top:502px;left:146px;">④</div>
+          <div class="marker" id="m-home-5" style="top:455px;left:146px;">⑤</div>
         </div>
       </div>
 
@@ -428,7 +477,7 @@ body.demo-mode .doc-details { display: none; }
           </div>
         </div>
       </div>
-      <div class="marker" id="m-home-5" style="top:726px;left:30px;">⑤</div>
+      <div class="marker" id="m-home-6" style="top:700px;left:30px;">⑥</div>
     </div>
 
     <!-- PAGE 2: Co-Creation Detail -->
@@ -681,6 +730,70 @@ body.demo-mode .doc-details { display: none; }
       </div>
     </div>
 
+    <!-- PAGE 8: My Contribution Detail -->
+    <div class="page slide-right contribution-page" id="page-contribution">
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="dynamic-island">
+          <div class="dynamic-island-inner">
+            <div class="dynamic-island-camera"></div>
+            <div class="dynamic-island-sensor"></div>
+          </div>
+        </div>
+        <span>⚡ 100%</span>
+      </div>
+      <div class="nav-bar"><div class="back-btn" onclick="goBack()"></div><div class="title">My contributions</div></div>
+      <div class="contribution-list">
+        <div class="contrib-card">
+          <div class="contrib-card-header">
+            <span class="contrib-task-name">Task Name</span>
+            <span class="contrib-status review">⏳ Under Review</span>
+          </div>
+          <div class="contrib-date">YYYY-MM-DD HH:MM:SS</div>
+          <div class="contrib-body">
+            <div class="contrib-thumb"><span class="contrib-thumb-bar">VINE 🎬</span></div>
+            <div class="contrib-desc">The copy for "Open-the-Box" is non-standard; would work better.</div>
+          </div>
+        </div>
+        <div class="contrib-card">
+          <div class="contrib-card-header">
+            <span class="contrib-task-name">Task Name Task Nam...</span>
+            <span class="contrib-reward">🪙 +8,000</span>
+            <span class="contrib-status quality">☆ High Quality</span>
+          </div>
+          <div class="contrib-date">YYYY-MM-DD HH:MM:SS</div>
+          <div class="contrib-body">
+            <div class="contrib-thumb"><span class="contrib-thumb-bar">VINE 🎬</span></div>
+            <div class="contrib-desc">The copy for "Open-the-Box" is non-standard; would work better.</div>
+          </div>
+        </div>
+        <div class="contrib-card">
+          <div class="contrib-card-header">
+            <span class="contrib-task-name">Task Name</span>
+            <span class="contrib-reward">🪙 +3000</span>
+            <span class="contrib-status passed">✓ Passed</span>
+          </div>
+          <div class="contrib-date">YYYY-MM-DD HH:MM:SS</div>
+          <div class="contrib-body">
+            <div class="contrib-thumb"><span class="contrib-thumb-bar">VINE 🎬</span></div>
+            <div class="contrib-desc">The copy for "Open-the-Box"</div>
+          </div>
+        </div>
+        <div class="contrib-card">
+          <div class="contrib-card-header">
+            <span class="contrib-task-name">Task Name Task Name Task</span>
+            <span class="contrib-status rejected">✕ Disapproved</span>
+          </div>
+          <div class="contrib-date">YYYY-MM-DD HH:MM:SS</div>
+          <div class="contrib-body">
+            <div class="contrib-desc">The copy for "Open-the-Box" is non-standard; would work better.</div>
+          </div>
+        </div>
+      </div>
+      <div class="marker" id="m-con-1" style="top:150px;left:20px;">①</div>
+      <div class="marker" id="m-con-2" style="top:400px;left:20px;">②</div>
+    </div>
+
     <!-- Rank Info Bottom Sheet -->
     <div class="rank-sheet-overlay" id="rank-sheet-overlay" onclick="hideRankInfo()"></div>
     <div class="rank-sheet" id="rank-sheet">
@@ -710,8 +823,14 @@ body.demo-mode .doc-details { display: none; }
     <div class="co-title">用户身份栏</div>
     <div class="co-body">顶部展示当前用户<strong class="hl">头像、昵称与已获得的星球称号标签</strong>（如 共创星·体验官、传播星·传播新手）。身份标签随对应星球等级提升而升级。</div>
   </div>
-  <div class="anno left" data-page="page-home" data-target="m-home-2" style="top:280px;">
+  <div class="anno right" data-page="page-home" data-target="m-home-2" style="top:190px;">
     <div class="co-badge">②</div><div class="co-page">星球首页</div>
+    <div class="co-title">我的贡献入口</div>
+    <div class="co-body">身份栏下方的<strong class="hl">贡献数据卡片</strong>：聚合展示当前用户的有效帖子数、获得金币、获得积分三项数据，数值随任务采纳情况实时更新。</div>
+    <div class="co-sub">点击卡片（或「查看详情 ›」）进入「我的贡献」页面，查看任务参与记录与完整数据。</div>
+  </div>
+  <div class="anno left" data-page="page-home" data-target="m-home-3" style="top:200px;">
+    <div class="co-badge">③</div><div class="co-page">星球首页</div>
     <div class="co-title">星球展示 · 星座图</div>
     <div class="co-body">4 颗星球以<strong class="hl">星座连线</strong>分布，营造太空探索氛围：</div>
     <div class="co-body"><ul>
@@ -721,19 +840,38 @@ body.demo-mode .doc-details { display: none; }
     </ul></div>
     <div class="co-sub">点击已开放星球进入对应详情页；点击锁定星球弹出「即将开放」提示。</div>
   </div>
-  <div class="anno right" data-page="page-home" data-target="m-home-3" style="top:0px;">
-    <div class="co-badge">③</div><div class="co-page">星球首页</div>
+  <div class="anno right" data-page="page-home" data-target="m-home-4" style="top:28px;">
+    <div class="co-badge">④</div><div class="co-page">星球首页</div>
     <div class="co-title">星球领主标识</div>
     <div class="co-body">已解锁星球顶部展示<strong class="hl">当前领主</strong>（用户头像 + 昵称）。每月能量排名第 1 名获封星球领主，每月 1 日 0:00 按自然月重置。</div>
     <div class="co-sub">点击领主标识可跳转到该用户的个人主页。</div>
   </div>
-  <div class="anno right" data-page="page-home" data-target="m-home-4" style="top:502px;">
-    <div class="co-badge">④</div><div class="co-page">星球首页</div>
+
+  <!-- My Contribution Detail -->
+  <div class="anno left" data-page="page-contribution" data-target="m-con-1" style="top:100px;">
+    <div class="co-badge">①</div><div class="co-page">我的贡献</div>
+    <div class="co-title">贡献记录卡片</div>
+    <div class="co-body">每条记录展示<strong class="hl">任务名称、提交时间、审核状态</strong>。状态类型：</div>
+    <div class="co-body"><ul>
+      <li><strong class="hl">Under Review</strong> — 待审核（灰色）</li>
+      <li><strong class="hl">High Quality</strong> — 优质（橙色），显示金币奖励标签</li>
+      <li><strong class="hl">Passed</strong> — 已通过（绿色），显示金币奖励标签</li>
+      <li><strong class="hl">Disapproved</strong> — 未通过（红色）</li>
+    </ul></div>
+  </div>
+  <div class="anno right" data-page="page-contribution" data-target="m-con-2" style="top:360px;">
+    <div class="co-badge">②</div><div class="co-page">我的贡献</div>
+    <div class="co-title">内容预览</div>
+    <div class="co-body">卡片内展示用户提交的<strong class="hl">内容缩略图 + 文字描述</strong>。视频类内容显示播放标识和来源标签（如 VINE），纯文本类仅显示描述文案。</div>
+    <div class="co-sub">任务名称超长时截断为省略号（…），金币奖励仅在 Passed/High Quality 状态下显示。</div>
+  </div>
+  <div class="anno right" data-page="page-home" data-target="m-home-5" style="top:430px;">
+    <div class="co-badge">⑤</div><div class="co-page">星球首页</div>
     <div class="co-title">锁定星球交互</div>
     <div class="co-body">未解锁星球（守护星 / 星探星）以<strong class="hl">灰色 + 🔒</strong> 标识呈现，点击弹出提示气泡「🔒 星球名 · 即将开放，敬请期待」，点击「我知道了」关闭。</div>
   </div>
-  <div class="anno left" data-page="page-home" data-target="m-home-5" style="top:660px;">
-    <div class="co-badge">⑤</div><div class="co-page">星球首页</div>
+  <div class="anno left" data-page="page-home" data-target="m-home-6" style="top:640px;">
+    <div class="co-badge">⑥</div><div class="co-page">星球首页</div>
     <div class="co-title">星球通告</div>
     <div class="co-body">首页底部<strong class="hl">任务推荐模块</strong>：每条展示星球标签、任务名称、奖励预览，点击直达对应星球详情页。当前推荐：传播星·站外扩散（+30 能量 · 1000 金币）、共创星·翻译查错（+30 能量 · 1000 金币）。</div>
   </div>
@@ -890,6 +1028,7 @@ function showAnnotations(id){
   if(!document.body.classList.contains('demo-mode')){ drawArrows(); setTimeout(drawArrows, 460); }
 }
 function goToDetail(planet){if(planet==='co-creation')goToPage('page-detail-cocreation');else if(planet==='guardian')goToPage('page-detail-guardian');else if(planet==='promotion')goToPage('page-detail-promotion');}
+function goToContribution(){goToPage('page-contribution');}
 function showLockedToast(n,d){document.getElementById('toast-title').textContent='🔒 '+n;document.getElementById('toast-desc').textContent=d;document.getElementById('locked-toast').classList.add('show');document.getElementById('stage').classList.add('sheet-open');}
 function hideToast(){document.getElementById('locked-toast').classList.remove('show');document.getElementById('stage').classList.remove('sheet-open');}
 function showRankInfo(){document.getElementById('rank-sheet-overlay').classList.add('show');document.getElementById('rank-sheet').classList.add('show');document.getElementById('stage').classList.add('sheet-open');}
