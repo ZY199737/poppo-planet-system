@@ -583,7 +583,7 @@ body.demo-mode .doc-details { display: none; }
         </div>
         <span>⚡ 100%</span>
       </div>
-      <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-cocreation')"></div><div class="title">任务详情</div></div>
+      <div class="nav-bar"><div class="back-btn" onclick="goBack()"></div><div class="title">任务详情</div></div>
       <div class="share-task-wrapper">
         <div class="share-task-header purple-header">
           <div class="share-task-badge purple-badge">Long-term</div>
@@ -638,7 +638,7 @@ body.demo-mode .doc-details { display: none; }
         </div>
         <span>⚡ 100%</span>
       </div>
-      <div class="nav-bar"><div class="back-btn" onclick="goToPage('page-detail-promotion')"></div><div class="title">任务详情</div></div>
+      <div class="nav-bar"><div class="back-btn" onclick="goBack()"></div><div class="title">任务详情</div></div>
       <div class="share-task-wrapper">
         <div class="share-task-header">
           <div class="share-task-badge">Limited</div>
@@ -866,14 +866,24 @@ body.demo-mode .doc-details { display: none; }
 <div class="toast" id="locked-toast"><h3 id="toast-title">🔒 星球未开放</h3><p id="toast-desc">即将开放，敬请期待</p><button class="close-toast" onclick="hideToast()">我知道了</button></div>
 
 <script>
+const pageHistory = [];
 const starsBg = document.getElementById('stars-bg');
 for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*3+'s';s.style.width=s.style.height=(Math.random()*2+1)+'px';starsBg.appendChild(s);}
 
 function goToPage(id){
+  const cur = document.querySelector('.page.active');
+  if(cur) pageHistory.push(cur.id);
   document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active');p.classList.add('slide-right');});
   document.getElementById(id).classList.remove('slide-right');
   document.getElementById(id).classList.add('active');
   showAnnotations(id);
+}
+function goBack(){
+  const prev = pageHistory.length ? pageHistory.pop() : 'page-home';
+  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active');p.classList.add('slide-right');});
+  document.getElementById(prev).classList.remove('slide-right');
+  document.getElementById(prev).classList.add('active');
+  showAnnotations(prev);
 }
 function showAnnotations(id){
   document.querySelectorAll('.anno').forEach(c=>{c.style.display=(c.dataset.page===id)?'block':'none';});
